@@ -73,6 +73,61 @@
                 animation-timing-function: cubic-bezier(0,0,0.2,1);
             }
         }
+        
+        /* Search Modal Animations */
+        .search-modal-enter {
+            animation: searchModalFadeIn 0.3s ease-out;
+        }
+        
+        .search-modal-exit {
+            animation: searchModalFadeOut 0.3s ease-in;
+        }
+        
+        @keyframes searchModalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes searchModalFadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+        }
+        
+        /* Search input focus styles */
+        #searchInput:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Keyboard shortcut styles */
+        kbd {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.25rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .dark kbd {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #d1d5db;
+        }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 font-sans transition-colors duration-300">
@@ -91,6 +146,11 @@
                     <a href="/posts" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Blog</a>
                     <a href="/about" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Giới thiệu</a>
                     <a href="/contact" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Liên hệ</a>
+                    
+                    <!-- Search Button -->
+                    <button onclick="openSearchModal()" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="Tìm kiếm">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
                     
                     {{#if user}}
                         <div class="flex items-center space-x-3">
@@ -126,6 +186,9 @@
                     <a href="/posts" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Blog</a>
                     <a href="/about" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Giới thiệu</a>
                     <a href="/contact" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">Liên hệ</a>
+                    <button onclick="openSearchModal()" class="text-left text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-300">
+                        <i class="fas fa-search mr-2"></i>Tìm kiếm
+                    </button>
                     {{#if user}}
                         <a href="/admin" class="bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition-colors duration-300 text-center">
                             <i class="fas fa-tachometer-alt mr-2"></i>
@@ -301,7 +364,114 @@
             alert('Cảm ơn bạn đã đăng ký! Chúng tôi sẽ gửi những bài viết mới nhất đến email của bạn.');
             event.target.reset();
         }
+        
+        // Search Modal Functions
+        function openSearchModal() {
+            const modal = document.getElementById('searchModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                // Focus on search input
+                setTimeout(() => {
+                    const searchInput = document.getElementById('searchInput');
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                }, 100);
+            }
+        }
+        
+        function closeSearchModal() {
+            const modal = document.getElementById('searchModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
+        
+        // Quick search function
+        function quickSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = `/search?q=${encodeURIComponent(query)}`;
+            }
+        }
+        
+        // Handle Enter key in search input
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                quickSearch();
+            }
+        }
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('searchModal');
+            if (modal && event.target === modal) {
+                closeSearchModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeSearchModal();
+            }
+        });
     </script>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-96 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b dark:border-gray-700">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    <i class="fas fa-search mr-2 text-blue-600"></i>
+                    Tìm kiếm bài viết
+                </h3>
+                <button onclick="closeSearchModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Search Input -->
+            <div class="p-6">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="Nhập từ khóa tìm kiếm..." 
+                        class="w-full px-4 py-3 pl-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                        onkeypress="handleSearchKeyPress(event)"
+                    >
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="flex gap-3 mt-4">
+                    <button 
+                        onclick="quickSearch()" 
+                        class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300"
+                    >
+                        <i class="fas fa-search mr-2"></i>
+                        Tìm kiếm
+                    </button>
+                    <a 
+                        href="/search" 
+                        class="flex-1 text-center bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-2 px-4 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300"
+                    >
+                        <i class="fas fa-cog mr-2"></i>
+                        Tìm kiếm nâng cao
+                    </a>
+                </div>
+                
+                <!-- Quick Tips -->
+                <div class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                    <p><i class="fas fa-lightbulb mr-2"></i>Mẹo: Sử dụng phím <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded text-xs">Enter</kbd> để tìm kiếm nhanh</p>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- JavaScript -->
     <script src="/html-template/js/script.js"></script>
