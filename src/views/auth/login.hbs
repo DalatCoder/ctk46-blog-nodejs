@@ -1,103 +1,519 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}} - Dynamic Blog</title>
-    <link rel="stylesheet" href="/admin-template/css/style.css">
+    <title>{{title}} - Dynamic Blog CMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'bounce-in': 'bounceIn 0.6s ease-out',
+                        'gradient': 'gradient 6s ease infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        bounceIn: {
+                            '0%': { transform: 'scale(0.3)', opacity: '0' },
+                            '50%': { transform: 'scale(1.05)' },
+                            '70%': { transform: 'scale(0.9)' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        },
+                        gradient: {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        .auth-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .auth-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        .auth-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .auth-header h1 {
-            margin: 0;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-        .btn:hover {
-            background: #5a6fd8;
-        }
-        .auth-links {
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .alert {
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border-radius: 5px;
-        }
-        .alert-error {
-            background: #fee;
-            color: #c33;
-            border: 1px solid #fcc;
-        }
-        .alert-success {
-            background: #efe;
-            color: #363;
-            border: 1px solid #cfc;
+        .bg-animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
         }
         
-        /* Default Account Info Styles */
-        .default-account-info {
-            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
-            border: 2px solid #667eea;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            text-align: center;
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
         }
         
-        .default-account-info h3 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+        .input-glow:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1), 0 0 20px rgba(102, 126, 234, 0.2);
         }
         
-        .account-details {
-            background: white;
-            border-radius: 8px;
-            padding: 1rem;
+        .btn-shimmer {
+            background: linear-gradient(45deg, #667eea 30%, #764ba2 55%, #667eea 80%);
+            background-size: 300% 300%;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+        
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            left: 80%;
+            animation-delay: 4s;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 9999;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="h-full font-inter bg-animated-gradient relative overflow-hidden">
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Header Section -->
+            <div class="text-center animate-bounce-in">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6 animate-float">
+                    <i class="fas fa-blog text-3xl text-white"></i>
+                </div>
+                <h2 class="text-4xl font-bold text-white mb-2">
+                    Chào mừng trở lại
+                </h2>
+                <p class="text-white/80 text-lg">
+                    Đăng nhập vào <span class="font-semibold">Dynamic Blog CMS</span>
+                </p>
+            </div>
+
+            <!-- Login Form -->
+            <div class="glass-morphism rounded-2xl shadow-2xl p-8 animate-slide-up">
+                <!-- Flash Messages -->
+                {{#if messages.error}}
+                    <div class="mb-6 p-4 bg-red-100/90 backdrop-blur-sm border border-red-200 text-red-700 rounded-xl animate-fade-in">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            <div>
+                                {{#each messages.error}}
+                                    <p class="text-sm">{{this}}</p>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+
+                {{#if messages.success}}
+                    <div class="mb-6 p-4 bg-green-100/90 backdrop-blur-sm border border-green-200 text-green-700 rounded-xl animate-fade-in">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <div>
+                                {{#each messages.success}}
+                                    <p class="text-sm">{{this}}</p>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+
+                <form action="/auth/login" method="POST" class="space-y-6">
+                    <!-- Email Input -->
+                    <div class="space-y-2">
+                        <label for="email" class="block text-sm font-medium text-gray-700">
+                            <i class="fas fa-envelope mr-2 text-indigo-500"></i>Email
+                        </label>
+                        <input 
+                            id="email" 
+                            name="email" 
+                            type="email" 
+                            required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 input-glow bg-white/50 backdrop-blur-sm"
+                            placeholder="admin@example.com"
+                        >
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="space-y-2">
+                        <label for="password" class="block text-sm font-medium text-gray-700">
+                            <i class="fas fa-lock mr-2 text-indigo-500"></i>Mật khẩu
+                        </label>
+                        <div class="relative">
+                            <input 
+                                id="password" 
+                                name="password" 
+                                type="password" 
+                                required 
+                                class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 input-glow bg-white/50 backdrop-blur-sm"
+                                placeholder="••••••••"
+                            >
+                            <button 
+                                type="button" 
+                                onclick="togglePassword()" 
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-indigo-500 transition-colors"
+                            >
+                                <i id="password-toggle-icon" class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Remember Me -->
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input 
+                                type="checkbox" 
+                                name="remember" 
+                                class="w-4 h-4 text-indigo-600 bg-white/50 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
+                            >
+                            <span class="ml-2 text-sm text-gray-700">Ghi nhớ đăng nhập</span>
+                        </label>
+                        <a href="/auth/forgot-password" class="text-sm text-indigo-600 hover:text-indigo-500 font-medium transition-colors">
+                            Quên mật khẩu?
+                        </a>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button 
+                        type="submit" 
+                        class="w-full py-3 px-4 btn-shimmer text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-500/50"
+                    >
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Đăng nhập
+                    </button>
+                </form>
+
+                <!-- Demo Account Section -->
+                <div class="mt-8 p-6 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 backdrop-blur-sm rounded-2xl border border-blue-200/50">
+                    <div class="text-center mb-4">
+                        <h3 class="font-semibold text-gray-800 flex items-center justify-center">
+                            <i class="fas fa-key text-indigo-500 mr-2"></i>
+                            Tài khoản Demo
+                        </h3>
+                    </div>
+                    
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center justify-between p-3 bg-white/60 rounded-lg">
+                            <span class="text-sm font-medium text-gray-700">Email:</span>
+                            <button 
+                                onclick="copyToClipboard('admin@example.com')"
+                                class="text-sm font-mono bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md hover:bg-indigo-200 transition-colors cursor-pointer"
+                            >
+                                admin@example.com
+                                <i class="fas fa-copy ml-1 text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-white/60 rounded-lg">
+                            <span class="text-sm font-medium text-gray-700">Mật khẩu:</span>
+                            <button 
+                                onclick="copyToClipboard('admin123456')"
+                                class="text-sm font-mono bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md hover:bg-indigo-200 transition-colors cursor-pointer"
+                            >
+                                admin123456
+                                <i class="fas fa-copy ml-1 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button 
+                        onclick="autoFillLogin()" 
+                        class="w-full py-2 px-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-600 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg"
+                    >
+                        <i class="fas fa-magic mr-2"></i>
+                        Tự động điền
+                    </button>
+                    
+                    <p class="text-xs text-gray-600 mt-3 text-center italic">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Tài khoản demo cho môi trường phát triển
+                    </p>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="mt-6 text-center space-y-3">
+                    <p class="text-sm text-gray-600">
+                        Chưa có tài khoản? 
+                        <a href="/auth/register" class="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                            Đăng ký ngay
+                        </a>
+                    </p>
+                    <p class="text-sm">
+                        <a href="/" class="text-gray-500 hover:text-gray-700 transition-colors">
+                            <i class="fas fa-arrow-left mr-1"></i>
+                            Về trang chủ
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center animate-fade-in">
+                <p class="text-white/60 text-sm">
+                    © 2025 Dynamic Blog CMS. Được phát triển với 
+                    <i class="fas fa-heart text-red-400 mx-1"></i>
+                    bởi CTK46
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('password-toggle-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.className = 'fas fa-eye';
+            }
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                showNotification(`Đã copy: ${text}`, 'success');
+            }).catch(function(err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification(`Đã copy: ${text}`, 'success');
+            });
+        }
+
+        // Auto-fill login form
+        function autoFillLogin() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            // Add typing animation
+            typeText(emailInput, 'admin@example.com', 50);
+            setTimeout(() => {
+                typeText(passwordInput, 'admin123456', 50);
+            }, 1000);
+            
+            showNotification('✨ Đã tự động điền thông tin đăng nhập!', 'success');
+        }
+
+        // Typing animation effect
+        function typeText(element, text, speed) {
+            element.value = '';
+            element.focus();
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.value += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    element.blur();
+                }
+            }, speed);
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification px-6 py-4 rounded-lg shadow-lg text-white font-medium ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                'bg-blue-500'
+            }`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${
+                        type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 
+                        'fa-info-circle'
+                    } mr-2"></i>
+                    ${message}
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + Shift + L for auto-fill
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'L') {
+                e.preventDefault();
+                autoFillLogin();
+            }
+            
+            // Escape to clear form
+            if (e.key === 'Escape') {
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                showNotification('Đã xóa form đăng nhập', 'info');
+            }
+        });
+
+        // Form validation and submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                e.preventDefault();
+                showNotification('Vui lòng điền đầy đủ thông tin', 'error');
+                return;
+            }
+            
+            // Add loading state to button
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang đăng nhập...';
+            submitBtn.disabled = true;
+            
+            // Re-enable button after a delay (in case of client-side redirect issues)
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 5000);
+        });
+
+        // Add focus animations
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('scale-105');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('scale-105');
+            });
+        });
+
+        // Add entrance animations when page loads
+        window.addEventListener('load', function() {
+            const elements = document.querySelectorAll('.animate-slide-up, .animate-bounce-in, .animate-fade-in');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.animationDelay = `${index * 100}ms`;
+                }, 100);
+            });
+        });
+
+        // Parallax effect for floating shapes
+        document.addEventListener('mousemove', function(e) {
+            const shapes = document.querySelectorAll('.shape');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.5;
+                const x = (mouseX - 0.5) * speed * 20;
+                const y = (mouseY - 0.5) * speed * 20;
+                shape.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // Show welcome message on first visit
+        if (!sessionStorage.getItem('welcomed')) {
+            setTimeout(() => {
+                showNotification('🎉 Chào mừng đến với Dynamic Blog CMS!', 'info');
+                sessionStorage.setItem('welcomed', 'true');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
             margin-bottom: 1rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
