@@ -1,172 +1,312 @@
-{{!-- Comment Details View --}}
-<div class="space-y-6">
-    <!-- Comment Info -->
-    <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4">
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <h4 class="font-medium text-slate-900 dark:text-white mb-2">Thông tin tác giả</h4>
-                <div class="space-y-2 text-sm">
-                    <div class="flex items-center">
-                        <span class="font-medium text-slate-600 dark:text-slate-400 w-16">Tên:</span>
-                        <span class="text-slate-900 dark:text-white">{{comment.authorName}}</span>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="font-medium text-slate-600 dark:text-slate-400 w-16">Email:</span>
-                        <span class="text-slate-900 dark:text-white">{{comment.authorEmail}}</span>
-                    </div>
-                    {{#if comment.authorWebsite}}
-                        <div class="flex items-center">
-                            <span class="font-medium text-slate-600 dark:text-slate-400 w-16">Website:</span>
-                            <a href="{{comment.authorWebsite}}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">{{comment.authorWebsite}}</a>
-                        </div>
-                    {{/if}}
-                    <div class="flex items-center">
-                        <span class="font-medium text-slate-600 dark:text-slate-400 w-16">Loại:</span>
-                        {{#if comment.user}}
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                                <i class="fas fa-user-check mr-1"></i>
-                                Thành viên
-                            </span>
-                        {{else}}
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300">
-                                <i class="fas fa-user mr-1"></i>
-                                Khách
-                            </span>
-                        {{/if}}
-                    </div>
+{{!-- Comment Details Page --}}
+<div class="p-6">
+    <!-- Page Header -->
+    <div class="mb-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="/admin/comments" class="inline-flex items-center px-3 py-2 text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Quay lại danh sách
+                </a>
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center">
+                        <i class="fas fa-comment-dots mr-3 text-blue-500"></i>
+                        Chi tiết bình luận #{{comment.id}}
+                    </h1>
+                    <p class="text-slate-600 dark:text-slate-400 mt-1">Xem và quản lý thông tin chi tiết bình luận</p>
                 </div>
             </div>
             
-            <div>
-                <h4 class="font-medium text-slate-900 dark:text-white mb-2">Thông tin bình luận</h4>
-                <div class="space-y-2 text-sm">
-                    <div class="flex items-center">
-                        <span class="font-medium text-slate-600 dark:text-slate-400 w-20">Trạng thái:</span>
-                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs {{#if (eq comment.status 'PENDING')}}bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400{{/if}}{{#if (eq comment.status 'APPROVED')}}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400{{/if}}{{#if (eq comment.status 'TRASH')}}bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400{{/if}}{{#if (eq comment.status 'SPAM')}}bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400{{/if}}">
-                            {{#if (eq comment.status 'PENDING')}}Chờ duyệt{{/if}}
-                            {{#if (eq comment.status 'APPROVED')}}Đã duyệt{{/if}}
-                            {{#if (eq comment.status 'TRASH')}}Thùng rác{{/if}}
-                            {{#if (eq comment.status 'SPAM')}}Spam{{/if}}
-                        </span>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="font-medium text-slate-600 dark:text-slate-400 w-20">Ngày tạo:</span>
-                        <span class="text-slate-900 dark:text-white">{{formatDate comment.createdAt}}</span>
-                    </div>
-                    {{#if comment.moderatedAt}}
-                        <div class="flex items-center">
-                            <span class="font-medium text-slate-600 dark:text-slate-400 w-20">Duyệt lúc:</span>
-                            <span class="text-slate-900 dark:text-white">{{formatDate comment.moderatedAt}}</span>
-                        </div>
+            <!-- Status Badge -->
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium {{#if (eq comment.status 'PENDING')}}bg-yellow-100 text-yellow-800 border border-yellow-200{{/if}}{{#if (eq comment.status 'APPROVED')}}bg-green-100 text-green-800 border border-green-200{{/if}}{{#if (eq comment.status 'TRASH')}}bg-red-100 text-red-800 border border-red-200{{/if}}{{#if (eq comment.status 'SPAM')}}bg-orange-100 text-orange-800 border border-orange-200{{/if}}">
+                    {{#if (eq comment.status 'PENDING')}}
+                        <i class="fas fa-clock mr-2"></i>Chờ duyệt
                     {{/if}}
-                    {{#if comment.parent}}
-                        <div class="flex items-center">
-                            <span class="font-medium text-slate-600 dark:text-slate-400 w-20">Trả lời:</span>
-                            <span class="text-slate-900 dark:text-white">{{comment.parent.authorName}}</span>
-                        </div>
+                    {{#if (eq comment.status 'APPROVED')}}
+                        <i class="fas fa-check-circle mr-2"></i>Đã duyệt
                     {{/if}}
-                </div>
+                    {{#if (eq comment.status 'TRASH')}}
+                        <i class="fas fa-trash mr-2"></i>Thùng rác
+                    {{/if}}
+                    {{#if (eq comment.status 'SPAM')}}
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Spam
+                    {{/if}}
+                </span>
             </div>
         </div>
     </div>
 
-    <!-- Comment Content -->
-    <div>
-        <h4 class="font-medium text-slate-900 dark:text-white mb-3">Nội dung bình luận</h4>
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-4">
-            <p class="text-slate-900 dark:text-white whitespace-pre-wrap">{{comment.content}}</p>
-        </div>
-    </div>
-
-    <!-- Related Post -->
-    <div>
-        <h4 class="font-medium text-slate-900 dark:text-white mb-3">Bài viết liên quan</h4>
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-4">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h5 class="font-medium text-slate-900 dark:text-white">{{comment.post.title}}</h5>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">ID: {{comment.post.id}}</p>
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <!-- Left Column: Comment Content -->
+        <div class="xl:col-span-2 space-y-6">
+            <!-- Comment Content Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center">
+                        <i class="fas fa-quote-left mr-3 text-blue-500"></i>
+                        Nội dung bình luận
+                    </h2>
                 </div>
-                <a href="/posts/{{comment.post.slug}}" target="_blank" class="inline-flex items-center px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-external-link-alt mr-2"></i>
-                    Xem bài viết
-                </a>
+                <div class="p-6">
+                    <div class="prose dark:prose-invert max-w-none">
+                        <p class="text-slate-900 dark:text-white leading-relaxed whitespace-pre-wrap text-base">{{comment.content}}</p>
+                    </div>
+                    
+                    <!-- Comment Metadata -->
+                    <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="flex items-center text-slate-600 dark:text-slate-400">
+                                <i class="fas fa-calendar-plus w-4 mr-2"></i>
+                                <span>Ngày tạo: <strong class="text-slate-900 dark:text-white">{{formatDate comment.createdAt}}</strong></span>
+                            </div>
+                            <div class="flex items-center text-slate-600 dark:text-slate-400">
+                                <i class="fas fa-clock w-4 mr-2"></i>
+                                <span>{{timeAgo comment.createdAt}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Replies -->
-    {{#if comment.replies.length}}
-        <div>
-            <h4 class="font-medium text-slate-900 dark:text-white mb-3">Các phản hồi ({{comment.replies.length}})</h4>
-            <div class="space-y-3">
-                {{#each comment.replies}}
-                    <div class="bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-lg p-4">
-                        <div class="flex items-start justify-between mb-2">
-                            <div class="flex items-center space-x-2">
-                                <span class="font-medium text-slate-900 dark:text-white">{{authorName}}</span>
-                                {{#if isAdminReply}}
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
-                                        <i class="fas fa-crown mr-1"></i>
-                                        Admin
+            <!-- Related Post Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center">
+                        <i class="fas fa-newspaper mr-3 text-green-500"></i>
+                        Bài viết liên quan
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-slate-900 dark:text-white text-lg mb-2">{{comment.post.title}}</h3>
+                            <div class="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
+                                <span class="flex items-center">
+                                    <i class="fas fa-hashtag mr-1"></i>
+                                    ID: {{comment.post.id}}
+                                </span>
+                                <span class="flex items-center">
+                                    <i class="fas fa-link mr-1"></i>
+                                    {{comment.post.slug}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <a href="/admin/posts/{{comment.post.id}}" 
+                               class="inline-flex items-center px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                <i class="fas fa-edit mr-2"></i>
+                                Chỉnh sửa
+                            </a>
+                            <a href="/posts/{{comment.post.slug}}" target="_blank" 
+                               class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Xem bài viết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Replies Section -->
+            {{#if comment.replies.length}}
+                <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+                        <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center">
+                            <i class="fas fa-reply mr-3 text-purple-500"></i>
+                            Các phản hồi 
+                            <span class="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
+                                {{comment.replies.length}}
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            {{#each comment.replies}}
+                                <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg p-4">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                                {{substring authorName 0 1}}
+                                            </div>
+                                            <div>
+                                                <span class="font-semibold text-slate-900 dark:text-white">{{authorName}}</span>
+                                                {{#if isAdminReply}}
+                                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 dark:from-purple-900/30 dark:to-pink-900/30 dark:text-purple-400">
+                                                        <i class="fas fa-crown mr-1"></i>
+                                                        Admin
+                                                    </span>
+                                                {{/if}}
+                                            </div>
+                                        </div>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400 flex items-center">
+                                            <i class="fas fa-clock mr-1"></i>
+                                            {{timeAgo createdAt}}
+                                        </span>
+                                    </div>
+                                    <p class="text-slate-700 dark:text-slate-300 leading-relaxed ml-13">{{content}}</p>
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+        <!-- Right Column: Author Info & Actions -->
+        <div class="xl:col-span-1 space-y-6">
+            <!-- Author Info Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center">
+                        <i class="fas fa-user mr-3 text-blue-500"></i>
+                        Thông tin tác giả
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            {{substring comment.authorName 0 1}}
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-lg">{{comment.authorName}}</h3>
+                            <div class="flex items-center mt-1">
+                                {{#if comment.user}}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                                        <i class="fas fa-user-check mr-1"></i>Thành viên
+                                    </span>
+                                {{else}}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-slate-100 text-slate-700 dark:bg-slate-600 dark:text-slate-300">
+                                        <i class="fas fa-user mr-1"></i>Khách
                                     </span>
                                 {{/if}}
                             </div>
-                            <span class="text-sm text-slate-500 dark:text-slate-400">{{formatDate createdAt}}</span>
                         </div>
-                        <p class="text-slate-700 dark:text-slate-300">{{content}}</p>
                     </div>
-                {{/each}}
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                            <i class="fas fa-envelope w-5 text-slate-400 mr-3"></i>
+                            <span class="text-slate-600 dark:text-slate-400 text-sm">{{comment.authorEmail}}</span>
+                        </div>
+                        {{#if comment.authorWebsite}}
+                            <div class="flex items-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                                <i class="fas fa-globe w-5 text-slate-400 mr-3"></i>
+                                <a href="{{comment.authorWebsite}}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">{{comment.authorWebsite}}</a>
+                            </div>
+                        {{/if}}
+                        <div class="flex items-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                            <i class="fas fa-map-marker-alt w-5 text-slate-400 mr-3"></i>
+                            <span class="text-slate-600 dark:text-slate-400 font-mono text-xs">{{comment.authorIp}}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    {{/if}}
 
-    <!-- Quick Actions -->
-    <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700">
-        <div class="flex items-center space-x-3">
-            <!-- Status Update -->
-            <select onchange="updateCommentStatus({{comment.id}}, this.value)" class="text-sm border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500">
-                <option value="PENDING" {{#if (eq comment.status "PENDING")}}selected{{/if}}>Chờ duyệt</option>
-                <option value="APPROVED" {{#if (eq comment.status "APPROVED")}}selected{{/if}}>Duyệt</option>
-                <option value="TRASH" {{#if (eq comment.status "TRASH")}}selected{{/if}}>Thùng rác</option>
-                <option value="SPAM" {{#if (eq comment.status "SPAM")}}selected{{/if}}>Spam</option>
-            </select>
-        </div>
+            <!-- Quick Actions Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center">
+                        <i class="fas fa-tools mr-3 text-orange-500"></i>
+                        Hành động nhanh
+                    </h2>
+                </div>
+                <div class="p-6 space-y-4">
+                    <!-- Status Update -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Thay đổi trạng thái:</label>
+                        <select onchange="updateCommentStatus({{comment.id}}, this.value)" 
+                                class="w-full text-sm border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all">
+                            <option value="PENDING" {{#if (eq comment.status "PENDING")}}selected{{/if}}>🕒 Chờ duyệt</option>
+                            <option value="APPROVED" {{#if (eq comment.status "APPROVED")}}selected{{/if}}>✅ Duyệt</option>
+                            <option value="TRASH" {{#if (eq comment.status "TRASH")}}selected{{/if}}>🗑️ Thùng rác</option>
+                            <option value="SPAM" {{#if (eq comment.status "SPAM")}}selected{{/if}}>⚠️ Spam</option>
+                        </select>
+                    </div>
 
-        <div class="flex items-center space-x-2">
-            <button onclick="showQuickReply({{comment.id}})" class="inline-flex items-center px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                <i class="fas fa-reply mr-2"></i>
-                Trả lời nhanh
-            </button>
-            <button onclick="deleteCommentFromDetails({{comment.id}})" class="inline-flex items-center px-3 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                <i class="fas fa-trash mr-2"></i>
-                Xóa
-            </button>
-        </div>
-    </div>
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <button onclick="showQuickReply({{comment.id}})" 
+                                class="w-full inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                            <i class="fas fa-reply mr-2"></i>
+                            Trả lời nhanh
+                        </button>
+                        
+                        <button onclick="deleteCommentFromDetails({{comment.id}})" 
+                                class="w-full inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-lg hover:from-red-700 hover:to-rose-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                            <i class="fas fa-trash mr-2"></i>
+                            Xóa bình luận
+                        </button>
+                    </div>
 
-    <!-- Quick Reply Form -->
-    <div id="quickReplyForm" class="hidden mt-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-        <form onsubmit="submitQuickReply(event, {{comment.id}})">
-            <div class="mb-3">
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Trả lời nhanh</label>
-                <textarea name="content" rows="3" required
-                          class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
-                          placeholder="Nhập nội dung trả lời..."></textarea>
+                    <!-- Quick Reply Form -->
+                    <div id="quickReplyForm" class="hidden">
+                        <div class="border-t border-slate-200 dark:border-slate-700 pt-4 mt-4">
+                            <form onsubmit="submitQuickReply(event, {{comment.id}})">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 flex items-center">
+                                        <i class="fas fa-edit mr-2 text-blue-500"></i>
+                                        Trả lời nhanh
+                                    </label>
+                                    <textarea name="content" rows="4" required
+                                              class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white transition-all resize-none"
+                                              placeholder="Nhập nội dung trả lời của bạn..."></textarea>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <button type="button" onclick="hideQuickReply()" 
+                                            class="flex-1 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600 rounded-lg transition-colors border border-slate-200 dark:border-slate-600">
+                                        <i class="fas fa-times mr-2"></i>
+                                        Hủy
+                                    </button>
+                                    <button type="submit" 
+                                            class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                                        <i class="fas fa-paper-plane mr-2"></i>
+                                        Gửi
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center justify-end space-x-2">
-                <button type="button" onclick="hideQuickReply()" class="px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600 rounded-lg transition-colors">
-                    Hủy
-                </button>
-                <button type="submit" class="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-paper-plane mr-2"></i>
-                    Gửi
-                </button>
-            </div>
-        </form>
+
+            <!-- Statistics Card (if available) -->
+            {{#if stats}}
+                <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20">
+                        <h2 class="text-lg font-semibold text-slate-900 dark:text-white flex items-center">
+                            <i class="fas fa-chart-bar mr-3 text-indigo-500"></i>
+                            Thống kê tổng quan
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{stats.total}}</div>
+                                <div class="text-sm text-slate-600 dark:text-slate-400">Tổng số</div>
+                            </div>
+                            <div class="text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                                <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{stats.pending}}</div>
+                                <div class="text-sm text-slate-600 dark:text-slate-400">Chờ duyệt</div>
+                            </div>
+                            <div class="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{stats.approved}}</div>
+                                <div class="text-sm text-slate-600 dark:text-slate-400">Đã duyệt</div>
+                            </div>
+                            <div class="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                                <div class="text-2xl font-bold text-red-600 dark:text-red-400">{{stats.trash}}</div>
+                                <div class="text-sm text-slate-600 dark:text-slate-400">Thùng rác</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
     </div>
 </div>
 
+<script>
 <script>
 function updateCommentStatus(commentId, status) {
     fetch(`/admin/comments/${commentId}/status`, {
@@ -179,22 +319,23 @@ function updateCommentStatus(commentId, status) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Update parent window if it exists
-            if (window.parent && window.parent.showNotification) {
-                window.parent.showNotification(data.message, 'success');
-            }
+            showNotification(data.message, 'success');
+            // Refresh page to show updated status
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
         } else {
-            alert(data.message);
+            showNotification(data.message, 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Có lỗi xảy ra khi cập nhật trạng thái');
+        showNotification('Có lỗi xảy ra khi cập nhật trạng thái', 'error');
     });
 }
 
 function deleteCommentFromDetails(commentId) {
-    if (!confirm('Bạn có chắc chắn muốn xóa bình luận này?')) {
+    if (!confirm('Bạn có chắc chắn muốn xóa bình luận này? Hành động này không thể hoàn tác.')) {
         return;
     }
     
@@ -207,27 +348,37 @@ function deleteCommentFromDetails(commentId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Close modal and refresh parent
-            if (window.parent && window.parent.closeDetailsModal) {
-                window.parent.closeDetailsModal();
-                window.parent.location.reload();
-            }
+            showNotification(data.message, 'success');
+            // Redirect to comments list after successful deletion
+            setTimeout(() => {
+                window.location.href = '/admin/comments';
+            }, 1500);
         } else {
-            alert(data.message);
+            showNotification(data.message, 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Có lỗi xảy ra khi xóa bình luận');
+        showNotification('Có lỗi xảy ra khi xóa bình luận', 'error');
     });
 }
 
 function showQuickReply(commentId) {
     document.getElementById('quickReplyForm').classList.remove('hidden');
+    // Focus on textarea
+    const textarea = document.querySelector('#quickReplyForm textarea[name="content"]');
+    if (textarea) {
+        setTimeout(() => textarea.focus(), 100);
+    }
 }
 
 function hideQuickReply() {
     document.getElementById('quickReplyForm').classList.add('hidden');
+    // Clear textarea
+    const textarea = document.querySelector('#quickReplyForm textarea[name="content"]');
+    if (textarea) {
+        textarea.value = '';
+    }
 }
 
 function submitQuickReply(event, commentId) {
@@ -235,6 +386,16 @@ function submitQuickReply(event, commentId) {
     
     const formData = new FormData(event.target);
     const content = formData.get('content');
+    
+    if (!content.trim()) {
+        showNotification('Vui lòng nhập nội dung trả lời', 'error');
+        return;
+    }
+    
+    // Disable submit button during request
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang gửi...';
     
     fetch(`/admin/comments/${commentId}/reply`, {
         method: 'POST',
@@ -246,18 +407,93 @@ function submitQuickReply(event, commentId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Refresh the details view
-            if (window.parent && window.parent.showNotification) {
-                window.parent.showNotification(data.message, 'success');
-                window.parent.showCommentDetails(commentId); // Refresh details
-            }
+            showNotification(data.message, 'success');
+            hideQuickReply();
+            // Refresh page to show new reply
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
         } else {
-            alert(data.message);
+            showNotification(data.message, 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Có lỗi xảy ra khi gửi trả lời');
+        showNotification('Có lỗi xảy ra khi gửi trả lời', 'error');
+    })
+    .finally(() => {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Gửi';
     });
 }
+
+// Notification function
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification-toast');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification-toast fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg text-white font-medium transform translate-x-full transition-transform duration-300 ${
+        type === 'success' ? 'bg-green-500' : 
+        type === 'error' ? 'bg-red-500' : 
+        type === 'warning' ? 'bg-yellow-500' : 
+        'bg-blue-500'
+    }`;
+    
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${
+                type === 'success' ? 'fa-check-circle' : 
+                type === 'error' ? 'fa-exclamation-circle' : 
+                type === 'warning' ? 'fa-exclamation-triangle' : 
+                'fa-info-circle'
+            } mr-2"></i>
+            ${message}
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white/80 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Hide notification after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 300);
+        }
+    }, 5000);
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // ESC to hide quick reply form
+    if (e.key === 'Escape') {
+        hideQuickReply();
+    }
+    
+    // Ctrl/Cmd + Enter to submit quick reply form if it's visible
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        const quickReplyForm = document.getElementById('quickReplyForm');
+        if (!quickReplyForm.classList.contains('hidden')) {
+            const form = quickReplyForm.querySelector('form');
+            if (form) {
+                form.dispatchEvent(new Event('submit', { cancelable: true }));
+            }
+        }
+    }
+});
 </script>

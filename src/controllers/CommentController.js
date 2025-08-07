@@ -43,7 +43,7 @@ class CommentController {
     }
   }
 
-  // Admin - Show single comment
+  // Admin - Show single comment page
   static async show(req, res) {
     try {
       const comment = await CommentModel.findById(req.params.id);
@@ -53,10 +53,14 @@ class CommentController {
         return res.redirect('/admin/comments');
       }
 
+      // Get comment statistics for context
+      const stats = await CommentModel.getStatistics();
+
       res.render('admin/comments/show', {
-        title: 'Comment Details',
+        title: `Comment #${comment.id} Details`,
         layout: 'admin',
         comment,
+        stats,
         currentPage: 'comments',
         user: req.user,
       });
