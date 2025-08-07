@@ -39,6 +39,8 @@ router.use(optionalAuth);
 router.get('/', async (req, res) => {
   try {
     const PostModel = require('../models/PostModel');
+    const UserModel = require('../models/UserModel');
+    const CommentModel = require('../models/CommentModel');
     
     // Get featured posts
     const featuredPosts = await PostModel.getAll(1, 3, { 
@@ -54,11 +56,34 @@ router.get('/', async (req, res) => {
     // Get categories
     const categories = await CategoryModel.getFeatured();
 
+    // Get stats for the homepage
+    const [userStats, postStats, commentStats] = await Promise.all([
+      UserModel.getStats(),
+      PostModel.getStats(),
+      CommentModel.getStats()
+    ]);
+
+    const stats = {
+      users: {
+        total: userStats.total || 0
+      },
+      posts: {
+        total: postStats.total || 0
+      },
+      comments: {
+        total: commentStats.total || 0
+      },
+      categories: {
+        total: categories.length || 0
+      }
+    };
+
     res.render('frontend/home', {
       title: 'Welcome to Dynamic Blog',
       featuredPosts: featuredPosts.posts,
       recentPosts: recentPosts.posts,
       categories,
+      stats,
     });
   } catch (error) {
     console.error('Home page error:', error);
