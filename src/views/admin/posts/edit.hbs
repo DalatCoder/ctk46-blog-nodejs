@@ -1,0 +1,1008 @@
+<!-- Header with actions -->
+<div class="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 mb-8 -mx-6 px-6 py-4">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center">
+                <i class="fas fa-edit text-blue-600 dark:text-blue-400 mr-3"></i>
+                Chỉnh sửa bài viết
+            </h1>
+            <p class="text-slate-600 dark:text-slate-300 mt-1">Cập nhật bài viết "{{post.title}}"</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <!-- Quick Actions -->
+            {{#if post.slug}}
+                <a href="/posts/{{post.slug}}" target="_blank" class="inline-flex items-center px-3 py-2 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/30 transition-colors">
+                    <i class="fas fa-external-link-alt mr-2"></i>
+                    Xem bài viết
+                </a>
+            {{/if}}
+            <button type="button" id="updateAsDraft" class="inline-flex items-center px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                <i class="fas fa-save mr-2"></i>
+                Lưu nháp
+            </button>
+            <button type="submit" form="editForm" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                <i class="fas fa-sync-alt mr-2"></i>
+                Cập nhật
+            </button>
+            <a href="/admin/posts" class="inline-flex items-center px-3 py-2 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white transition-colors">
+                <i class="fas fa-times mr-2"></i>
+                Hủy
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Form -->
+<form id="editForm" action="/admin/posts/{{post.id}}" method="POST" enctype="multipart/form-data" class="max-w-7xl mx-auto">
+    <input type="hidden" name="_method" value="PUT">
+    
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+        <!-- Main Content Area -->
+        <div class="xl:col-span-3 space-y-6">
+            <!-- Quick Title & Excerpt with Stats -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="p-6">
+                    <!-- Title with live preview -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                <i class="fas fa-heading text-blue-600 dark:text-blue-400 mr-2"></i>
+                                Tiêu đề bài viết <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="title" id="postTitle" value="{{post.title}}" required
+                                   class="w-full px-4 py-3 text-lg border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white transition-all"
+                                   placeholder="Nhập tiêu đề hấp dẫn cho bài viết của bạn...">
+                            {{#if post.slug}}
+                            <div class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                                <span class="font-medium">URL hiện tại:</span> 
+                                <span class="text-blue-600 dark:text-blue-400">/posts/{{post.slug}}</span>
+                            </div>
+                            {{/if}}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                <i class="fas fa-align-left text-green-600 dark:text-green-400 mr-2"></i>
+                                Tóm tắt bài viết
+                            </label>
+                            <textarea name="excerpt" id="postExcerpt" rows="3"
+                                      class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white transition-all resize-none"
+                                      placeholder="Viết mô tả ngắn gọn, hấp dẫn để thu hút người đọc...">{{post.excerpt}}</textarea>
+                            <div class="flex justify-between items-center mt-2 text-xs text-slate-500 dark:text-slate-400">
+                                <span>Tóm tắt giúp người đọc hiểu nhanh nội dung bài viết</span>
+                                <span id="excerptCount">{{#if post.excerpt}}{{length post.excerpt}}{{else}}0{{/if}}/300</span>
+                            </div>
+                        </div>
+
+                        <!-- Enhanced Post Stats -->
+                        <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-700/50 dark:to-slate-600/50 rounded-xl p-4 border border-blue-200 dark:border-slate-600">
+                            <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 flex items-center">
+                                <i class="fas fa-chart-bar text-blue-600 dark:text-blue-400 mr-2"></i>
+                                Thống kê bài viết
+                            </h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                <div class="bg-white dark:bg-slate-800 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{post.views}}</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">Lượt xem</div>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{post._count.comments}}</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">Bình luận</div>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{post._count.postTags}}</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">Tags</div>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 rounded-lg p-3">
+                                    <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">
+                                        {{#if post.status}}
+                                            {{#if (eq post.status 'PUBLISHED')}}✓{{else if (eq post.status 'DRAFT')}}📝{{else}}📦{{/if}}
+                                        {{else}}📝{{/if}}
+                                    </div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">Trạng thái</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-xs text-slate-600 dark:text-slate-300 text-center">
+                                Tạo: {{formatDate post.createdAt 'DD/MM/YYYY'}} | Cập nhật: {{formatDate post.updatedAt 'DD/MM/YYYY'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Content Editor -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="border-b border-slate-200 dark:border-slate-700 p-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white flex items-center">
+                            <i class="fas fa-edit text-purple-600 dark:text-purple-400 mr-2"></i>
+                            Nội dung bài viết
+                        </h3>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" id="togglePreview" class="inline-flex items-center px-3 py-1.5 text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                <i class="fas fa-eye mr-1"></i>
+                                Xem trước
+                            </button>
+                            <button type="button" id="toggleFullscreen" class="inline-flex items-center px-3 py-1.5 text-sm bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                <i class="fas fa-expand mr-1"></i>
+                                Toàn màn hình
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <!-- Toolbar -->
+                    <div class="mb-4 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" class="toolbar-btn" data-action="bold" title="Bold (Ctrl+B)">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button type="button" class="toolbar-btn" data-action="italic" title="Italic (Ctrl+I)">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button type="button" class="toolbar-btn" data-action="underline" title="Underline (Ctrl+U)">
+                                <i class="fas fa-underline"></i>
+                            </button>
+                            <div class="w-px h-6 bg-slate-300 dark:bg-slate-600"></div>
+                            <button type="button" class="toolbar-btn" data-action="h1" title="Heading 1">H1</button>
+                            <button type="button" class="toolbar-btn" data-action="h2" title="Heading 2">H2</button>
+                            <button type="button" class="toolbar-btn" data-action="h3" title="Heading 3">H3</button>
+                            <div class="w-px h-6 bg-slate-300 dark:bg-slate-600"></div>
+                            <button type="button" class="toolbar-btn" data-action="quote" title="Quote">
+                                <i class="fas fa-quote-left"></i>
+                            </button>
+                            <button type="button" class="toolbar-btn" data-action="list" title="Bullet List">
+                                <i class="fas fa-list-ul"></i>
+                            </button>
+                            <button type="button" class="toolbar-btn" data-action="numberlist" title="Numbered List">
+                                <i class="fas fa-list-ol"></i>
+                            </button>
+                            <button type="button" class="toolbar-btn" data-action="link" title="Link">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button type="button" class="toolbar-btn" data-action="image" title="Image">
+                                <i class="fas fa-image"></i>
+                            </button>
+                            <button type="button" class="toolbar-btn" data-action="code" title="Code">
+                                <i class="fas fa-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <textarea name="content" id="contentEditor" rows="20" required
+                                  class="w-full px-4 py-4 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-slate-700 dark:text-white font-mono text-sm leading-relaxed transition-all resize-none"
+                                  placeholder="Bắt đầu viết nội dung tuyệt vời của bạn...">{{post.content}}</textarea>
+                        <div id="previewArea" class="hidden absolute inset-0 p-4 bg-white dark:bg-slate-700 rounded-xl overflow-auto prose prose-slate dark:prose-invert max-w-none"></div>
+                        <div class="absolute bottom-4 right-4 text-xs text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 px-2 py-1 rounded">
+                            <span id="wordCount">0 từ</span> | <span id="charCount">0 ký tự</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                        <div class="flex items-center space-x-4">
+                            <span class="flex items-center">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Hỗ trợ Markdown
+                            </span>
+                            <span class="flex items-center">
+                                <i class="fas fa-keyboard mr-1"></i>
+                                Ctrl+P: Xem trước
+                            </span>
+                        </div>
+                        <button type="button" class="text-blue-600 dark:text-blue-400 hover:underline" onclick="openMarkdownGuide()">
+                            Hướng dẫn Markdown
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEO & Advanced Settings -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="border-b border-slate-200 dark:border-slate-700 p-4">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white flex items-center">
+                        <i class="fas fa-search text-indigo-600 dark:text-indigo-400 mr-2"></i>
+                        Tối ưu SEO & Cài đặt nâng cao
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-6">
+                        <!-- SEO Preview -->
+                        <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                            <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Xem trước Google Search</h4>
+                            <div class="space-y-1">
+                                <div id="seoTitle" class="text-blue-600 dark:text-blue-400 text-lg hover:underline cursor-pointer">
+                                    {{#if post.metaTitle}}{{post.metaTitle}}{{else}}{{post.title}}{{/if}} - Website
+                                </div>
+                                <div id="seoUrl" class="text-green-700 dark:text-green-400 text-sm">
+                                    https://yoursite.com/posts/{{post.slug}}
+                                </div>
+                                <div id="seoDescription" class="text-slate-600 dark:text-slate-300 text-sm">
+                                    {{#if post.metaDescription}}{{post.metaDescription}}{{else if post.excerpt}}{{post.excerpt}}{{else}}Mô tả tóm tắt sẽ hiển thị ở đây để thu hút người dùng click vào bài viết của bạn.{{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                    Meta Title
+                                </label>
+                                <input type="text" name="metaTitle" id="metaTitle" value="{{post.metaTitle}}"
+                                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
+                                       placeholder="Tối ưu cho Google (50-60 ký tự)">
+                                <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                                    <span id="metaTitleCount">{{#if post.metaTitle}}{{length post.metaTitle}}{{else}}0{{/if}}/60</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                    Meta Keywords
+                                </label>
+                                <input type="text" name="metaKeywords" value="{{post.metaKeywords}}"
+                                       class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
+                                       placeholder="javascript, react, tutorial">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                Meta Description
+                            </label>
+                            <textarea name="metaDescription" id="metaDescription" rows="3"
+                                      class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-white"
+                                      placeholder="Mô tả hấp dẫn cho Google Search (140-160 ký tự)">{{post.metaDescription}}</textarea>
+                            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                                <span id="metaDescCount">{{#if post.metaDescription}}{{length post.metaDescription}}{{else}}0{{/if}}/160</span>
+                            </div>
+                        </div>
+
+                        {{#if post.slug}}
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                URL Slug
+                            </label>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-slate-500 dark:text-slate-400">/posts/</span>
+                                <code class="flex-1 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded border text-sm">{{post.slug}}</code>
+                                <button type="button" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-900/30 transition-colors text-sm">
+                                    Tái tạo
+                                </button>
+                            </div>
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Sidebar -->
+        <div class="xl:col-span-1 space-y-6">
+            <!-- Quick Update Panel -->
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 rounded-xl border border-blue-200 dark:border-slate-600 shadow-sm">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4 flex items-center">
+                        <i class="fas fa-sync text-blue-600 dark:text-blue-400 mr-2"></i>
+                        Cập nhật
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                Trạng thái
+                            </label>
+                            <select name="status" id="postStatus" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                                <option value="DRAFT" {{#if (eq post.status 'DRAFT')}}selected{{/if}}>📝 Bản nháp</option>
+                                <option value="PUBLISHED" {{#if (eq post.status 'PUBLISHED')}}selected{{/if}}>🚀 Đã xuất bản</option>
+                                <option value="ARCHIVED" {{#if (eq post.status 'ARCHIVED')}}selected{{/if}}>📦 Lưu trữ</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Publishing time -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                Thời gian xuất bản
+                            </label>
+                            <input type="datetime-local" name="publishedAt" value="{{#if post.publishedAt}}{{formatDate post.publishedAt 'YYYY-MM-DDTHH:mm'}}{{/if}}"
+                                   class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white text-sm">
+                        </div>
+                        
+                        <!-- Publish Info -->
+                        <div class="bg-white dark:bg-slate-800 rounded-lg p-3 text-sm space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-slate-600 dark:text-slate-400">Tạo:</span>
+                                <span class="text-slate-800 dark:text-white font-medium">{{formatDate post.createdAt 'DD/MM/YYYY'}}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-600 dark:text-slate-400">Cập nhật:</span>
+                                <span class="text-slate-800 dark:text-white font-medium">{{formatDate post.updatedAt 'DD/MM/YYYY'}}</span>
+                            </div>
+                            {{#if post.publishedAt}}
+                            <div class="flex justify-between">
+                                <span class="text-slate-600 dark:text-slate-400">Xuất bản:</span>
+                                <span class="text-green-600 dark:text-green-400 font-medium">{{formatDate post.publishedAt 'DD/MM/YYYY'}}</span>
+                            </div>
+                            {{/if}}
+                        </div>
+                        
+                        <div class="pt-4 border-t border-blue-200 dark:border-slate-600">
+                            <div class="flex space-x-2">
+                                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg transition-colors text-sm font-medium">
+                                    <i class="fas fa-sync-alt mr-1"></i>
+                                    Cập nhật
+                                </button>
+                                <button type="button" id="updateDraftBtn" class="px-3 py-2 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                            </div>
+                            <button type="button" onclick="deletePost()" class="w-full mt-2 bg-red-100 dark:bg-red-900/20 hover:bg-red-200 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 py-2 px-3 rounded-lg transition-colors text-sm">
+                                <i class="fas fa-trash mr-2"></i>
+                                Xóa bài viết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category & Tags -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4 flex items-center">
+                        <i class="fas fa-tags text-green-600 dark:text-green-400 mr-2"></i>
+                        Phân loại
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                Danh mục <span class="text-red-500">*</span>
+                            </label>
+                            <select name="categoryId" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white">
+                                <option value="">Chọn danh mục</option>
+                                {{#each categories}}
+                                    <option value="{{id}}" {{#if (eq ../post.categoryId id)}}selected{{/if}}>{{name}}</option>
+                                {{/each}}
+                            </select>
+                            {{#if post.category}}
+                            <div class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                                Hiện tại: <span class="font-medium text-green-600 dark:text-green-400">{{post.category.name}}</span>
+                            </div>
+                            {{/if}}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                                Tags
+                            </label>
+                            <input type="text" name="tags" id="tagsInput" value="{{post.tags}}"
+                                   class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white"
+                                   placeholder="VD: javascript, react, tutorial">
+                            <div id="tagsSuggestions" class="mt-2 flex flex-wrap gap-2">
+                                {{#if post.postTags}}
+                                    {{#each post.postTags}}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300">
+                                            {{tag.name}}
+                                        </span>
+                                    {{/each}}
+                                {{/if}}
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Phân cách bằng dấu phẩy hoặc Enter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Featured Image -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4 flex items-center">
+                        <i class="fas fa-image text-purple-600 dark:text-purple-400 mr-2"></i>
+                        Ảnh đại diện
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Current Image -->
+                        {{#if post.featuredImage}}
+                        <div id="currentImage" class="relative group">
+                            <img src="{{post.featuredImage}}" alt="Current featured image" class="w-full h-48 object-cover rounded-xl">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-xl"></div>
+                            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button type="button" onclick="removeCurrentImage()" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                                    <i class="fas fa-trash text-sm"></i>
+                                </button>
+                            </div>
+                            <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                                Ảnh hiện tại
+                            </div>
+                        </div>
+                        {{/if}}
+                        
+                        <!-- Upload Area -->
+                        <div class="relative">
+                            <input type="file" name="featuredImage" id="featuredImageInput" accept="image/*" class="hidden">
+                            <div id="uploadArea" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-6 text-center hover:border-purple-500 dark:hover:border-purple-400 transition-colors cursor-pointer {{#if post.featuredImage}}hidden{{/if}}">
+                                <div id="uploadPrompt" class="space-y-3">
+                                    <div class="w-12 h-12 mx-auto bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-cloud-upload-alt text-purple-600 dark:text-purple-400 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                            {{#if post.featuredImage}}Thay đổi ảnh đại diện{{else}}Kéo thả ảnh vào đây{{/if}}
+                                        </p>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">hoặc click để chọn file</p>
+                                    </div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">PNG, JPG, GIF tối đa 5MB</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- New Image Preview -->
+                        <div id="imagePreview" class="hidden">
+                            <div class="relative group">
+                                <img id="previewImg" src="" alt="Preview" class="w-full h-48 object-cover rounded-xl">
+                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded-xl"></div>
+                                <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button type="button" onclick="removeImage()" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                                <div class="absolute bottom-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-xs">
+                                    Ảnh mới
+                                </div>
+                            </div>
+                            <div class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                                <div class="flex items-center justify-between">
+                                    <span id="imageInfo">Image info</span>
+                                    <button type="button" onclick="editImage()" class="text-purple-600 dark:text-purple-400 hover:underline">
+                                        Chỉnh sửa
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{#if post.featuredImage}}
+                        <button type="button" onclick="document.getElementById('uploadArea').classList.remove('hidden')" 
+                                class="w-full text-sm text-purple-600 dark:text-purple-400 hover:underline">
+                            Thay đổi ảnh đại diện
+                        </button>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Analysis -->
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-slate-800 dark:to-slate-700 rounded-xl border border-green-200 dark:border-slate-600 shadow-sm">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4 flex items-center">
+                        <i class="fas fa-chart-line text-emerald-600 dark:text-emerald-400 mr-2"></i>
+                        Phân tích nội dung
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div id="readingTime" class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                                    {{#if post.content}}{{readingTime post.content}}{{else}}0{{/if}} phút
+                                </div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Thời gian đọc</div>
+                            </div>
+                            <div class="text-center">
+                                <div id="readabilityScore" class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                    {{#if post.content}}{{readabilityScore post.content}}{{else}}--{{/if}}
+                                </div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">Điểm đọc</div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-slate-600 dark:text-slate-300">SEO Score</span>
+                                <span id="seoScore" class="font-medium text-slate-800 dark:text-white">
+                                    {{#if post}}{{seoScore post}}{{else}}0{{/if}}/100
+                                </span>
+                            </div>
+                            <div class="w-full bg-slate-200 dark:bg-slate-600 rounded-full h-2">
+                                <div id="seoScoreBar" class="bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 h-2 rounded-full transition-all duration-500" 
+                                     style="width: {{#if post}}{{seoScore post}}{{else}}0{{/if}}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div id="contentSuggestions" class="space-y-2 text-xs">
+                            <div class="flex items-center text-green-600 dark:text-green-400">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                Bài viết đã được tối ưu
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Enhanced JavaScript -->
+<style>
+.toolbar-btn {
+    @apply px-2 py-1 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded transition-colors;
+}
+
+.toolbar-btn.active {
+    @apply bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400;
+}
+
+.content-fullscreen {
+    @apply fixed inset-0 z-50 bg-white dark:bg-slate-900;
+}
+
+.content-fullscreen .bg-white {
+    @apply bg-transparent;
+}
+
+.content-fullscreen #contentEditor {
+    @apply h-screen border-none rounded-none focus:ring-0;
+}
+</style>
+
+<script>
+// Enhanced functionality for edit form
+document.addEventListener('DOMContentLoaded', function() {
+    // Character counting
+    const titleInput = document.getElementById('postTitle');
+    const excerptInput = document.getElementById('postExcerpt');
+    const contentEditor = document.getElementById('contentEditor');
+    const metaTitleInput = document.getElementById('metaTitle');
+    const metaDescInput = document.getElementById('metaDescription');
+    
+    // Initialize word count for existing content
+    if (contentEditor && contentEditor.value) {
+        updateContentStats(contentEditor.value);
+    }
+    
+    // Character counters
+    function updateCharCount(input, counterId, maxLength) {
+        const counter = document.getElementById(counterId);
+        if (counter) {
+            const length = input.value.length;
+            counter.textContent = `${length}/${maxLength}`;
+            counter.className = length > maxLength ? 'text-red-500' : 'text-slate-500 dark:text-slate-400';
+        }
+    }
+    
+    excerptInput?.addEventListener('input', () => updateCharCount(excerptInput, 'excerptCount', 300));
+    metaTitleInput?.addEventListener('input', () => updateCharCount(metaTitleInput, 'metaTitleCount', 60));
+    metaDescInput?.addEventListener('input', () => updateCharCount(metaDescInput, 'metaDescCount', 160));
+    
+    // SEO Preview updates
+    function updateSEOPreview() {
+        const title = titleInput?.value || '{{post.title}}';
+        const metaTitle = metaTitleInput?.value || title;
+        const excerpt = excerptInput?.value || '{{post.excerpt}}';
+        const metaDesc = metaDescInput?.value || excerpt;
+        
+        document.getElementById('seoTitle').textContent = metaTitle + ' - Website';
+        document.getElementById('seoDescription').textContent = metaDesc || 'Mô tả tóm tắt sẽ hiển thị ở đây';
+    }
+    
+    titleInput?.addEventListener('input', updateSEOPreview);
+    excerptInput?.addEventListener('input', updateSEOPreview);
+    metaTitleInput?.addEventListener('input', updateSEOPreview);
+    metaDescInput?.addEventListener('input', updateSEOPreview);
+    
+    // Content editor enhancements
+    contentEditor?.addEventListener('input', function() {
+        updateContentStats(this.value);
+    });
+    
+    function updateContentStats(content) {
+        const text = content;
+        const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+        const chars = text.length;
+        
+        document.getElementById('wordCount').textContent = `${words} từ`;
+        document.getElementById('charCount').textContent = `${chars} ký tự`;
+        
+        // Calculate reading time (250 words per minute)
+        const readingTime = Math.ceil(words / 250);
+        document.getElementById('readingTime').textContent = `${readingTime} phút`;
+    }
+    
+    // Enhanced image upload
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('featuredImageInput');
+    
+    uploadArea?.addEventListener('click', () => fileInput?.click());
+    
+    // Drag and drop
+    uploadArea?.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('border-purple-500', 'bg-purple-50', 'dark:bg-purple-900/10');
+    });
+    
+    uploadArea?.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('border-purple-500', 'bg-purple-50', 'dark:bg-purple-900/10');
+    });
+    
+    uploadArea?.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('border-purple-500', 'bg-purple-50', 'dark:bg-purple-900/10');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleImagePreview(files[0]);
+        }
+    });
+    
+    fileInput?.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleImagePreview(e.target.files[0]);
+        }
+    });
+    
+    function handleImagePreview(file) {
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('imagePreview').classList.remove('hidden');
+                document.getElementById('uploadArea').classList.add('hidden');
+                
+                // Show file info
+                const size = (file.size / 1024 / 1024).toFixed(2);
+                document.getElementById('imageInfo').textContent = `${file.name} (${size} MB)`;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    // Toolbar functionality
+    const toolbarBtns = document.querySelectorAll('.toolbar-btn');
+    toolbarBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const action = btn.dataset.action;
+            handleToolbarAction(action);
+        });
+    });
+    
+    function handleToolbarAction(action) {
+        const editor = contentEditor;
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+        const selectedText = editor.value.substring(start, end);
+        let replacement = '';
+        
+        switch(action) {
+            case 'bold':
+                replacement = `**${selectedText || 'text'}**`;
+                break;
+            case 'italic':
+                replacement = `*${selectedText || 'text'}*`;
+                break;
+            case 'h1':
+                replacement = `# ${selectedText || 'Heading 1'}`;
+                break;
+            case 'h2':
+                replacement = `## ${selectedText || 'Heading 2'}`;
+                break;
+            case 'h3':
+                replacement = `### ${selectedText || 'Heading 3'}`;
+                break;
+            case 'quote':
+                replacement = `> ${selectedText || 'Quote'}`;
+                break;
+            case 'list':
+                replacement = `- ${selectedText || 'List item'}`;
+                break;
+            case 'numberlist':
+                replacement = `1. ${selectedText || 'List item'}`;
+                break;
+            case 'link':
+                replacement = `[${selectedText || 'link text'}](url)`;
+                break;
+            case 'image':
+                replacement = `![${selectedText || 'alt text'}](image-url)`;
+                break;
+            case 'code':
+                replacement = selectedText.includes('
+') ? ````
+${selectedText || 'code'}
+```` : ``${selectedText || 'code'}``;
+                break;
+        }
+        
+        editor.value = editor.value.substring(0, start) + replacement + editor.value.substring(end);
+        editor.focus();
+        editor.setSelectionRange(start, start + replacement.length);
+    }
+    
+    // Keyboard shortcuts
+    contentEditor?.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            switch(e.key) {
+                case 'b':
+                    e.preventDefault();
+                    handleToolbarAction('bold');
+                    break;
+                case 'i':
+                    e.preventDefault();
+                    handleToolbarAction('italic');
+                    break;
+                case 'p':
+                    e.preventDefault();
+                    togglePreview();
+                    break;
+            }
+        }
+    });
+    
+    // Update as draft functionality
+    document.getElementById('updateDraftBtn')?.addEventListener('click', function() {
+        document.getElementById('postStatus').value = 'DRAFT';
+        document.getElementById('editForm').submit();
+    });
+    
+    document.getElementById('updateAsDraft')?.addEventListener('click', function() {
+        document.getElementById('postStatus').value = 'DRAFT';
+        document.getElementById('editForm').submit();
+    });
+});
+
+// Global functions
+function removeImage() {
+    document.getElementById('featuredImageInput').value = '';
+    document.getElementById('imagePreview').classList.add('hidden');
+    document.getElementById('uploadArea').classList.remove('hidden');
+}
+
+function removeCurrentImage() {
+    // Hide current image display
+    document.getElementById('currentImage')?.classList.add('hidden');
+    document.getElementById('uploadArea').classList.remove('hidden');
+    
+    // Add a hidden input to indicate removal
+    const form = document.getElementById('editForm');
+    let removeInput = form.querySelector('input[name="removeFeaturedImage"]');
+    if (!removeInput) {
+        removeInput = document.createElement('input');
+        removeInput.type = 'hidden';
+        removeInput.name = 'removeFeaturedImage';
+        removeInput.value = 'true';
+        form.appendChild(removeInput);
+    }
+}
+
+function togglePreview() {
+    const editor = document.getElementById('contentEditor');
+    const preview = document.getElementById('previewArea');
+    const btn = document.getElementById('togglePreview');
+    
+    if (preview.classList.contains('hidden')) {
+        // Show preview
+        preview.innerHTML = '<div class="p-4">Preview functionality would be here with a markdown parser</div>';
+        preview.classList.remove('hidden');
+        editor.classList.add('hidden');
+        btn.innerHTML = '<i class="fas fa-edit mr-1"></i>Chỉnh sửa';
+    } else {
+        // Show editor
+        preview.classList.add('hidden');
+        editor.classList.remove('hidden');
+        btn.innerHTML = '<i class="fas fa-eye mr-1"></i>Xem trước';
+    }
+}
+
+function toggleFullscreen() {
+    const container = document.querySelector('.xl\:col-span-3');
+    const btn = document.getElementById('toggleFullscreen');
+    
+    if (container.classList.contains('content-fullscreen')) {
+        container.classList.remove('content-fullscreen');
+        btn.innerHTML = '<i class="fas fa-expand mr-1"></i>Toàn màn hình';
+    } else {
+        container.classList.add('content-fullscreen');
+        btn.innerHTML = '<i class="fas fa-compress mr-1"></i>Thu nhỏ';
+    }
+}
+
+function deletePost() {
+    if (confirm('Bạn có chắc chắn muốn xóa bài viết này? Hành động này không thể hoàn tác.')) {
+        fetch(`/admin/posts/{{post.id}}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '/admin/posts';
+            } else {
+                alert('Có lỗi xảy ra khi xóa bài viết');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi xóa bài viết');
+        });
+    }
+}
+
+function openMarkdownGuide() {
+    alert('Markdown Guide:
+
+**Bold** - **text**
+*Italic* - *text*
+# Heading 1
+## Heading 2
+> Quote
+- List item
+[Link](url)
+![Image](url)
+`code`');
+}
+
+function editImage() {
+    // Image editing functionality could be added here
+    alert('Chức năng chỉnh sửa ảnh sẽ được thêm vào sau');
+}
+</script>            <!-- Category & Tags -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Phân loại</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            Danh mục <span class="text-red-500">*</span>
+                        </label>
+                        <select name="categoryId" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                            <option value="">Chọn danh mục</option>
+                            {{#each categories}}
+                                <option value="{{id}}" {{#if (eq ../post.categoryId id)}}selected{{/if}}>{{name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            Tags
+                        </label>
+                        <input type="text" name="tags" value="{{post.tags}}"
+                               class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                               placeholder="VD: javascript, react, tutorial">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Phân cách bằng dấu phẩy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Image -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Ảnh đại diện</h3>
+                
+                <div class="space-y-4">
+                    <!-- Current Image -->
+                    {{#if post.featuredImage}}
+                        <div id="currentImage">
+                            <img src="{{post.featuredImage}}" alt="Current featured image" class="w-full h-32 object-cover rounded-lg">
+                            <button type="button" onclick="removeCurrentImage()" class="mt-2 text-sm text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash mr-1"></i>
+                                Xóa ảnh hiện tại
+                            </button>
+                        </div>
+                    {{/if}}
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            {{#if post.featuredImage}}Thay đổi ảnh{{else}}Chọn ảnh{{/if}}
+                        </label>
+                        <input type="file" name="featuredImage" accept="image/*" 
+                               class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Tối đa 5MB. Định dạng: JPG, PNG, GIF</p>
+                    </div>
+                    
+                    <!-- New Image Preview -->
+                    <div id="imagePreview" class="hidden">
+                        <img id="previewImg" src="" alt="Preview" class="w-full h-32 object-cover rounded-lg">
+                        <button type="button" onclick="removeNewImage()" class="mt-2 text-sm text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash mr-1"></i>
+                            Hủy ảnh mới
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+// Image preview functionality
+document.querySelector('input[name="featuredImage"]').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('previewImg').src = e.target.result;
+            document.getElementById('imagePreview').classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+function removeCurrentImage() {
+    if (confirm('Bạn có chắc muốn xóa ảnh hiện tại? Thay đổi này sẽ được áp dụng khi lưu bài viết.')) {
+        document.getElementById('currentImage').style.opacity = '0.5';
+        // You could add a hidden input to mark for deletion
+    }
+}
+
+function removeNewImage() {
+    document.querySelector('input[name="featuredImage"]').value = '';
+    document.getElementById('imagePreview').classList.add('hidden');
+}
+
+function deletePost() {
+    if (confirm('Bạn có chắc chắn muốn xóa bài viết này? Hành động này không thể hoàn tác.')) {
+        fetch(`/admin/posts/{{post.id}}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '/admin/posts';
+            } else {
+                alert('Có lỗi xảy ra khi xóa bài viết: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi xóa bài viết');
+        });
+    }
+}
+
+// Handle form submission for PUT method
+document.getElementById('editForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch(`/admin/posts/{{post.id}}`, {
+        method: 'PUT',
+        body: formData
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        } else {
+            return response.text();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi cập nhật bài viết');
+    });
+});
+
+// Auto-update meta title placeholder
+document.querySelector('input[name="title"]').addEventListener('input', function() {
+    const metaTitleInput = document.querySelector('input[name="metaTitle"]');
+    if (!metaTitleInput.value) {
+        metaTitleInput.placeholder = this.value;
+    }
+});
+
+// Character count for meta description
+const metaDescInput = document.querySelector('textarea[name="metaDescription"]');
+metaDescInput.addEventListener('input', function() {
+    const length = this.value.length;
+    const maxLength = 160;
+    
+    if (length > maxLength) {
+        this.style.borderColor = '#ef4444';
+    } else {
+        this.style.borderColor = '';
+    }
+});
+</script>

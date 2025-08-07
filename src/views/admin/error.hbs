@@ -1,0 +1,102 @@
+<!-- Error Page -->
+<div class="min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-2xl w-full text-center">
+        <!-- Error Icon -->
+        <div class="mb-8">
+            <div class="mx-auto w-24 h-24 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-3xl"></i>
+            </div>
+        </div>
+
+        <!-- Error Content -->
+        <div class="space-y-6">
+            <div>
+                <h1 class="text-4xl font-bold text-slate-800 dark:text-white mb-2">
+                    {{#if status}}{{status}}{{else}}500{{/if}}
+                </h1>
+                <h2 class="text-xl font-semibold text-slate-600 dark:text-slate-300 mb-4">
+                    {{#if (eq status 404)}}
+                        Trang không tìm thấy
+                    {{else if (eq status 403)}}
+                        Không có quyền truy cập
+                    {{else if (eq status 401)}}
+                        Yêu cầu đăng nhập
+                    {{else}}
+                        Đã xảy ra lỗi
+                    {{/if}}
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+                    {{#if message}}
+                        {{message}}
+                    {{else if (eq status 404)}}
+                        Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.
+                    {{else if (eq status 403)}}
+                        Bạn không có quyền truy cập vào trang này.
+                    {{else if (eq status 401)}}
+                        Vui lòng đăng nhập để tiếp tục.
+                    {{else}}
+                        Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.
+                    {{/if}}
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="window.history.back()" 
+                        class="inline-flex items-center px-6 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Quay lại
+                </button>
+                <a href="/admin" 
+                   class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                    <i class="fas fa-home mr-2"></i>
+                    Về trang chủ
+                </a>
+            </div>
+
+            <!-- Additional Help -->
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-700">
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                    Nếu vấn đề vẫn tiếp tục, vui lòng liên hệ với quản trị viên.
+                </p>
+                
+                {{#if isDevelopment}}
+                    <!-- Development Error Details -->
+                    <div class="mt-8 text-left">
+                        <details class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                            <summary class="cursor-pointer font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                Chi tiết lỗi (Development Mode)
+                            </summary>
+                            {{#if error}}
+                                <div class="space-y-4">
+                                    <div>
+                                        <h4 class="font-semibold text-slate-700 dark:text-slate-300 mb-2">Error Message:</h4>
+                                        <pre class="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 p-3 rounded text-sm overflow-auto">{{error.message}}</pre>
+                                    </div>
+                                    {{#if error.stack}}
+                                        <div>
+                                            <h4 class="font-semibold text-slate-700 dark:text-slate-300 mb-2">Stack Trace:</h4>
+                                            <pre class="bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 p-3 rounded text-xs overflow-auto max-h-64">{{error.stack}}</pre>
+                                        </div>
+                                    {{/if}}
+                                </div>
+                            {{/if}}
+                        </details>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Auto-refresh for development -->
+{{#if isDevelopment}}
+<script>
+// Auto-refresh page every 30 seconds in development mode
+setTimeout(() => {
+    if (confirm('Tự động làm mới trang để kiểm tra lỗi đã được sửa?')) {
+        location.reload();
+    }
+}, 30000);
+</script>
+{{/if}}

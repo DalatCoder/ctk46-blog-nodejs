@@ -17,8 +17,8 @@ router.get('/', AdminController.dashboard);
 router.get('/posts', AdminController.posts);
 router.get('/posts/create', PostController.create);
 router.post('/posts', PostController.uploadMiddleware(), validatePost, PostController.store);
-router.get('/posts/edit/:id', PostController.edit);
-router.post('/posts/edit/:id', PostController.uploadMiddleware(), validatePost, PostController.update);
+router.get('/posts/:id/edit', PostController.edit);
+router.put('/posts/:id', PostController.uploadMiddleware(), validatePost, PostController.update);
 router.delete('/posts/:id', PostController.destroy);
 
 // Categories routes

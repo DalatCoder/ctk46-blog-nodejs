@@ -97,7 +97,7 @@ class PostController {
 
       res.render('admin/posts/create', {
         title: 'Create New Post',
-        layout: 'layouts/admin',
+        layout: 'admin',
         categories,
         currentPage: 'posts',
         user: req.user,
@@ -173,7 +173,7 @@ class PostController {
 
       res.render('admin/posts/edit', {
         title: 'Edit Post',
-        layout: 'layouts/admin',
+        layout: 'admin',
         post: { ...post, tags },
         categories,
         currentPage: 'posts',
@@ -199,7 +199,7 @@ class PostController {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         req.flash('error', errors.array()[0].msg);
-        return res.redirect(`/admin/posts/edit/${req.params.id}`);
+        return res.redirect(`/admin/posts/${req.params.id}/edit`);
       }
 
       const { title, excerpt, content, categoryId, tags, status, metaTitle, metaDescription, metaKeywords } = req.body;
@@ -233,7 +233,7 @@ class PostController {
     } catch (error) {
       console.error('Post update error:', error);
       req.flash('error', 'Error updating post');
-      res.redirect(`/admin/posts/edit/${req.params.id}`);
+      res.redirect(`/admin/posts/${req.params.id}/edit`);
     }
   }
 
