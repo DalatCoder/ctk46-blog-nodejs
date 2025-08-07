@@ -2,9 +2,20 @@ const express = require('express');
 const router = express.Router();
 const AdminController = require('../controllers/AdminController');
 const PostController = require('../controllers/PostController');
+const CommentController = require('../controllers/CommentController');
 const AuthController = require('../controllers/AuthController');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 const { validatePost, validateProfileUpdate, validatePasswordChange } = require('../middleware/validation');
+const { body } = require('express-validator');
+
+// Comment validation
+const replyValidation = [
+  body('content')
+    .notEmpty()
+    .withMessage('Reply content is required')
+    .isLength({ min: 5, max: 500 })
+    .withMessage('Reply must be between 5 and 500 characters'),
+];
 
 // Apply authentication middleware to all admin routes
 router.use(requireAuth);
@@ -28,7 +39,12 @@ router.put('/categories/:id', AdminController.updateCategory);
 router.delete('/categories/:id', AdminController.deleteCategory);
 
 // Comments routes
-router.get('/comments', AdminController.comments);
+router.get('/comments', CommentController.index);
+router.get('/comments/:id', CommentController.show);
+router.patch('/comments/:id/status', CommentController.updateStatus);
+router.post('/comments/bulk-update', CommentController.bulkUpdate);
+router.delete('/comments/:id', CommentController.destroy);
+router.post('/comments/:id/reply', replyValidation, CommentController.reply);
 
 // Users routes
 router.get('/users', AdminController.users);

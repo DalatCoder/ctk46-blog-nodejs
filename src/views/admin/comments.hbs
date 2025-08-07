@@ -1,0 +1,639 @@
+{{!-- Comment Management Page --}}
+<div class="p-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Quản lý Bình luận</h1>
+            <p class="text-slate-600 dark:text-slate-400 mt-1">Duyệt và quản lý bình luận từ người dùng</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <!-- Refresh Button -->
+            <button onclick="window.location.reload()" class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
+                <i class="fas fa-sync-alt mr-2"></i>
+                Làm mới
+            </button>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-comments text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400">Tổng số</p>
+                    <p class="text-2xl font-bold text-slate-900 dark:text-white">{{stats.total}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-yellow-600 dark:text-yellow-400"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400">Chờ duyệt</p>
+                    <p class="text-2xl font-bold text-slate-900 dark:text-white">{{stats.pending}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check text-green-600 dark:text-green-400"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400">Đã duyệt</p>
+                    <p class="text-2xl font-bold text-slate-900 dark:text-white">{{stats.approved}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-times text-red-600 dark:text-red-400"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400">Thùng rác</p>
+                    <p class="text-2xl font-bold text-slate-900 dark:text-white">{{stats.trash}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-flag text-orange-600 dark:text-orange-400"></i>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400">Spam</p>
+                    <p class="text-2xl font-bold text-slate-900 dark:text-white">{{stats.spam}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-6">
+        <form method="GET" action="/admin/comments" class="flex flex-wrap items-center gap-4">
+            <!-- Search -->
+            <div class="flex-1 min-w-64">
+                <input type="text" name="search" value="{{filters.search}}" 
+                       placeholder="Tìm kiếm theo nội dung, tên, email..."
+                       class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+            </div>
+
+            <!-- Status Filter -->
+            <select name="status" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                <option value="">Tất cả trạng thái</option>
+                <option value="PENDING" {{#if (eq filters.status "PENDING")}}selected{{/if}}>Chờ duyệt</option>
+                <option value="APPROVED" {{#if (eq filters.status "APPROVED")}}selected{{/if}}>Đã duyệt</option>
+                <option value="TRASH" {{#if (eq filters.status "TRASH")}}selected{{/if}}>Thùng rác</option>
+                <option value="SPAM" {{#if (eq filters.status "SPAM")}}selected{{/if}}>Spam</option>
+            </select>
+
+            <!-- Post Filter -->
+            <select name="post" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                <option value="">Tất cả bài viết</option>
+                {{#each posts}}
+                    <option value="{{id}}" {{#if (eq ../filters.postId id)}}selected{{/if}}>{{title}}</option>
+                {{/each}}
+            </select>
+
+            <!-- Filter Button -->
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fas fa-filter mr-2"></i>
+                Lọc
+            </button>
+
+            <!-- Clear Filters -->
+            <a href="/admin/comments" class="px-6 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors">
+                <i class="fas fa-times mr-2"></i>
+                Xóa bộ lọc
+            </a>
+        </form>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <input type="checkbox" id="select-all" class="w-4 h-4 text-blue-600 bg-white border-slate-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-slate-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600">
+                <label for="select-all" class="text-sm font-medium text-slate-700 dark:text-slate-300">Chọn tất cả</label>
+                <span id="selected-count" class="text-sm text-slate-500 dark:text-slate-400">0 bình luận được chọn</span>
+            </div>
+
+            <div id="bulk-actions" class="flex items-center space-x-2 opacity-0 transition-opacity">
+                <button onclick="bulkAction('approve')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-check mr-2"></i>
+                    Duyệt
+                </button>
+                <button onclick="bulkAction('trash')" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    <i class="fas fa-times mr-2"></i>
+                    Thùng rác
+                </button>
+                <button onclick="bulkAction('spam')" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                    <i class="fas fa-flag mr-2"></i>
+                    Spam
+                </button>
+                <button onclick="bulkAction('delete')" class="px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors">
+                    <i class="fas fa-trash mr-2"></i>
+                    Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+        {{#if comments.length}}
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-50 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 bg-white border-slate-300 rounded focus:ring-blue-500">
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Bình luận
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Tác giả
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Bài viết
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Trạng thái
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Ngày tạo
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Thao tác
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
+                        {{#each comments}}
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <input type="checkbox" class="comment-checkbox w-4 h-4 text-blue-600 bg-white border-slate-300 rounded focus:ring-blue-500" value="{{id}}">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="max-w-xs">
+                                        <p class="text-sm text-slate-900 dark:text-white line-clamp-2">{{truncate content 100}}</p>
+                                        {{#if parent}}
+                                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                                <i class="fas fa-reply mr-1"></i>
+                                                Trả lời cho: {{parent.authorName}}
+                                            </p>
+                                        {{/if}}
+                                        {{#if _count.replies}}
+                                            <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                                                <i class="fas fa-comments mr-1"></i>
+                                                {{_count.replies}} phản hồi
+                                            </p>
+                                        {{/if}}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-8 w-8">
+                                            <div class="h-8 w-8 rounded-full bg-slate-200 dark:bg-slate-600 flex items-center justify-center">
+                                                <i class="fas fa-user text-slate-500 dark:text-slate-400 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-slate-900 dark:text-white">{{authorName}}</p>
+                                            <p class="text-sm text-slate-500 dark:text-slate-400">{{authorEmail}}</p>
+                                            {{#if user}}
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                                                    <i class="fas fa-user-check mr-1"></i>
+                                                    Đã đăng ký
+                                                </span>
+                                            {{else}}
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300">
+                                                    <i class="fas fa-user mr-1"></i>
+                                                    Khách
+                                                </span>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="max-w-xs">
+                                        <a href="/posts/{{post.slug}}" target="_blank" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                            {{truncate post.title 50}}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <select onchange="updateStatus({{id}}, this.value)" class="status-select text-sm rounded-lg border-0 py-1 px-2 focus:ring-2 focus:ring-blue-500 {{#if (eq status 'PENDING')}}bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400{{/if}}{{#if (eq status 'APPROVED')}}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400{{/if}}{{#if (eq status 'TRASH')}}bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400{{/if}}{{#if (eq status 'SPAM')}}bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400{{/if}}">
+                                        <option value="PENDING" {{#if (eq status "PENDING")}}selected{{/if}}>Chờ duyệt</option>
+                                        <option value="APPROVED" {{#if (eq status "APPROVED")}}selected{{/if}}>Đã duyệt</option>
+                                        <option value="TRASH" {{#if (eq status "TRASH")}}selected{{/if}}>Thùng rác</option>
+                                        <option value="SPAM" {{#if (eq status "SPAM")}}selected{{/if}}>Spam</option>
+                                    </select>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                                    {{formatDate createdAt}}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="showCommentDetails({{id}})" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button onclick="showReplyModal({{id}})" class="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300">
+                                            <i class="fas fa-reply"></i>
+                                        </button>
+                                        <button onclick="deleteComment({{id}})" class="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {{#if pagination}}
+                <div class="bg-white dark:bg-slate-800 px-6 py-4 border-t border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-slate-700 dark:text-slate-300">
+                            Trang {{pagination.current}} / {{pagination.total}}
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            {{#if pagination.hasPrev}}
+                                <a href="?page={{sub pagination.current 1}}{{#if filters.search}}&search={{filters.search}}{{/if}}{{#if filters.status}}&status={{filters.status}}{{/if}}{{#if filters.post}}&post={{filters.post}}{{/if}}" 
+                                   class="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            {{/if}}
+                            
+                            <span class="px-3 py-2 bg-blue-600 text-white rounded-lg">{{pagination.current}}</span>
+                            
+                            {{#if pagination.hasNext}}
+                                <a href="?page={{add pagination.current 1}}{{#if filters.search}}&search={{filters.search}}{{/if}}{{#if filters.status}}&status={{filters.status}}{{/if}}{{#if filters.post}}&post={{filters.post}}{{/if}}" 
+                                   class="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        {{else}}
+            <div class="text-center py-12">
+                <div class="mx-auto h-24 w-24 text-slate-400 dark:text-slate-500">
+                    <i class="fas fa-comments text-6xl"></i>
+                </div>
+                <h3 class="mt-4 text-lg font-medium text-slate-900 dark:text-white">Không có bình luận</h3>
+                <p class="mt-2 text-slate-500 dark:text-slate-400">
+                    {{#if filters.search}}
+                        Không tìm thấy bình luận nào phù hợp với tìm kiếm của bạn.
+                    {{else}}
+                        Chưa có bình luận nào được tạo.
+                    {{/if}}
+                </p>
+            </div>
+        {{/if}}
+    </div>
+</div>
+
+<!-- Reply Modal -->
+<div id="replyModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-lg w-full mx-4">
+        <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Trả lời bình luận</h3>
+            <button onclick="closeReplyModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form id="replyForm" class="p-6">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Nội dung trả lời</label>
+                <textarea name="content" rows="4" required
+                          class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                          placeholder="Nhập nội dung trả lời..."></textarea>
+            </div>
+            <div class="flex items-center justify-end space-x-3">
+                <button type="button" onclick="closeReplyModal()" class="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                    Hủy
+                </button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-reply mr-2"></i>
+                    Gửi trả lời
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Comment Details Modal -->
+<div id="detailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Chi tiết bình luận</h3>
+            <button onclick="closeDetailsModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="detailsContent" class="p-6">
+            <!-- Content will be loaded dynamically -->
+        </div>
+    </div>
+</div>
+
+<script>
+// Select all functionality
+document.getElementById('select-all').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.comment-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+    updateBulkActions();
+});
+
+// Individual checkbox change
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('comment-checkbox')) {
+        updateBulkActions();
+    }
+});
+
+function updateBulkActions() {
+    const checkboxes = document.querySelectorAll('.comment-checkbox:checked');
+    const count = checkboxes.length;
+    const bulkActions = document.getElementById('bulk-actions');
+    const selectedCount = document.getElementById('selected-count');
+    
+    selectedCount.textContent = `${count} bình luận được chọn`;
+    
+    if (count > 0) {
+        bulkActions.style.opacity = '1';
+    } else {
+        bulkActions.style.opacity = '0';
+    }
+}
+
+// Update comment status
+function updateStatus(commentId, status) {
+    fetch(`/admin/comments/${commentId}/status`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            // Update status colors
+            const select = document.querySelector(`select[onchange*="${commentId}"]`);
+            updateStatusColors(select, status);
+        } else {
+            showNotification(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Có lỗi xảy ra khi cập nhật trạng thái', 'error');
+    });
+}
+
+function updateStatusColors(select, status) {
+    select.className = select.className.replace(/bg-\w+-100 text-\w+-800 dark:bg-\w+-900\/30 dark:text-\w+-400/g, '');
+    
+    const colorMap = {
+        'PENDING': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
+        'APPROVED': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+        'TRASH': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+        'SPAM': 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
+    };
+    
+    select.className += ' ' + colorMap[status];
+}
+
+// Bulk actions
+function bulkAction(action) {
+    const checkboxes = document.querySelectorAll('.comment-checkbox:checked');
+    const commentIds = Array.from(checkboxes).map(cb => cb.value);
+    
+    if (commentIds.length === 0) {
+        showNotification('Vui lòng chọn ít nhất một bình luận', 'warning');
+        return;
+    }
+    
+    const actionNames = {
+        'approve': 'duyệt',
+        'trash': 'chuyển vào thùng rác', 
+        'spam': 'đánh dấu spam',
+        'delete': 'xóa'
+    };
+    
+    if (action === 'delete' && !confirm(`Bạn có chắc chắn muốn xóa ${commentIds.length} bình luận đã chọn?`)) {
+        return;
+    }
+    
+    fetch('/admin/comments/bulk-update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action, commentIds })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            if (action === 'delete') {
+                location.reload();
+            } else {
+                // Update status for affected comments
+                commentIds.forEach(id => {
+                    const select = document.querySelector(`select[onchange*="${id}"]`);
+                    if (select) {
+                        const newStatus = action === 'approve' ? 'APPROVED' : 
+                                        action === 'trash' ? 'TRASH' : 'SPAM';
+                        select.value = newStatus;
+                        updateStatusColors(select, newStatus);
+                    }
+                });
+            }
+            
+            // Clear selections
+            document.getElementById('select-all').checked = false;
+            checkboxes.forEach(cb => cb.checked = false);
+            updateBulkActions();
+        } else {
+            showNotification(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Có lỗi xảy ra khi thực hiện thao tác', 'error');
+    });
+}
+
+// Delete single comment
+function deleteComment(commentId) {
+    if (!confirm('Bạn có chắc chắn muốn xóa bình luận này?')) {
+        return;
+    }
+    
+    fetch(`/admin/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            location.reload();
+        } else {
+            showNotification(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Có lỗi xảy ra khi xóa bình luận', 'error');
+    });
+}
+
+// Reply modal
+let currentCommentId = null;
+
+function showReplyModal(commentId) {
+    currentCommentId = commentId;
+    document.getElementById('replyModal').classList.remove('hidden');
+    document.getElementById('replyModal').classList.add('flex');
+}
+
+function closeReplyModal() {
+    document.getElementById('replyModal').classList.add('hidden');
+    document.getElementById('replyModal').classList.remove('flex');
+    document.getElementById('replyForm').reset();
+    currentCommentId = null;
+}
+
+document.getElementById('replyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    if (!currentCommentId) return;
+    
+    const formData = new FormData(this);
+    const content = formData.get('content');
+    
+    fetch(`/admin/comments/${currentCommentId}/reply`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            closeReplyModal();
+            location.reload();
+        } else {
+            showNotification(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Có lỗi xảy ra khi gửi trả lời', 'error');
+    });
+});
+
+// Comment details modal
+function showCommentDetails(commentId) {
+    fetch(`/admin/comments/${commentId}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('detailsContent').innerHTML = html;
+            document.getElementById('detailsModal').classList.remove('hidden');
+            document.getElementById('detailsModal').classList.add('flex');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Có lỗi xảy ra khi tải chi tiết bình luận', 'error');
+        });
+}
+
+function closeDetailsModal() {
+    document.getElementById('detailsModal').classList.add('hidden');
+    document.getElementById('detailsModal').classList.remove('flex');
+}
+
+// Notification function
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg text-white font-medium transform translate-x-full transition-transform duration-300 ${
+        type === 'success' ? 'bg-green-500' : 
+        type === 'error' ? 'bg-red-500' : 
+        type === 'warning' ? 'bg-yellow-500' : 
+        'bg-blue-500'
+    }`;
+    
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${
+                type === 'success' ? 'fa-check-circle' : 
+                type === 'error' ? 'fa-exclamation-circle' : 
+                type === 'warning' ? 'fa-exclamation-triangle' : 
+                'fa-info-circle'
+            } mr-2"></i>
+            ${message}
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Hide notification after 4 seconds
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 4000);
+}
+
+// Close modals when clicking outside
+document.addEventListener('click', function(e) {
+    if (e.target.id === 'replyModal') {
+        closeReplyModal();
+    }
+    if (e.target.id === 'detailsModal') {
+        closeDetailsModal();
+    }
+});
+</script>

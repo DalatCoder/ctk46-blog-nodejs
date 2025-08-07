@@ -274,6 +274,69 @@ class CommentModel {
       },
     });
   }
+
+  // Update comment status
+  static async updateStatus(id, status) {
+    return await prisma.comment.update({
+      where: { id: parseInt(id) },
+      data: { 
+        status,
+        moderatedAt: new Date(),
+      },
+    });
+  }
+
+  // Bulk update comment status
+  static async bulkUpdateStatus(ids, status) {
+    return await prisma.comment.updateMany({
+      where: {
+        id: {
+          in: ids.map(id => parseInt(id)),
+        },
+      },
+      data: { 
+        status,
+        moderatedAt: new Date(),
+      },
+    });
+  }
+
+  // Bulk delete comments
+  static async bulkDelete(ids) {
+    return await prisma.comment.deleteMany({
+      where: {
+        id: {
+          in: ids.map(id => parseInt(id)),
+        },
+      },
+    });
+  }
+
+  // Get comment statistics
+  static async getStatistics() {
+    const [total, pending, approved, trash, spam] = await Promise.all([
+      prisma.comment.count(),
+      prisma.comment.count({ where: { status: 'PENDING' } }),
+      prisma.comment.count({ where: { status: 'APPROVED' } }),
+      prisma.comment.count({ where: { status: 'TRASH' } }),
+      prisma.comment.count({ where: { status: 'SPAM' } }),
+    ]);
+
+    return {
+      total,
+      pending,
+      approved,
+      trash,
+      spam,
+    };
+  }
+
+  // Delete comment
+  static async delete(id) {
+    return await prisma.comment.delete({
+      where: { id: parseInt(id) },
+    });
+  }
 }
 
 module.exports = CommentModel;

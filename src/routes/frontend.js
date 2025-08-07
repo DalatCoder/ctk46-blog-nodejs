@@ -1,8 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const PostController = require('../controllers/PostController');
+const CommentController = require('../controllers/CommentController');
 const CategoryModel = require('../models/CategoryModel');
 const { optionalAuth } = require('../middleware/auth');
+const { body } = require('express-validator');
+
+// Comment validation for frontend
+const commentValidation = [
+  body('content')
+    .notEmpty()
+    .withMessage('Nội dung bình luận là bắt buộc')
+    .isLength({ min: 10, max: 1000 })
+    .withMessage('Nội dung bình luận phải từ 10 đến 1000 ký tự'),
+];
+
+const guestCommentValidation = [
+  ...commentValidation,
+  body('authorName')
+    .notEmpty()
+    .withMessage('Tên là bắt buộc')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('Tên phải từ 2 đến 100 ký tự'),
+  body('authorEmail')
+    .isEmail()
+    .withMessage('Email hợp lệ là bắt buộc')
+    .normalizeEmail(),
+  body('authorWebsite')
+    .optional()
+    .isURL()
+    .withMessage('Vui lòng nhập URL website hợp lệ'),
+];
 
 // Apply optional authentication to all frontend routes
 router.use(optionalAuth);
@@ -91,5 +119,14 @@ router.get('/search', async (req, res) => {
     res.status(500).render('frontend/error', { error });
   }
 });
+
+// Comment routes
+router.post('/comments', (req, res, next) => {
+  // Use guest validation if user is not logged in
+  const validation = req.user ? commentValidation : guestCommentValidation;
+  return validation.reduce((promise, validator) => promise.then(() => validator(req, res, next)), Promise.resolve());
+}, CommentController.store);
+
+router.get('/comments/post/:postId', CommentController.getByPost);
 
 module.exports = router;

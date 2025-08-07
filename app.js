@@ -301,6 +301,23 @@ const hbs = engine({
       if (Array.isArray(value)) return value.length > 0;
       if (typeof value === 'string') return value.trim().length > 0;
       return true;
+    },
+
+    // Math helpers
+    add: function(a, b) {
+      return parseInt(a) + parseInt(b);
+    },
+
+    sub: function(a, b) {
+      return parseInt(a) - parseInt(b);
+    },
+
+    multiply: function(a, b) {
+      return parseInt(a) * parseInt(b);
+    },
+
+    divide: function(a, b) {
+      return parseInt(a) / parseInt(b);
     }
   }
 });
