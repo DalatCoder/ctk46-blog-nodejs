@@ -1,0 +1,399 @@
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 text-white overflow-hidden">
+    <!-- Background pattern -->
+    <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-emerald-600/10 to-cyan-600/10"></div>
+    
+    <!-- Animated background elements -->
+    <div class="absolute top-12 left-12 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-pulse"></div>
+    <div class="absolute top-36 right-16 w-16 h-16 bg-white bg-opacity-10 rounded-full animate-bounce delay-75"></div>
+    <div class="absolute bottom-20 left-32 w-12 h-12 bg-white bg-opacity-10 rounded-full animate-pulse delay-150"></div>
+    <div class="absolute bottom-44 right-24 w-24 h-24 bg-white bg-opacity-10 rounded-full animate-bounce delay-300"></div>
+    
+    <div class="relative container mx-auto px-4 py-20 lg:py-32">
+        <div class="text-center max-w-4xl mx-auto">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex items-center justify-center space-x-2 text-emerald-200">
+                    <li><a href="/" class="hover:text-white transition-colors duration-300">Trang chủ</a></li>
+                    <li><i class="fas fa-chevron-right text-xs mx-2"></i></li>
+                    <li class="text-white">Liên hệ</li>
+                </ol>
+            </nav>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                Liên hệ với chúng tôi
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-emerald-100 max-w-3xl mx-auto leading-relaxed">
+                Có câu hỏi, góp ý hoặc muốn hợp tác? Chúng tôi luôn sẵn sàng lắng nghe bạn
+            </p>
+            
+            <!-- Contact info quick view -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mt-12">
+                <div class="flex items-center justify-center space-x-3 text-emerald-100">
+                    <i class="fas fa-envelope text-2xl"></i>
+                    <span class="font-medium">hello@dynamicblog.com</span>
+                </div>
+                <div class="flex items-center justify-center space-x-3 text-emerald-100">
+                    <i class="fas fa-phone text-2xl"></i>
+                    <span class="font-medium">+84 123 456 789</span>
+                </div>
+                <div class="flex items-center justify-center space-x-3 text-emerald-100">
+                    <i class="fas fa-map-marker-alt text-2xl"></i>
+                    <span class="font-medium">Hà Nội, Việt Nam</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+                        Gửi tin nhắn cho chúng tôi
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                        Điền thông tin vào form bên dưới và chúng tôi sẽ phản hồi bạn trong vòng 24 giờ. 
+                        Mọi thông tin của bạn đều được bảo mật tuyệt đối.
+                    </p>
+                    
+                    <form class="space-y-6" id="contactForm">
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Họ và tên *
+                            </label>
+                            <input type="text" 
+                                   id="name" 
+                                   name="name" 
+                                   required
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-600 transition-all duration-300"
+                                   placeholder="Nhập họ và tên của bạn">
+                        </div>
+                        
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Email *
+                            </label>
+                            <input type="email" 
+                                   id="email" 
+                                   name="email" 
+                                   required
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-600 transition-all duration-300"
+                                   placeholder="Nhập địa chỉ email của bạn">
+                        </div>
+                        
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Số điện thoại
+                            </label>
+                            <input type="tel" 
+                                   id="phone" 
+                                   name="phone"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-600 transition-all duration-300"
+                                   placeholder="Nhập số điện thoại của bạn">
+                        </div>
+                        
+                        <!-- Subject -->
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Chủ đề *
+                            </label>
+                            <select id="subject" 
+                                    name="subject" 
+                                    required
+                                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-600 transition-all duration-300">
+                                <option value="">Chọn chủ đề</option>
+                                <option value="general">Câu hỏi chung</option>
+                                <option value="feedback">Góp ý và phản hồi</option>
+                                <option value="partnership">Hợp tác</option>
+                                <option value="technical">Hỗ trợ kỹ thuật</option>
+                                <option value="content">Đóng góp nội dung</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Message -->
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Tin nhắn *
+                            </label>
+                            <textarea id="message" 
+                                      name="message" 
+                                      rows="6" 
+                                      required
+                                      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-600 transition-all duration-300 resize-vertical"
+                                      placeholder="Nhập tin nhắn của bạn..."></textarea>
+                        </div>
+                        
+                        <!-- Privacy notice -->
+                        <div class="flex items-start space-x-3">
+                            <input type="checkbox" 
+                                   id="privacy" 
+                                   name="privacy" 
+                                   required
+                                   class="mt-1 w-4 h-4 text-emerald-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600">
+                            <label for="privacy" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                Tôi đồng ý với việc xử lý thông tin cá nhân theo 
+                                <a href="#" class="text-emerald-600 dark:text-emerald-400 hover:underline">chính sách bảo mật</a> 
+                                của Dynamic Blog
+                            </label>
+                        </div>
+                        
+                        <!-- Submit button -->
+                        <button type="submit" 
+                                class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Gửi tin nhắn
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Contact Information -->
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+                        Thông tin liên hệ
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                        Bạn có thể liên hệ với chúng tôi qua các kênh thông tin dưới đây hoặc ghé thăm 
+                        văn phòng của chúng tôi trong giờ làm việc.
+                    </p>
+                    
+                    <!-- Contact Cards -->
+                    <div class="space-y-6 mb-8">
+                        <!-- Email -->
+                        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 border border-emerald-100 dark:border-gray-600">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-envelope text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Email</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                                        Gửi email cho chúng tôi, chúng tôi sẽ phản hồi trong vòng 24 giờ
+                                    </p>
+                                    <a href="mailto:hello@dynamicblog.com" 
+                                       class="text-emerald-600 dark:text-emerald-400 font-medium hover:underline">
+                                        hello@dynamicblog.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Phone -->
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 border border-teal-100 dark:border-gray-600">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-phone text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Điện thoại</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                                        Gọi cho chúng tôi từ thứ 2 đến thứ 6, 9:00 - 18:00
+                                    </p>
+                                    <a href="tel:+84123456789" 
+                                       class="text-teal-600 dark:text-teal-400 font-medium hover:underline">
+                                        +84 123 456 789
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Address -->
+                        <div class="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 border border-cyan-100 dark:border-gray-600">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-map-marker-alt text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Địa chỉ</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                                        Ghé thăm văn phòng của chúng tôi
+                                    </p>
+                                    <address class="text-cyan-600 dark:text-cyan-400 font-medium not-italic">
+                                        123 Đường ABC, Quận 1<br>
+                                        TP. Hồ Chí Minh, Việt Nam
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div>
+                        <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-4">Theo dõi chúng tôi</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" 
+                               class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center text-white hover:bg-blue-600 transition-colors duration-300">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" 
+                               class="w-12 h-12 bg-blue-400 rounded-lg flex items-center justify-center text-white hover:bg-blue-500 transition-colors duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" 
+                               class="w-12 h-12 bg-blue-700 rounded-lg flex items-center justify-center text-white hover:bg-blue-800 transition-colors duration-300">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" 
+                               class="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center text-white hover:bg-gray-900 transition-colors duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+                    Vị trí của chúng tôi
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Văn phòng của Dynamic Blog tọa lạc tại trung tâm thành phố, dễ dàng tiếp cận bằng các phương tiện giao thông công cộng.
+                </p>
+            </div>
+            
+            <!-- Map placeholder -->
+            <div class="bg-white dark:bg-gray-700 rounded-2xl shadow-xl overflow-hidden">
+                <div class="h-96 bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                    <div class="text-center text-white">
+                        <i class="fas fa-map-marked-alt text-6xl mb-4 opacity-70"></i>
+                        <h3 class="text-2xl font-bold mb-2">Bản đồ tương tác</h3>
+                        <p class="text-emerald-100">Tích hợp Google Maps sẽ hiển thị tại đây</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+                    Câu hỏi thường gặp
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Những câu hỏi được hỏi nhiều nhất về Dynamic Blog
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- FAQ Item 1 -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                        Làm thế nào để đóng góp bài viết cho Dynamic Blog?
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Bạn có thể gửi bài viết của mình qua email hello@dynamicblog.com hoặc liên hệ trực tiếp với đội ngũ biên tập. 
+                        Chúng tôi luôn hoan nghênh những bài viết chất lượng về công nghệ và lập trình.
+                    </p>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                        Dynamic Blog có miễn phí không?
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Có, tất cả nội dung trên Dynamic Blog đều hoàn toàn miễn phí. Chúng tôi tin rằng kiến thức nên được chia sẻ 
+                        rộng rãi để phát triển cộng đồng công nghệ Việt Nam.
+                    </p>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                        Tôi có thể quảng cáo trên Dynamic Blog không?
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Chúng tôi có các gói quảng cáo dành cho doanh nghiệp và tổ chức muốn tiếp cận cộng đồng developer. 
+                        Vui lòng liên hệ qua email để biết thêm chi tiết về các gói quảng cáo.
+                    </p>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                        Làm thế nào để nhận thông báo về bài viết mới?
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Bạn có thể đăng ký newsletter của chúng tôi ở cuối trang hoặc theo dõi các kênh social media. 
+                        Chúng tôi sẽ thông báo mỗi khi có bài viết mới được đăng tải.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-16 bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <h3 class="text-3xl font-bold mb-4">Đăng ký nhận tin</h3>
+            <p class="text-emerald-100 mb-8">
+                Nhận thông báo về những bài viết mới và cập nhật từ Dynamic Blog.
+            </p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" 
+                       placeholder="Nhập email của bạn..." 
+                       class="flex-1 px-4 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50">
+                <button type="submit" 
+                        class="bg-white text-emerald-600 px-6 py-3 rounded-full font-semibold hover:bg-emerald-50 transition-colors duration-300">
+                    <i class="fas fa-paper-plane mr-2"></i>
+                    Đăng ký
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form data
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    // Basic validation
+    if (!data.name || !data.email || !data.subject || !data.message || !data.privacy) {
+        alert('Vui lòng điền đầy đủ thông tin bắt buộc và đồng ý với chính sách bảo mật.');
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang gửi...';
+    submitBtn.disabled = true;
+    
+    // Simulate form submission (replace with actual API call)
+    setTimeout(() => {
+        alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong vòng 24 giờ.');
+        this.reset();
+        
+        // Reset button
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }, 2000);
+});
+</script>
