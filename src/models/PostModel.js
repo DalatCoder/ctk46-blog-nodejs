@@ -344,7 +344,7 @@ class PostModel {
 
   // Get post statistics
   static async getStats() {
-    const [totalPosts, publishedPosts, draftPosts, archivedPosts] = await Promise.all([
+    const [total, published, draft, archived] = await Promise.all([
       prisma.post.count(),
       prisma.post.count({ where: { status: 'PUBLISHED' } }),
       prisma.post.count({ where: { status: 'DRAFT' } }),
@@ -352,11 +352,35 @@ class PostModel {
     ]);
 
     return {
-      totalPosts,
-      publishedPosts,
-      draftPosts,
-      archivedPosts,
+      total,
+      published,
+      draft,
+      archived,
     };
+  }
+
+  // Get recent posts
+  static async getRecent(limit = 5) {
+    return await prisma.post.findMany({
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
   }
 }
 

@@ -235,7 +235,7 @@ class CommentModel {
 
   // Get comment statistics
   static async getStats() {
-    const [totalComments, approvedComments, pendingComments, spamComments] = await Promise.all([
+    const [total, approved, pending, spam] = await Promise.all([
       prisma.comment.count(),
       prisma.comment.count({ where: { status: 'APPROVED' } }),
       prisma.comment.count({ where: { status: 'PENDING' } }),
@@ -243,10 +243,10 @@ class CommentModel {
     ]);
 
     return {
-      totalComments,
-      approvedComments,
-      pendingComments,
-      spamComments,
+      total,
+      approved,
+      pending,
+      spam,
     };
   }
 

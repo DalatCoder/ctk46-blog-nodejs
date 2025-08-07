@@ -44,6 +44,18 @@ module.exports = {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   },
 
+  // Get substring helper
+  substring: function(str, start, length) {
+    if (!str) return '';
+    return str.substring(start, start + length);
+  },
+
+  // Time ago helper
+  timeAgo: function(date) {
+    if (!date) return '';
+    return moment(date).fromNow();
+  },
+
   // Get current year
   currentYear: function() {
     return new Date().getFullYear();

@@ -8,26 +8,55 @@ class AdminController {
   // Dashboard
   static async dashboard(req, res) {
     try {
-      // Simplified dashboard for testing
       console.log('🏠 Loading dashboard for user:', req.user.email);
       
-      res.render('admin/dashboard', {
-        title: 'Dashboard',
-        layout: 'admin', // Enable admin layout
-        stats: {
-          users: { totalUsers: 1, activeUsers: 1 },
-          posts: { totalPosts: 0, publishedPosts: 0 },
-          comments: { totalComments: 0, pendingComments: 0 },
-          categories: { totalCategories: 0 }
+      // Get statistics from all models
+      const [userStats, postStats, commentStats, categories] = await Promise.all([
+        UserModel.getStats(),
+        PostModel.getStats(),
+        CommentModel.getStats(),
+        CategoryModel.getAll()
+      ]);
+
+      // Get recent posts and comments
+      const [recentPosts, recentComments] = await Promise.all([
+        PostModel.getRecent(5),
+        CommentModel.getRecent(5)
+      ]);
+
+      const stats = {
+        users: {
+          totalUsers: userStats.total || 0,
+          activeUsers: userStats.active || 0,
+          newThisMonth: userStats.newThisMonth || 0
         },
-        recentPosts: [],
-        recentComments: [],
+        posts: {
+          totalPosts: postStats.total || 0,
+          publishedPosts: postStats.published || 0,
+          draftPosts: postStats.draft || 0
+        },
+        comments: {
+          totalComments: commentStats.total || 0,
+          pendingComments: commentStats.pending || 0,
+          approvedComments: commentStats.approved || 0
+        },
+        categories: {
+          totalCategories: categories.length || 0
+        }
+      };
+
+      res.render('admin/dashboard', {
+        title: 'Bảng điều khiển',
+        layout: 'admin',
+        stats,
+        recentPosts,
+        recentComments,
         currentPage: 'dashboard',
         user: req.user,
       });
     } catch (error) {
       console.error('Dashboard error:', error);
-      req.flash('error', 'Error loading dashboard');
+      req.flash('error', 'Lỗi khi tải bảng điều khiển');
       res.status(500).json({ error: 'Dashboard error', details: error.message });
     }
   }

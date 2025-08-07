@@ -205,16 +205,28 @@ class UserModel {
 
   // Get user statistics
   static async getStats() {
-    const [totalUsers, activeUsers, adminUsers] = await Promise.all([
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const [total, active, admin, newThisMonth] = await Promise.all([
       prisma.user.count(),
       prisma.user.count({ where: { status: 'ACTIVE' } }),
       prisma.user.count({ where: { role: 'ADMIN' } }),
+      prisma.user.count({ 
+        where: { 
+          createdAt: {
+            gte: startOfMonth
+          }
+        } 
+      }),
     ]);
 
     return {
-      totalUsers,
-      activeUsers,
-      adminUsers,
+      total,
+      active,
+      admin,
+      newThisMonth,
     };
   }
 

@@ -2,7 +2,7 @@
 <div class="mb-8">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-slate-800 dark:text-white">Dashboard</h1>
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-white">Bảng điều khiển</h1>
             <p class="text-slate-600 dark:text-slate-300 mt-2">Chào mừng trở lại! Đây là tổng quan về blog của bạn.</p>
         </div>
         <div class="text-right">
@@ -19,11 +19,16 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Tổng người dùng</p>
-                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.users.totalUsers}}</p>
+                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.users.total}}</p>
                 <p class="text-sm text-green-600 dark:text-green-400 mt-2">
                     <i class="fas fa-arrow-up mr-1"></i>
-                    {{stats.users.activeUsers}} đang hoạt động
+                    {{stats.users.active}} đang hoạt động
                 </p>
+                {{#if stats.users.newThisMonth}}
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    +{{stats.users.newThisMonth}} người dùng mới tháng này
+                </p>
+                {{/if}}
             </div>
             <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
                 <i class="fas fa-users text-blue-600 dark:text-blue-400 text-xl"></i>
@@ -36,11 +41,16 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Tổng bài viết</p>
-                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.posts.totalPosts}}</p>
+                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.posts.total}}</p>
                 <p class="text-sm text-green-600 dark:text-green-400 mt-2">
                     <i class="fas fa-check-circle mr-1"></i>
-                    {{stats.posts.publishedPosts}} đã xuất bản
+                    {{stats.posts.published}} đã xuất bản
                 </p>
+                {{#if stats.posts.draft}}
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    {{stats.posts.draft}} bản nháp
+                </p>
+                {{/if}}
             </div>
             <div class="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
                 <i class="fas fa-file-alt text-green-600 dark:text-green-400 text-xl"></i>
@@ -53,11 +63,16 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Tổng bình luận</p>
-                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.comments.totalComments}}</p>
+                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.comments.total}}</p>
                 <p class="text-sm text-orange-600 dark:text-orange-400 mt-2">
                     <i class="fas fa-clock mr-1"></i>
-                    {{stats.comments.pendingComments}} chờ duyệt
+                    {{stats.comments.pending}} chờ duyệt
                 </p>
+                {{#if stats.comments.approved}}
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    {{stats.comments.approved}} đã duyệt
+                </p>
+                {{/if}}
             </div>
             <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
                 <i class="fas fa-comments text-orange-600 dark:text-orange-400 text-xl"></i>
@@ -87,7 +102,7 @@
 <div class="mb-8">
     <h3 class="text-xl font-semibold text-slate-800 dark:text-white mb-4">Thao tác nhanh</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a href="/admin/posts/new" class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+        <a href="/admin/posts/create" class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
             <i class="fas fa-plus text-blue-600 dark:text-blue-400 mr-3"></i>
             <span class="font-medium text-blue-800 dark:text-blue-200">Tạo bài viết mới</span>
         </a>
@@ -126,13 +141,46 @@
                 <div class="space-y-4">
                     {{#each recentPosts}}
                         <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                            <div class="w-12 h-12 bg-slate-200 dark:bg-slate-600 rounded-lg flex items-center justify-center">
+                            {{#if featuredImage}}
+                            <div class="w-16 h-12 bg-slate-200 dark:bg-slate-600 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="{{featuredImage}}" alt="{{title}}" class="w-full h-full object-cover">
+                            </div>
+                            {{else}}
+                            <div class="w-16 h-12 bg-slate-200 dark:bg-slate-600 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <i class="fas fa-file-alt text-slate-600 dark:text-slate-300"></i>
                             </div>
+                            {{/if}}
                             <div class="flex-1 min-w-0">
-                                <h4 class="text-sm font-medium text-slate-800 dark:text-white truncate">{{title}}</h4>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                    {{formatDate createdAt 'DD/MM/YYYY'}} • {{status}}
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-medium text-slate-800 dark:text-white truncate">{{title}}</h4>
+                                        {{#if category}}
+                                        <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">{{category.name}}</p>
+                                        {{/if}}
+                                    </div>
+                                    <div class="flex items-center ml-2">
+                                        {{#if (eq status 'PUBLISHED')}}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                            <i class="fas fa-check-circle mr-1"></i>
+                                            Đã xuất bản
+                                        </span>
+                                        {{else if (eq status 'DRAFT')}}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                                            <i class="fas fa-edit mr-1"></i>
+                                            Bản nháp
+                                        </span>
+                                        {{else}}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-400">
+                                            {{status}}
+                                        </span>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                                    {{formatDate createdAt 'DD/MM/YYYY'}} • bởi {{author.firstName}} {{author.lastName}}
+                                    {{#if viewCount}}
+                                    • {{viewCount}} lượt xem
+                                    {{/if}}
                                 </p>
                             </div>
                         </div>
@@ -142,7 +190,7 @@
                 <div class="text-center py-8">
                     <i class="fas fa-file-alt text-slate-300 dark:text-slate-600 text-4xl mb-4"></i>
                     <p class="text-slate-500 dark:text-slate-400">Chưa có bài viết nào</p>
-                    <a href="/admin/posts/new" class="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <a href="/admin/posts/create" class="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                         Tạo bài viết đầu tiên
                     </a>
                 </div>
@@ -165,20 +213,58 @@
                 <div class="space-y-4">
                     {{#each recentComments}}
                         <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                            <div class="w-10 h-10 bg-slate-200 dark:bg-slate-600 rounded-full flex items-center justify-center">
+                            <div class="w-10 h-10 bg-slate-200 dark:bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                {{#if user}}
+                                <span class="text-sm font-medium text-slate-600 dark:text-slate-300">
+                                    {{substring user.firstName 0 1}}{{substring user.lastName 0 1}}
+                                </span>
+                                {{else}}
                                 <span class="text-sm font-medium text-slate-600 dark:text-slate-300">
                                     {{substring authorName 0 1}}
                                 </span>
+                                {{/if}}
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between">
-                                    <h4 class="text-sm font-medium text-slate-800 dark:text-white">{{authorName}}</h4>
-                                    <span class="text-xs text-slate-500 dark:text-slate-400">{{timeAgo createdAt}}</span>
+                                    <h4 class="text-sm font-medium text-slate-800 dark:text-white">
+                                        {{#if user}}
+                                        {{user.firstName}} {{user.lastName}}
+                                        {{else}}
+                                        {{authorName}}
+                                        {{/if}}
+                                    </h4>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-xs text-slate-500 dark:text-slate-400">{{timeAgo createdAt}}</span>
+                                        {{#if (eq status 'PENDING')}}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">
+                                            <i class="fas fa-clock mr-1"></i>
+                                            Chờ duyệt
+                                        </span>
+                                        {{else if (eq status 'APPROVED')}}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                            <i class="fas fa-check mr-1"></i>
+                                            Đã duyệt
+                                        </span>
+                                        {{else if (eq status 'SPAM')}}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                                            <i class="fas fa-ban mr-1"></i>
+                                            Spam
+                                        </span>
+                                        {{/if}}
+                                    </div>
                                 </div>
-                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-1 truncate">{{content}}</p>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                    trên <span class="font-medium">{{Post.title}}</span>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-1 line-clamp-2">{{content}}</p>
+                                {{#if post}}
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                                    trên bài viết: <a href="/admin/posts/{{post.id}}/edit" class="font-medium text-blue-600 dark:text-blue-400 hover:underline">{{post.title}}</a>
                                 </p>
+                                {{/if}}
+                                {{#if authorEmail}}
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                    <i class="fas fa-envelope mr-1"></i>
+                                    {{authorEmail}}
+                                </p>
+                                {{/if}}
                             </div>
                         </div>
                     {{/each}}
@@ -193,132 +279,116 @@
     </div>
 </div>
 
-        <div class="stat-card">
-            <div class="stat-icon comments">
-                <i class="fas fa-comments"></i>
-            </div>
-            <div class="stat-info">
-                <h3>{{stats.comments.totalComments}}</h3>
-                <p>Comments</p>
-                {{#if stats.comments.pendingComments}}
-                    <span class="stat-change warning">{{stats.comments.pendingComments}} pending</span>
-                {{else}}
-                    <span class="stat-change positive">All approved</span>
-                {{/if}}
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-icon categories">
-                <i class="fas fa-folder"></i>
-            </div>
-            <div class="stat-info">
-                <h3>{{stats.categories.totalCategories}}</h3>
-                <p>Categories</p>
-                <span class="stat-change neutral">{{stats.categories.featuredCategories}} featured</span>
-            </div>
-        </div>
+<!-- Activity Overview -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 mt-8">
+    <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-semibold text-slate-800 dark:text-white flex items-center">
+            <i class="fas fa-chart-line mr-3 text-indigo-600"></i>
+            Tổng quan hoạt động
+        </h3>
     </div>
-
-    <div class="dashboard-content">
-        <div class="dashboard-row">
-            <!-- Recent Posts -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h3>Recent Posts</h3>
-                    <a href="/admin/posts" class="btn btn-sm btn-outline">View All</a>
-                </div>
-                
-                <div class="posts-list">
-                    {{#each recentPosts}}
-                        <div class="post-item">
-                            <div class="post-info">
-                                <h4>
-                                    <a href="/admin/posts/edit/{{id}}">{{title}}</a>
-                                </h4>
-                                <p class="post-meta">
-                                    By {{author.firstName}} {{author.lastName}} • 
-                                    {{formatDate createdAt}} • 
-                                    <span class="status status-{{status}}">{{capitalize status}}</span>
-                                </p>
-                                <p class="post-stats">
-                                    <i class="fas fa-eye"></i> {{viewsCount}} views • 
-                                    <i class="fas fa-comments"></i> {{commentsCount}} comments
-                                </p>
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Content Overview -->
+            <div class="space-y-4">
+                <h4 class="font-medium text-slate-800 dark:text-white">Nội dung</h4>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-check text-green-600 dark:text-green-400 text-sm"></i>
                             </div>
-                            <div class="post-actions">
-                                <a href="/posts/{{slug}}" target="_blank" class="btn btn-sm btn-outline">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                                <a href="/admin/posts/edit/{{id}}" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Bài viết đã xuất bản</span>
+                        </div>
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.posts.published}}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-edit text-yellow-600 dark:text-yellow-400 text-sm"></i>
                             </div>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Bản nháp</span>
                         </div>
-                    {{else}}
-                        <div class="empty-state">
-                            <i class="fas fa-file-alt"></i>
-                            <p>No posts yet. <a href="/admin/posts/create">Create your first post</a></p>
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.posts.draft}}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-folder text-purple-600 dark:text-purple-400 text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Danh mục</span>
                         </div>
-                    {{/each}}
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.categories.totalCategories}}</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Recent Comments -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h3>Recent Comments</h3>
-                    <a href="/admin/comments" class="btn btn-sm btn-outline">View All</a>
-                </div>
-                
-                <div class="comments-list">
-                    {{#each recentComments}}
-                        <div class="comment-item">
-                            <div class="comment-avatar">
-                                <i class="fas fa-user"></i>
+            <!-- User Overview -->
+            <div class="space-y-4">
+                <h4 class="font-medium text-slate-800 dark:text-white">Người dùng</h4>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-blue-600 dark:text-blue-400 text-sm"></i>
                             </div>
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <strong>{{authorName}}</strong>
-                                    <span class="comment-date">{{timeAgo createdAt}}</span>
-                                    <span class="status status-{{status}}">{{capitalize status}}</span>
-                                </div>
-                                <p class="comment-text">{{truncate content 100}}</p>
-                                <p class="comment-post">
-                                    On: <a href="/posts/{{post.slug}}" target="_blank">{{post.title}}</a>
-                                </p>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Tổng người dùng</span>
+                        </div>
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.users.total}}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-check-circle text-green-600 dark:text-green-400 text-sm"></i>
                             </div>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Đang hoạt động</span>
                         </div>
-                    {{else}}
-                        <div class="empty-state">
-                            <i class="fas fa-comments"></i>
-                            <p>No comments yet.</p>
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.users.active}}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-user-plus text-indigo-600 dark:text-indigo-400 text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Mới tháng này</span>
                         </div>
-                    {{/each}}
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.users.newThisMonth}}</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <h3>Quick Actions</h3>
-            <div class="action-buttons">
-                <a href="/admin/posts/create" class="action-btn">
-                    <i class="fas fa-plus"></i>
-                    <span>New Post</span>
-                </a>
-                <a href="/admin/categories" class="action-btn">
-                    <i class="fas fa-folder-plus"></i>
-                    <span>Manage Categories</span>
-                </a>
-                <a href="/admin/comments?status=PENDING" class="action-btn">
-                    <i class="fas fa-clock"></i>
-                    <span>Review Comments</span>
-                </a>
-                <a href="/admin/settings" class="action-btn">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </a>
+            <!-- Comments Overview -->
+            <div class="space-y-4">
+                <h4 class="font-medium text-slate-800 dark:text-white">Bình luận</h4>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-comments text-orange-600 dark:text-orange-400 text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Tổng bình luận</span>
+                        </div>
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.comments.total}}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-check text-green-600 dark:text-green-400 text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Đã duyệt</span>
+                        </div>
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.comments.approved}}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-clock text-yellow-600 dark:text-yellow-400 text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-sm text-slate-700 dark:text-slate-300">Chờ duyệt</span>
+                        </div>
+                        <span class="font-semibold text-slate-800 dark:text-white">{{stats.comments.pending}}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
