@@ -1,0 +1,323 @@
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 text-white overflow-hidden">
+    <!-- Background pattern -->
+    <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10"></div>
+    
+    <!-- Animated background elements -->
+    <div class="absolute top-12 left-12 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-pulse"></div>
+    <div class="absolute top-36 right-16 w-16 h-16 bg-white bg-opacity-10 rounded-full animate-bounce delay-75"></div>
+    <div class="absolute bottom-20 left-32 w-12 h-12 bg-white bg-opacity-10 rounded-full animate-pulse delay-150"></div>
+    
+    <div class="relative container mx-auto px-4 py-20 lg:py-32">
+        <div class="text-center max-w-4xl mx-auto">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex items-center justify-center space-x-2 text-purple-200">
+                    <li><a href="/" class="hover:text-white transition-colors duration-300">Trang chủ</a></li>
+                    <li><i class="fas fa-chevron-right text-xs mx-2"></i></li>
+                    <li class="text-white">Tìm kiếm</li>
+                </ol>
+            </nav>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                {{#if query}}
+                    Kết quả tìm kiếm
+                {{else}}
+                    Tìm kiếm bài viết
+                {{/if}}
+            </h1>
+            
+            {{#if query}}
+            <p class="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto leading-relaxed">
+                Kết quả cho từ khóa: <strong>"{{query}}"</strong>
+            </p>
+            {{else}}
+            <p class="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto leading-relaxed">
+                Tìm kiếm những bài viết mà bạn quan tâm
+            </p>
+            {{/if}}
+            
+            <!-- Search Form -->
+            <form action="/search" method="GET" class="max-w-2xl mx-auto mb-8">
+                <div class="relative">
+                    <input type="text" 
+                           name="q" 
+                           value="{{query}}"
+                           placeholder="Nhập từ khóa tìm kiếm..." 
+                           class="w-full px-6 py-4 pr-16 rounded-full text-gray-800 text-lg focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 shadow-lg">
+                    <button type="submit" 
+                            class="absolute right-2 top-2 bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            
+            {{#if query}}
+            <!-- Search Stats -->
+            <div class="text-purple-200">
+                {{#if posts}}
+                Tìm thấy {{posts.length}} bài viết
+                {{else}}
+                Không tìm thấy kết quả nào
+                {{/if}}
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</section>
+
+{{#if query}}
+<!-- Search Results Section -->
+<section class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            {{#if posts}}
+            <!-- Results Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                {{#each posts}}
+                <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
+                    <!-- Featured Image -->
+                    <div class="aspect-video overflow-hidden">
+                        {{#if featuredImage}}
+                        <img src="{{featuredImage}}" 
+                             alt="{{title}}" 
+                             class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        {{else}}
+                        <div class="w-full h-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                            <i class="fas fa-image text-white text-4xl opacity-50"></i>
+                        </div>
+                        {{/if}}
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="p-6">
+                        <!-- Category -->
+                        {{#if category}}
+                        <div class="mb-3">
+                            <span class="inline-block bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-3 py-1 rounded-full text-xs font-medium">
+                                {{category.name}}
+                            </span>
+                        </div>
+                        {{/if}}
+                        
+                        <!-- Title -->
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3 line-clamp-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-300">
+                            <a href="/posts/{{slug}}">{{title}}</a>
+                        </h3>
+                        
+                        <!-- Excerpt -->
+                        {{#if excerpt}}
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">{{excerpt}}</p>
+                        {{/if}}
+                        
+                        <!-- Meta -->
+                        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
+                            <span class="flex items-center">
+                                <i class="fas fa-calendar mr-1"></i>
+                                {{formatDate publishedAt}}
+                            </span>
+                            <span class="flex items-center">
+                                <i class="fas fa-clock mr-1"></i>
+                                {{readingTime}} phút
+                            </span>
+                        </div>
+                        
+                        <!-- Author -->
+                        <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-xs">
+                                    {{substring author.firstName 0 1}}{{substring author.lastName 0 1}}
+                                </span>
+                            </div>
+                            <span>{{author.firstName}} {{author.lastName}}</span>
+                        </div>
+                    </div>
+                </article>
+                {{/each}}
+            </div>
+            
+            <!-- Pagination -->
+            {{#if pagination}}
+            <div class="flex justify-center">
+                <nav class="flex items-center space-x-2">
+                    {{#if pagination.hasPrev}}
+                    <a href="/search?q={{query}}&page={{pagination.prevPage}}" 
+                       class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors duration-300">
+                        <i class="fas fa-chevron-left mr-2"></i>Trước
+                    </a>
+                    {{/if}}
+                    
+                    <span class="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium">
+                        Trang {{pagination.currentPage}} / {{pagination.totalPages}}
+                    </span>
+                    
+                    {{#if pagination.hasNext}}
+                    <a href="/search?q={{query}}&page={{pagination.nextPage}}" 
+                       class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors duration-300">
+                        Sau<i class="fas fa-chevron-right ml-2"></i>
+                    </a>
+                    {{/if}}
+                </nav>
+            </div>
+            {{/if}}
+            
+            {{else}}
+            <!-- No Results -->
+            <div class="text-center py-16">
+                <div class="max-w-md mx-auto">
+                    <div class="w-24 h-24 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-search text-purple-600 dark:text-purple-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+                        Không tìm thấy kết quả
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8">
+                        Không có bài viết nào phù hợp với từ khóa "<strong>{{query}}</strong>".
+                        Hãy thử với từ khóa khác hoặc xem các bài viết gợi ý bên dưới.
+                    </p>
+                    
+                    <!-- Search suggestions -->
+                    <div class="mb-8">
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Gợi ý tìm kiếm:</h4>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <a href="/search?q=javascript" class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-300">
+                                JavaScript
+                            </a>
+                            <a href="/search?q=nodejs" class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-300">
+                                Node.js
+                            </a>
+                            <a href="/search?q=react" class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-300">
+                                React
+                            </a>
+                            <a href="/search?q=css" class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-300">
+                                CSS
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <a href="/posts" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-700 transition-colors duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Xem tất cả bài viết
+                    </a>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</section>
+
+{{else}}
+<!-- Search Suggestions Section -->
+<section class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+                    Chủ đề phổ biến
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Những chủ đề được tìm kiếm nhiều nhất trên Dynamic Blog
+                </p>
+            </div>
+            
+            <!-- Popular Topics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                <a href="/search?q=javascript" class="group">
+                    <div class="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl p-6 text-center text-white group-hover:scale-105 transition-transform duration-300">
+                        <i class="fab fa-js-square text-4xl mb-4"></i>
+                        <h3 class="font-bold text-lg">JavaScript</h3>
+                        <p class="text-sm opacity-90">Ngôn ngữ lập trình phổ biến</p>
+                    </div>
+                </a>
+                
+                <a href="/search?q=nodejs" class="group">
+                    <div class="bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl p-6 text-center text-white group-hover:scale-105 transition-transform duration-300">
+                        <i class="fab fa-node-js text-4xl mb-4"></i>
+                        <h3 class="font-bold text-lg">Node.js</h3>
+                        <p class="text-sm opacity-90">Runtime JavaScript</p>
+                    </div>
+                </a>
+                
+                <a href="/search?q=react" class="group">
+                    <div class="bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl p-6 text-center text-white group-hover:scale-105 transition-transform duration-300">
+                        <i class="fab fa-react text-4xl mb-4"></i>
+                        <h3 class="font-bold text-lg">React</h3>
+                        <p class="text-sm opacity-90">Thư viện JavaScript UI</p>
+                    </div>
+                </a>
+                
+                <a href="/search?q=css" class="group">
+                    <div class="bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl p-6 text-center text-white group-hover:scale-105 transition-transform duration-300">
+                        <i class="fab fa-css3-alt text-4xl mb-4"></i>
+                        <h3 class="font-bold text-lg">CSS</h3>
+                        <p class="text-sm opacity-90">Styling & Design</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Search Tips -->
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 text-center">
+                    Mẹo tìm kiếm hiệu quả
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-quotes-left text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Sử dụng dấu ngoặc kép</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">
+                            Đặt cụm từ trong dấu ngoặc kép để tìm chính xác. Ví dụ: "web development"
+                        </p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-plus text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Kết hợp từ khóa</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">
+                            Sử dụng nhiều từ khóa liên quan để có kết quả tốt hơn
+                        </p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-spell-check text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Kiểm tra chính tả</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">
+                            Đảm bảo từ khóa được viết đúng chính tả
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{/if}}
+
+<!-- Newsletter Section -->
+<section class="py-16 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <h3 class="text-3xl font-bold mb-4">Đăng ký nhận tin</h3>
+            <p class="text-purple-100 mb-8">
+                Nhận thông báo về những bài viết mới và cập nhật từ Dynamic Blog.
+            </p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" 
+                       placeholder="Nhập email của bạn..." 
+                       class="flex-1 px-4 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50">
+                <button type="submit" 
+                        class="bg-white text-purple-600 px-6 py-3 rounded-full font-semibold hover:bg-purple-50 transition-colors duration-300">
+                    <i class="fas fa-paper-plane mr-2"></i>
+                    Đăng ký
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
