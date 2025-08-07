@@ -1,0 +1,325 @@
+<!-- Dashboard Header -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-white">Dashboard</h1>
+            <p class="text-slate-600 dark:text-slate-300 mt-2">Chào mừng trở lại! Đây là tổng quan về blog của bạn.</p>
+        </div>
+        <div class="text-right">
+            <p class="text-sm text-slate-500 dark:text-slate-400">Hôm nay</p>
+            <p class="text-lg font-semibold text-slate-800 dark:text-white">{{formatDate (Date) 'DD/MM/YYYY'}}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Users Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Tổng người dùng</p>
+                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.users.totalUsers}}</p>
+                <p class="text-sm text-green-600 dark:text-green-400 mt-2">
+                    <i class="fas fa-arrow-up mr-1"></i>
+                    {{stats.users.activeUsers}} đang hoạt động
+                </p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-users text-blue-600 dark:text-blue-400 text-xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Posts Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Tổng bài viết</p>
+                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.posts.totalPosts}}</p>
+                <p class="text-sm text-green-600 dark:text-green-400 mt-2">
+                    <i class="fas fa-check-circle mr-1"></i>
+                    {{stats.posts.publishedPosts}} đã xuất bản
+                </p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-file-alt text-green-600 dark:text-green-400 text-xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Tổng bình luận</p>
+                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.comments.totalComments}}</p>
+                <p class="text-sm text-orange-600 dark:text-orange-400 mt-2">
+                    <i class="fas fa-clock mr-1"></i>
+                    {{stats.comments.pendingComments}} chờ duyệt
+                </p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-comments text-orange-600 dark:text-orange-400 text-xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-medium">Danh mục</p>
+                <p class="text-3xl font-bold text-slate-800 dark:text-white mt-1">{{stats.categories.totalCategories}}</p>
+                <p class="text-sm text-purple-600 dark:text-purple-400 mt-2">
+                    <i class="fas fa-folder-open mr-1"></i>
+                    Đang hoạt động
+                </p>
+            </div>
+            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-folder text-purple-600 dark:text-purple-400 text-xl"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="mb-8">
+    <h3 class="text-xl font-semibold text-slate-800 dark:text-white mb-4">Thao tác nhanh</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a href="/admin/posts/new" class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+            <i class="fas fa-plus text-blue-600 dark:text-blue-400 mr-3"></i>
+            <span class="font-medium text-blue-800 dark:text-blue-200">Tạo bài viết mới</span>
+        </a>
+        
+        <a href="/admin/categories" class="flex items-center p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors">
+            <i class="fas fa-folder-plus text-green-600 dark:text-green-400 mr-3"></i>
+            <span class="font-medium text-green-800 dark:text-green-200">Quản lý danh mục</span>
+        </a>
+        
+        <a href="/admin/comments" class="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors">
+            <i class="fas fa-comment-dots text-orange-600 dark:text-orange-400 mr-3"></i>
+            <span class="font-medium text-orange-800 dark:text-orange-200">Duyệt bình luận</span>
+        </a>
+        
+        <a href="/admin/settings" class="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors">
+            <i class="fas fa-cog text-purple-600 dark:text-purple-400 mr-3"></i>
+            <span class="font-medium text-purple-800 dark:text-purple-200">Cài đặt hệ thống</span>
+        </a>
+    </div>
+</div>
+
+<!-- Recent Activities -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Recent Posts -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Bài viết gần đây</h3>
+                <a href="/admin/posts" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 text-sm font-medium">
+                    Xem tất cả <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+        <div class="p-6">
+            {{#if recentPosts}}
+                <div class="space-y-4">
+                    {{#each recentPosts}}
+                        <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <div class="w-12 h-12 bg-slate-200 dark:bg-slate-600 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-file-alt text-slate-600 dark:text-slate-300"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-medium text-slate-800 dark:text-white truncate">{{title}}</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                    {{formatDate createdAt 'DD/MM/YYYY'}} • {{status}}
+                                </p>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                <div class="text-center py-8">
+                    <i class="fas fa-file-alt text-slate-300 dark:text-slate-600 text-4xl mb-4"></i>
+                    <p class="text-slate-500 dark:text-slate-400">Chưa có bài viết nào</p>
+                    <a href="/admin/posts/new" class="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Tạo bài viết đầu tiên
+                    </a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+    <!-- Recent Comments -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Bình luận gần đây</h3>
+                <a href="/admin/comments" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 text-sm font-medium">
+                    Xem tất cả <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+        <div class="p-6">
+            {{#if recentComments}}
+                <div class="space-y-4">
+                    {{#each recentComments}}
+                        <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <div class="w-10 h-10 bg-slate-200 dark:bg-slate-600 rounded-full flex items-center justify-center">
+                                <span class="text-sm font-medium text-slate-600 dark:text-slate-300">
+                                    {{substring authorName 0 1}}
+                                </span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-sm font-medium text-slate-800 dark:text-white">{{authorName}}</h4>
+                                    <span class="text-xs text-slate-500 dark:text-slate-400">{{timeAgo createdAt}}</span>
+                                </div>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-1 truncate">{{content}}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                    trên <span class="font-medium">{{Post.title}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                <div class="text-center py-8">
+                    <i class="fas fa-comments text-slate-300 dark:text-slate-600 text-4xl mb-4"></i>
+                    <p class="text-slate-500 dark:text-slate-400">Chưa có bình luận nào</p>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+        <div class="stat-card">
+            <div class="stat-icon comments">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{stats.comments.totalComments}}</h3>
+                <p>Comments</p>
+                {{#if stats.comments.pendingComments}}
+                    <span class="stat-change warning">{{stats.comments.pendingComments}} pending</span>
+                {{else}}
+                    <span class="stat-change positive">All approved</span>
+                {{/if}}
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon categories">
+                <i class="fas fa-folder"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{stats.categories.totalCategories}}</h3>
+                <p>Categories</p>
+                <span class="stat-change neutral">{{stats.categories.featuredCategories}} featured</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="dashboard-row">
+            <!-- Recent Posts -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h3>Recent Posts</h3>
+                    <a href="/admin/posts" class="btn btn-sm btn-outline">View All</a>
+                </div>
+                
+                <div class="posts-list">
+                    {{#each recentPosts}}
+                        <div class="post-item">
+                            <div class="post-info">
+                                <h4>
+                                    <a href="/admin/posts/edit/{{id}}">{{title}}</a>
+                                </h4>
+                                <p class="post-meta">
+                                    By {{author.firstName}} {{author.lastName}} • 
+                                    {{formatDate createdAt}} • 
+                                    <span class="status status-{{status}}">{{capitalize status}}</span>
+                                </p>
+                                <p class="post-stats">
+                                    <i class="fas fa-eye"></i> {{viewsCount}} views • 
+                                    <i class="fas fa-comments"></i> {{commentsCount}} comments
+                                </p>
+                            </div>
+                            <div class="post-actions">
+                                <a href="/posts/{{slug}}" target="_blank" class="btn btn-sm btn-outline">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="/admin/posts/edit/{{id}}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {{else}}
+                        <div class="empty-state">
+                            <i class="fas fa-file-alt"></i>
+                            <p>No posts yet. <a href="/admin/posts/create">Create your first post</a></p>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- Recent Comments -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h3>Recent Comments</h3>
+                    <a href="/admin/comments" class="btn btn-sm btn-outline">View All</a>
+                </div>
+                
+                <div class="comments-list">
+                    {{#each recentComments}}
+                        <div class="comment-item">
+                            <div class="comment-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="comment-content">
+                                <div class="comment-header">
+                                    <strong>{{authorName}}</strong>
+                                    <span class="comment-date">{{timeAgo createdAt}}</span>
+                                    <span class="status status-{{status}}">{{capitalize status}}</span>
+                                </div>
+                                <p class="comment-text">{{truncate content 100}}</p>
+                                <p class="comment-post">
+                                    On: <a href="/posts/{{post.slug}}" target="_blank">{{post.title}}</a>
+                                </p>
+                            </div>
+                        </div>
+                    {{else}}
+                        <div class="empty-state">
+                            <i class="fas fa-comments"></i>
+                            <p>No comments yet.</p>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="action-buttons">
+                <a href="/admin/posts/create" class="action-btn">
+                    <i class="fas fa-plus"></i>
+                    <span>New Post</span>
+                </a>
+                <a href="/admin/categories" class="action-btn">
+                    <i class="fas fa-folder-plus"></i>
+                    <span>Manage Categories</span>
+                </a>
+                <a href="/admin/comments?status=PENDING" class="action-btn">
+                    <i class="fas fa-clock"></i>
+                    <span>Review Comments</span>
+                </a>
+                <a href="/admin/settings" class="action-btn">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

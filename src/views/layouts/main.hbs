@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} - Dynamic Blog</title>
+    <meta name="description" content="{{#if metaDescription}}{{metaDescription}}{{else}}A modern blog platform built with Node.js{{/if}}">
+    {{#if metaKeywords}}<meta name="keywords" content="{{metaKeywords}}">{{/if}}
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/html-template/css/style.css">
+    <link rel="stylesheet" href="/html-template/css/custom.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="/">Dynamic Blog</a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/posts" class="nav-link">Blog</a>
+                <a href="/about" class="nav-link">About</a>
+                <a href="/contact" class="nav-link">Contact</a>
+                {{#if user}}
+                    <a href="/admin" class="nav-link">Dashboard</a>
+                    <a href="/auth/logout" class="nav-link">Logout</a>
+                {{else}}
+                    <a href="/auth/login" class="nav-link">Login</a>
+                {{/if}}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {{#if messages.success}}
+        <div class="alert alert-success">
+            {{#each messages.success}}
+                <p>{{this}}</p>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{#if messages.error}}
+        <div class="alert alert-error">
+            {{#each messages.error}}
+                <p>{{this}}</p>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    <!-- Main Content -->
+    <main>
+        {{{body}}}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dynamic Blog</h3>
+                    <p>A modern blog platform built with Node.js, Express, and Prisma.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/posts">Blog</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{currentYear}} Dynamic Blog. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/html-template/js/script.js"></script>
+</body>
+</html>

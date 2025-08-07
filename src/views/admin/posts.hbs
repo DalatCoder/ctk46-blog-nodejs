@@ -1,0 +1,206 @@
+<!-- Posts Management -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-white">Quản lý bài viết</h1>
+            <p class="text-slate-600 dark:text-slate-300 mt-2">Tạo, chỉnh sửa và quản lý các bài viết của bạn</p>
+        </div>
+        <a href="/admin/posts/new" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+            <i class="fas fa-plus mr-2"></i>
+            Tạo bài viết mới
+        </a>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-6">
+    <form method="GET" class="flex flex-wrap items-center gap-4">
+        <div class="flex-1 min-w-64">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tìm kiếm</label>
+            <input type="text" name="search" value="{{filters.search}}" placeholder="Tìm kiếm theo tiêu đề, nội dung..." 
+                   class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Trạng thái</label>
+            <select name="status" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                <option value="">Tất cả</option>
+                <option value="PUBLISHED" {{#if (eq filters.status 'PUBLISHED')}}selected{{/if}}>Đã xuất bản</option>
+                <option value="DRAFT" {{#if (eq filters.status 'DRAFT')}}selected{{/if}}>Bản nháp</option>
+                <option value="ARCHIVED" {{#if (eq filters.status 'ARCHIVED')}}selected{{/if}}>Lưu trữ</option>
+            </select>
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Danh mục</label>
+            <select name="category" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                <option value="">Tất cả</option>
+                {{#each categories}}
+                    <option value="{{id}}" {{#if (eq ../filters.categoryId id)}}selected{{/if}}>{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        
+        <div class="flex items-end">
+            <button type="submit" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors">
+                <i class="fas fa-search mr-2"></i>
+                Lọc
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Posts Table -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    {{#if posts}}
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Bài viết</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Danh mục</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Trạng thái</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ngày tạo</th>
+                        <th class="px-6 py-4 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    {{#each posts}}
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-start space-x-4">
+                                    {{#if featuredImage}}
+                                        <img src="{{featuredImage}}" alt="{{title}}" class="w-16 h-12 object-cover rounded-lg">
+                                    {{else}}
+                                        <div class="w-16 h-12 bg-slate-200 dark:bg-slate-600 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-image text-slate-400"></i>
+                                        </div>
+                                    {{/if}}
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-medium text-slate-800 dark:text-white truncate">{{title}}</h4>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{{stripTags (truncate content 100)}}</p>
+                                        <div class="flex items-center space-x-4 mt-2 text-xs text-slate-500 dark:text-slate-400">
+                                            <span><i class="fas fa-eye mr-1"></i>{{views}} lượt xem</span>
+                                            <span><i class="fas fa-comments mr-1"></i>{{_count.comments}} bình luận</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{#if category}}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
+                                        {{category.name}}
+                                    </span>
+                                {{else}}
+                                    <span class="text-slate-400 dark:text-slate-500">Chưa phân loại</span>
+                                {{/if}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{#if (eq status 'PUBLISHED')}}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300">
+                                        <i class="fas fa-check-circle mr-1"></i>
+                                        Đã xuất bản
+                                    </span>
+                                {{else if (eq status 'DRAFT')}}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300">
+                                        <i class="fas fa-edit mr-1"></i>
+                                        Bản nháp
+                                    </span>
+                                {{else if (eq status 'ARCHIVED')}}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-900/20 dark:text-slate-300">
+                                        <i class="fas fa-archive mr-1"></i>
+                                        Lưu trữ
+                                    </span>
+                                {{/if}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-slate-600 dark:text-slate-300">{{formatDate createdAt 'DD/MM/YYYY'}}</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">{{timeAgo createdAt}}</div>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex items-center justify-end space-x-2">
+                                    <a href="/posts/{{slug}}" target="_blank" class="inline-flex items-center px-2 py-1 text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                                        <i class="fas fa-eye mr-1"></i>
+                                        Xem
+                                    </a>
+                                    <a href="/admin/posts/{{id}}/edit" class="inline-flex items-center px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-900/30 transition-colors">
+                                        <i class="fas fa-edit mr-1"></i>
+                                        Sửa
+                                    </a>
+                                    <button onclick="deletePost({{id}})" class="inline-flex items-center px-2 py-1 text-xs bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-300 rounded hover:bg-red-200 dark:hover:bg-red-900/30 transition-colors">
+                                        <i class="fas fa-trash mr-1"></i>
+                                        Xóa
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {{#if pagination.totalPages}}
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-slate-600 dark:text-slate-300">
+                        Hiển thị {{pagination.startItem}} - {{pagination.endItem}} của {{pagination.totalItems}} bài viết
+                    </div>
+                    
+                    {{#if (gt pagination.totalPages 1)}}
+                        <div class="flex items-center space-x-2">
+                            {{#if pagination.hasPrev}}
+                                <a href="?page={{pagination.prevPage}}" class="px-3 py-1 text-sm bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            {{/if}}
+                            
+                            <span class="px-3 py-1 text-sm bg-blue-600 text-white rounded">{{pagination.currentPage}}</span>
+                            
+                            {{#if pagination.hasNext}}
+                                <a href="?page={{pagination.nextPage}}" class="px-3 py-1 text-sm bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded hover:bg-slate-200 dark:hover:bg-slate-600">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            {{/if}}
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        {{/if}}
+    {{else}}
+        <div class="text-center py-12">
+            <i class="fas fa-file-alt text-slate-300 dark:text-slate-600 text-6xl mb-4"></i>
+            <h3 class="text-lg font-medium text-slate-600 dark:text-slate-300 mb-2">Chưa có bài viết nào</h3>
+            <p class="text-slate-500 dark:text-slate-400 mb-6">Bắt đầu tạo bài viết đầu tiên của bạn</p>
+            <a href="/admin/posts/new" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                <i class="fas fa-plus mr-2"></i>
+                Tạo bài viết mới
+            </a>
+        </div>
+    {{/if}}
+</div>
+
+<script>
+function deletePost(id) {
+    if (confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+        fetch(`/admin/posts/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Có lỗi xảy ra khi xóa bài viết');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi xóa bài viết');
+        });
+    }
+}
+</script>

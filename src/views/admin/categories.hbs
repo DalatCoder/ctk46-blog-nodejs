@@ -1,0 +1,307 @@
+<!-- Categories Management -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-white">Quản lý danh mục</h1>
+            <p class="text-slate-600 dark:text-slate-300 mt-2">Tạo và quản lý các danh mục cho bài viết</p>
+        </div>
+        <button onclick="openCreateModal()" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+            <i class="fas fa-plus mr-2"></i>
+            Tạo danh mục mới
+        </button>
+    </div>
+</div>
+
+<!-- Search and Filter -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-6">
+    <form method="GET" class="flex flex-wrap items-center gap-4">
+        <div class="flex-1 min-w-64">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tìm kiếm</label>
+            <input type="text" name="search" value="{{filters.search}}" placeholder="Tìm kiếm theo tên danh mục..." 
+                   class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Trạng thái</label>
+            <select name="featured" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                <option value="">Tất cả</option>
+                <option value="true" {{#if (eq filters.featured 'true')}}selected{{/if}}>Nổi bật</option>
+                <option value="false" {{#if (eq filters.featured 'false')}}selected{{/if}}>Thường</option>
+            </select>
+        </div>
+        
+        <div class="flex items-end">
+            <button type="submit" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors">
+                <i class="fas fa-search mr-2"></i>
+                Lọc
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Categories Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    {{#each categories}}
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg transition-shadow">
+            <!-- Category Header -->
+            <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+                <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-2">{{name}}</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 line-clamp-2">{{description}}</p>
+                    </div>
+                    <div class="ml-4">
+                        {{#if isFeatured}}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300">
+                                <i class="fas fa-star mr-1"></i>
+                                Nổi bật
+                            </span>
+                        {{else}}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-900/20 dark:text-slate-300">
+                                <i class="fas fa-folder mr-1"></i>
+                                Thường
+                            </span>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category Stats -->
+            <div class="p-6">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{_count.posts}}</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Bài viết</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{publishedPosts}}</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">Đã xuất bản</div>
+                    </div>
+                </div>
+                
+                <!-- Category Info -->
+                <div class="space-y-2 text-sm text-slate-600 dark:text-slate-300 mb-4">
+                    <div class="flex items-center justify-between">
+                        <span>Slug:</span>
+                        <code class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">{{slug}}</code>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span>Ngày tạo:</span>
+                        <span class="text-xs">{{formatDate createdAt 'DD/MM/YYYY'}}</span>
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700">
+                    <a href="/admin/categories/{{id}}/posts" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
+                        <i class="fas fa-eye mr-1"></i>
+                        Xem bài viết
+                    </a>
+                    
+                    <div class="flex items-center space-x-2">
+                        <button onclick="editCategory({{json this}})" class="inline-flex items-center px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-900/30 transition-colors">
+                            <i class="fas fa-edit mr-1"></i>
+                            Sửa
+                        </button>
+                        <button onclick="deleteCategory({{id}}, '{{name}}')" class="inline-flex items-center px-2 py-1 text-xs bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-300 rounded hover:bg-red-200 dark:hover:bg-red-900/30 transition-colors">
+                            <i class="fas fa-trash mr-1"></i>
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <div class="col-span-full">
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 text-center py-12">
+                <i class="fas fa-folder text-slate-300 dark:text-slate-600 text-6xl mb-4"></i>
+                <h3 class="text-lg font-medium text-slate-600 dark:text-slate-300 mb-2">Chưa có danh mục nào</h3>
+                <p class="text-slate-500 dark:text-slate-400 mb-6">Bắt đầu tạo danh mục đầu tiên cho blog của bạn</p>
+                <button onclick="openCreateModal()" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                    <i class="fas fa-plus mr-2"></i>
+                    Tạo danh mục đầu tiên
+                </button>
+            </div>
+        </div>
+    {{/each}}
+</div>
+
+<!-- Create/Edit Category Modal -->
+<div id="categoryModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <h3 id="modalTitle" class="text-lg font-semibold text-slate-800 dark:text-white">Tạo danh mục mới</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <form id="categoryForm" class="p-6">
+            <input type="hidden" id="categoryId" name="id">
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                        Tên danh mục <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="categoryName" name="name" required
+                           class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                           placeholder="Nhập tên danh mục">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                        Slug
+                    </label>
+                    <input type="text" id="categorySlug" name="slug"
+                           class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                           placeholder="Tự động tạo từ tên danh mục">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Để trống để tự động tạo từ tên danh mục</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                        Mô tả
+                    </label>
+                    <textarea id="categoryDescription" name="description" rows="3"
+                              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white"
+                              placeholder="Mô tả ngắn về danh mục này"></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                        Trạng thái
+                    </label>
+                    <select id="categoryFeatured" name="isFeatured"
+                            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-700 dark:text-white">
+                        <option value="false">Thường</option>
+                        <option value="true">Nổi bật</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+                <button type="button" onclick="closeModal()" class="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                    Hủy
+                </button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                    <i class="fas fa-save mr-2"></i>
+                    <span id="submitText">Tạo danh mục</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+let isEdit = false;
+
+function openCreateModal() {
+    isEdit = false;
+    document.getElementById('modalTitle').textContent = 'Tạo danh mục mới';
+    document.getElementById('submitText').textContent = 'Tạo danh mục';
+    document.getElementById('categoryForm').reset();
+    document.getElementById('categoryId').value = '';
+    document.getElementById('categoryModal').classList.remove('hidden');
+}
+
+function editCategory(category) {
+    isEdit = true;
+    document.getElementById('modalTitle').textContent = 'Chỉnh sửa danh mục';
+    document.getElementById('submitText').textContent = 'Cập nhật';
+    
+    document.getElementById('categoryId').value = category.id;
+    document.getElementById('categoryName').value = category.name;
+    document.getElementById('categorySlug').value = category.slug;
+    document.getElementById('categoryDescription').value = category.description || '';
+    document.getElementById('categoryFeatured').value = category.isFeatured ? 'true' : 'false';
+    
+    document.getElementById('categoryModal').classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('categoryModal').classList.add('hidden');
+}
+
+function deleteCategory(id, name) {
+    if (confirm(`Bạn có chắc chắn muốn xóa danh mục "${name}"?`)) {
+        fetch(`/admin/categories/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Có lỗi xảy ra khi xóa danh mục: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi xóa danh mục');
+        });
+    }
+}
+
+// Auto-generate slug from name
+document.getElementById('categoryName').addEventListener('input', function() {
+    if (!isEdit) {
+        const name = this.value;
+        const slug = name.toLowerCase()
+            .replace(/[àáạảãâầấậẩẫăằắặẳẵ]/g, 'a')
+            .replace(/[èéẹẻẽêềếệểễ]/g, 'e')
+            .replace(/[ìíịỉĩ]/g, 'i')
+            .replace(/[òóọỏõôồốộổỗơờớợởỡ]/g, 'o')
+            .replace(/[ùúụủũưừứựửữ]/g, 'u')
+            .replace(/[ỳýỵỷỹ]/g, 'y')
+            .replace(/đ/g, 'd')
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+        document.getElementById('categorySlug').value = slug;
+    }
+});
+
+// Form submission
+document.getElementById('categoryForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    const url = isEdit ? `/admin/categories/${data.id}` : '/admin/categories';
+    const method = isEdit ? 'PUT' : 'POST';
+    
+    fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Có lỗi xảy ra: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi lưu danh mục');
+    });
+});
+
+// Close modal when clicking outside
+document.getElementById('categoryModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+</script>

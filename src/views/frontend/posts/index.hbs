@@ -1,0 +1,459 @@
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>{{title}}</h1>
+        {{#if currentCategory}}
+        <p>Category: <span class="category-name">{{currentCategory.name}}</span></p>
+        {{/if}}
+    </div>
+</div>
+
+<!-- Search and Filters -->
+<div class="filters-section">
+    <div class="container">
+        <div class="filters-wrapper">
+            <!-- Search Form -->
+            <form class="search-form" method="GET">
+                <div class="search-input-group">
+                    <input type="text" name="search" placeholder="Search posts..." value="{{search}}" class="search-input">
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                {{#if category}}
+                <input type="hidden" name="category" value="{{category}}">
+                {{/if}}
+            </form>
+
+            <!-- Category Filter -->
+            <div class="category-filter">
+                <select onchange="filterByCategory(this.value)" class="category-select">
+                    <option value="">All Categories</option>
+                    {{#each categories}}
+                    <option value="{{id}}" {{#if (eq ../currentCategory this.id)}}selected{{/if}}>
+                        {{name}}
+                    </option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Posts Grid -->
+<section class="posts-section">
+    <div class="container">
+        {{#if posts.length}}
+        <div class="posts-grid">
+            {{#each posts}}
+            <article class="post-card">
+                {{#if featuredImage}}
+                <div class="post-image">
+                    <img src="{{featuredImage}}" alt="{{title}}" loading="lazy">
+                    {{#if isFeatured}}
+                    <span class="featured-badge">Featured</span>
+                    {{/if}}
+                </div>
+                {{/if}}
+                
+                <div class="post-content">
+                    <div class="post-meta">
+                        {{#if category}}
+                        <span class="category" style="background-color: {{category.color}}">
+                            {{category.name}}
+                        </span>
+                        {{/if}}
+                        <time datetime="{{publishedAt}}">{{formatDate publishedAt}}</time>
+                    </div>
+                    
+                    <h2 class="post-title">
+                        <a href="/posts/{{slug}}">{{title}}</a>
+                    </h2>
+                    
+                    <p class="post-excerpt">{{excerpt}}</p>
+                    
+                    <div class="post-footer">
+                        <div class="author-info">
+                            <i class="fas fa-user"></i>
+                            <span>{{author.firstName}} {{author.lastName}}</span>
+                        </div>
+                        <div class="post-stats">
+                            <span><i class="fas fa-eye"></i> {{viewsCount}}</span>
+                            <span><i class="fas fa-comments"></i> {{commentsCount}}</span>
+                        </div>
+                    </div>
+                    
+                    {{#if tags.length}}
+                    <div class="post-tags">
+                        {{#each tags}}
+                        <span class="tag">{{name}}</span>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </div>
+            </article>
+            {{/each}}
+        </div>
+
+        <!-- Pagination -->
+        {{#if pagination}}
+        <div class="pagination-wrapper">
+            <nav class="pagination" aria-label="Posts pagination">
+                {{#if pagination.hasPrevious}}
+                <a href="?page={{pagination.previousPage}}{{#if search}}&search={{search}}{{/if}}{{#if currentCategory}}&category={{currentCategory}}{{/if}}" class="pagination-link pagination-prev">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+                {{/if}}
+
+                <div class="pagination-pages">
+                    {{#each (pagination pagination.currentPage pagination.totalPages baseUrl)}}
+                    {{#if current}}
+                    <span class="pagination-link pagination-current">{{number}}</span>
+                    {{else}}
+                    <a href="{{url}}{{#if ../search}}&search={{../search}}{{/if}}{{#if ../currentCategory}}&category={{../currentCategory}}{{/if}}" class="pagination-link">{{number}}</a>
+                    {{/if}}
+                    {{/each}}
+                </div>
+
+                {{#if pagination.hasNext}}
+                <a href="?page={{pagination.nextPage}}{{#if search}}&search={{search}}{{/if}}{{#if currentCategory}}&category={{currentCategory}}{{/if}}" class="pagination-link pagination-next">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+                {{/if}}
+            </nav>
+        </div>
+        {{/if}}
+
+        {{else}}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <i class="fas fa-file-alt"></i>
+            <h3>No posts found</h3>
+            {{#if search}}
+            <p>No posts match your search for "{{search}}"</p>
+            <a href="/posts" class="btn btn-primary">View All Posts</a>
+            {{else}}
+            <p>There are no published posts yet. Check back later!</p>
+            <a href="/" class="btn btn-primary">Go Home</a>
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+</section>
+
+<script>
+function filterByCategory(categoryId) {
+    const url = new URL(window.location);
+    if (categoryId) {
+        url.searchParams.set('category', categoryId);
+    } else {
+        url.searchParams.delete('category');
+    }
+    url.searchParams.delete('page'); // Reset to first page
+    window.location.href = url.toString();
+}
+</script>
+
+<style>
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.category-name {
+    color: #ffd700;
+    font-weight: 600;
+}
+
+.filters-section {
+    background: #f8f9fa;
+    padding: 2rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.filters-wrapper {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-form {
+    flex: 1;
+    min-width: 300px;
+}
+
+.search-input-group {
+    display: flex;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    overflow: hidden;
+    background: white;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+
+.search-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #5a6fd8;
+}
+
+.category-select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background: white;
+    font-size: 1rem;
+    min-width: 200px;
+}
+
+.posts-section {
+    padding: 3rem 0;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.post-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+.post-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.post-card:hover .post-image img {
+    transform: scale(1.05);
+}
+
+.featured-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ffd700;
+    color: #333;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.post-content {
+    padding: 1.5rem;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.category {
+    background: #667eea;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+}
+
+.post-title {
+    margin-bottom: 1rem;
+}
+
+.post-title a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.3rem;
+    line-height: 1.4;
+}
+
+.post-title a:hover {
+    color: #667eea;
+}
+
+.post-excerpt {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.post-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background: #e9ecef;
+    color: #495057;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pagination-link {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    color: #667eea;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.pagination-link:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.pagination-current {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.pagination-pages {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #666;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #ddd;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #5a6fd8;
+}
+
+@media (max-width: 768px) {
+    .filters-wrapper {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .search-form {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .category-select {
+        width: 100%;
+    }
+    
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .post-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+</style>

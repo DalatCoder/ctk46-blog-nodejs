@@ -1,0 +1,347 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+  AUTHOR
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  ARCHIVED
+}
+
+enum PostVisibility {
+  PUBLIC
+  PRIVATE
+  PASSWORD
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  SPAM
+  TRASH
+}
+
+enum SubscriberStatus {
+  ACTIVE
+  INACTIVE
+  UNSUBSCRIBED
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  username        String    @unique @db.VarChar(50)
+  email           String    @unique @db.VarChar(100)
+  password        String    @db.VarChar(255)
+  firstName       String    @map("first_name") @db.VarChar(50)
+  lastName        String    @map("last_name") @db.VarChar(50)
+  avatar          String?   @db.VarChar(255)
+  role            UserRole  @default(USER)
+  status          UserStatus @default(ACTIVE)
+  bio             String?   @db.Text
+  website         String?   @db.VarChar(255)
+  socialLinks     Json?     @map("social_links")
+  emailVerifiedAt DateTime? @map("email_verified_at")
+  lastLoginAt     DateTime? @map("last_login_at")
+  loginCount      Int       @default(0) @map("login_count")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  posts           Post[]
+  comments        Comment[]
+  uploadedMedia   Media[]   @relation("UploadedBy")
+  activityLogs    ActivityLog[]
+  userSessions    UserSession[]
+  postViews       PostView[]
+
+  @@map("users")
+  @@index([username])
+  @@index([email])
+  @@index([role])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @db.VarChar(100)
+  slug        String   @unique @db.VarChar(100)
+  description String?  @db.Text
+  color       String   @default("#2563eb") @db.VarChar(7)
+  icon        String?  @db.VarChar(50)
+  parentId    Int?     @map("parent_id")
+  sortOrder   Int      @default(0) @map("sort_order")
+  postCount   Int      @default(0) @map("post_count")
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  metaTitle   String?  @map("meta_title") @db.VarChar(255)
+  metaDescription String? @map("meta_description") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  parent      Category? @relation("CategoryParent", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryParent")
+  posts       Post[]
+
+  @@map("categories")
+  @@index([slug])
+  @@index([parentId])
+  @@index([isFeatured])
+  @@index([sortOrder])
+}
+
+model Post {
+  id              Int            @id @default(autoincrement())
+  title           String         @db.VarChar(255)
+  slug            String         @unique @db.VarChar(255)
+  excerpt         String         @db.Text
+  content         String         @db.LongText
+  featuredImage   String?        @map("featured_image") @db.VarChar(255)
+  gallery         Json?
+  status          PostStatus     @default(DRAFT)
+  visibility      PostVisibility @default(PUBLIC)
+  password        String?        @db.VarChar(255)
+  authorId        Int            @map("author_id")
+  categoryId      Int            @map("category_id")
+  viewsCount      Int            @default(0) @map("views_count")
+  likesCount      Int            @default(0) @map("likes_count")
+  commentsCount   Int            @default(0) @map("comments_count")
+  readingTime     Int            @default(0) @map("reading_time")
+  isFeatured      Boolean        @default(false) @map("is_featured")
+  isSticky        Boolean        @default(false) @map("is_sticky")
+  allowComments   Boolean        @default(true) @map("allow_comments")
+  metaTitle       String?        @map("meta_title") @db.VarChar(255)
+  metaDescription String?        @map("meta_description") @db.Text
+  metaKeywords    String?        @map("meta_keywords") @db.Text
+  publishedAt     DateTime?      @map("published_at")
+  scheduledAt     DateTime?      @map("scheduled_at")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  author          User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category        Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  comments        Comment[]
+  postTags        PostTag[]
+  postViews       PostView[]
+
+  @@map("posts")
+  @@index([slug])
+  @@index([status])
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([publishedAt])
+  @@index([isFeatured])
+  @@index([isSticky])
+  @@index([createdAt])
+  @@fulltext([title, excerpt, content])
+}
+
+model Tag {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique @db.VarChar(100)
+  slug        String    @unique @db.VarChar(100)
+  description String?   @db.Text
+  color       String    @default("#64748b") @db.VarChar(7)
+  postCount   Int       @default(0) @map("post_count")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  postTags    PostTag[]
+
+  @@map("tags")
+  @@index([slug])
+  @@index([name])
+}
+
+model PostTag {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  tagId     Int      @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, tagId])
+  @@map("post_tags")
+  @@index([postId])
+  @@index([tagId])
+}
+
+model Comment {
+  id            Int           @id @default(autoincrement())
+  postId        Int           @map("post_id")
+  parentId      Int?          @map("parent_id")
+  userId        Int?          @map("user_id")
+  authorName    String        @map("author_name") @db.VarChar(100)
+  authorEmail   String        @map("author_email") @db.VarChar(100)
+  authorWebsite String?       @map("author_website") @db.VarChar(255)
+  authorIp      String        @map("author_ip") @db.VarChar(45)
+  content       String        @db.Text
+  status        CommentStatus @default(PENDING)
+  likesCount    Int           @default(0) @map("likes_count")
+  userAgent     String?       @map("user_agent") @db.Text
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  post          Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent        Comment?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies       Comment[]     @relation("CommentReplies")
+  user          User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("comments")
+  @@index([postId])
+  @@index([parentId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([authorEmail])
+}
+
+model Media {
+  id            Int      @id @default(autoincrement())
+  filename      String   @db.VarChar(255)
+  originalName  String   @map("original_name") @db.VarChar(255)
+  filePath      String   @map("file_path") @db.VarChar(500)
+  fileUrl       String   @map("file_url") @db.VarChar(500)
+  mimeType      String   @map("mime_type") @db.VarChar(100)
+  fileSize      BigInt   @map("file_size")
+  altText       String?  @map("alt_text") @db.VarChar(255)
+  caption       String?  @db.Text
+  dimensions    Json?
+  uploadedBy    Int      @map("uploaded_by")
+  isPublic      Boolean  @default(true) @map("is_public")
+  downloadCount Int      @default(0) @map("download_count")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  uploader      User     @relation("UploadedBy", fields: [uploadedBy], references: [id], onDelete: Cascade)
+
+  @@map("media")
+  @@index([filename])
+  @@index([mimeType])
+  @@index([uploadedBy])
+  @@index([createdAt])
+}
+
+model Setting {
+  id            Int      @id @default(autoincrement())
+  settingKey    String   @unique @map("setting_key") @db.VarChar(100)
+  settingValue  String?  @map("setting_value") @db.LongText
+  settingType   String   @default("string") @map("setting_type") @db.VarChar(20)
+  category      String   @default("general") @db.VarChar(50)
+  description   String?  @db.Text
+  isPublic      Boolean  @default(false) @map("is_public")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+  @@index([category])
+  @@index([isPublic])
+}
+
+model UserSession {
+  id           String    @id @db.VarChar(128)
+  userId       Int?      @map("user_id")
+  ipAddress    String    @map("ip_address") @db.VarChar(45)
+  userAgent    String?   @map("user_agent") @db.Text
+  payload      String    @db.LongText
+  lastActivity DateTime  @default(now()) @map("last_activity")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  user         User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
+  @@index([userId])
+  @@index([lastActivity])
+}
+
+model PostView {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  userId    Int?     @map("user_id")
+  ipAddress String   @map("ip_address") @db.VarChar(45)
+  userAgent String?  @map("user_agent") @db.Text
+  referer   String?  @db.VarChar(500)
+  sessionId String?  @map("session_id") @db.VarChar(128)
+  viewedAt  DateTime @default(now()) @map("viewed_at")
+
+  // Relations
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("post_views")
+  @@index([postId])
+  @@index([userId])
+  @@index([ipAddress])
+  @@index([viewedAt])
+  @@index([sessionId])
+}
+
+model Subscriber {
+  id                Int               @id @default(autoincrement())
+  email             String            @unique @db.VarChar(100)
+  name              String?           @db.VarChar(100)
+  status            SubscriberStatus  @default(ACTIVE)
+  verificationToken String?           @map("verification_token") @db.VarChar(255)
+  verifiedAt        DateTime?         @map("verified_at")
+  subscribedAt      DateTime          @default(now()) @map("subscribed_at")
+  unsubscribedAt    DateTime?         @map("unsubscribed_at")
+  ipAddress         String?           @map("ip_address") @db.VarChar(45)
+  source            String            @default("website") @db.VarChar(100)
+
+  @@map("subscribers")
+  @@index([email])
+  @@index([status])
+  @@index([subscribedAt])
+}
+
+model ActivityLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int?     @map("user_id")
+  action      String   @db.VarChar(100)
+  subjectType String?  @map("subject_type") @db.VarChar(100)
+  subjectId   Int?     @map("subject_id")
+  description String?  @db.Text
+  properties  Json?
+  ipAddress   String?  @map("ip_address") @db.VarChar(45)
+  userAgent   String?  @map("user_agent") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("activity_logs")
+  @@index([userId])
+  @@index([action])
+  @@index([subjectType, subjectId])
+  @@index([createdAt])
+}
