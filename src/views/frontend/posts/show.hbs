@@ -1,0 +1,351 @@
+<!-- Post Hero Section -->
+<section class="relative bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white overflow-hidden">
+    <!-- Background pattern -->
+    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+    
+    <!-- Post featured image overlay -->
+    {{#if post.featuredImage}}
+    <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('{{post.featuredImage}}');"></div>
+    {{/if}}
+    
+    <!-- Animated background elements -->
+    <div class="absolute top-10 left-10 w-16 h-16 bg-white bg-opacity-10 rounded-full animate-pulse"></div>
+    <div class="absolute top-32 right-16 w-12 h-12 bg-white bg-opacity-10 rounded-full animate-bounce delay-75"></div>
+    <div class="absolute bottom-20 left-32 w-8 h-8 bg-white bg-opacity-10 rounded-full animate-pulse delay-150"></div>
+    
+    <div class="relative container mx-auto px-4 py-16 lg:py-24">
+        <div class="max-w-4xl mx-auto text-center">
+            <!-- Breadcrumb -->
+            <nav class="mb-8">
+                <ol class="flex items-center justify-center space-x-2 text-blue-200">
+                    <li><a href="/" class="hover:text-white transition-colors duration-300">Trang chủ</a></li>
+                    <li><i class="fas fa-chevron-right text-xs mx-2"></i></li>
+                    <li><a href="/posts" class="hover:text-white transition-colors duration-300">Blog</a></li>
+                    <li><i class="fas fa-chevron-right text-xs mx-2"></i></li>
+                    <li class="text-white">{{post.title}}</li>
+                </ol>
+            </nav>
+            
+            <!-- Category badge -->
+            {{#if post.category}}
+            <div class="mb-6">
+                <span class="inline-block bg-blue-600 bg-opacity-80 text-white px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fas fa-folder mr-2"></i>
+                    {{post.category.name}}
+                </span>
+            </div>
+            {{/if}}
+            
+            <!-- Post title -->
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                {{post.title}}
+            </h1>
+            
+            <!-- Post excerpt -->
+            {{#if post.excerpt}}
+            <p class="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto leading-relaxed">
+                {{post.excerpt}}
+            </p>
+            {{/if}}
+            
+            <!-- Post meta -->
+            <div class="flex flex-wrap items-center justify-center gap-6 text-blue-200">
+                <div class="flex items-center">
+                    <i class="fas fa-user mr-2"></i>
+                    <span>{{post.author.firstName}} {{post.author.lastName}}</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-calendar mr-2"></i>
+                    <span>{{formatDate post.publishedAt}}</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-clock mr-2"></i>
+                    <span>{{post.readingTime}} phút đọc</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-eye mr-2"></i>
+                    <span>{{post.viewCount}} lượt xem</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transition-colors duration-300">
+                
+                <!-- Featured Image -->
+                {{#if post.featuredImage}}
+                <div class="aspect-video w-full overflow-hidden">
+                    <img src="{{post.featuredImage}}" 
+                         alt="{{post.title}}" 
+                         class="w-full h-full object-cover">
+                </div>
+                {{/if}}
+                
+                <!-- Post Content -->
+                <div class="p-8 lg:p-12">
+                    <!-- Tags -->
+                    {{#if post.postTags}}
+                    <div class="mb-8">
+                        <div class="flex flex-wrap gap-2">
+                            {{#each post.postTags}}
+                            <span class="inline-block bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm font-medium transition-colors duration-300">
+                                <i class="fas fa-tag mr-1"></i>
+                                {{tag.name}}
+                            </span>
+                            {{/each}}
+                        </div>
+                    </div>
+                    {{/if}}
+                    
+                    <!-- Post content -->
+                    <div class="prose prose-lg max-w-none dark:prose-invert">
+                        <div class="text-gray-800 dark:text-gray-200 leading-relaxed">
+                            {{{post.content}}}
+                        </div>
+                    </div>
+                    
+                    <!-- Social sharing -->
+                    <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Chia sẻ bài viết:</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" 
+                               onclick="shareOnFacebook()"
+                               class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300">
+                                <i class="fab fa-facebook-f mr-2"></i>Facebook
+                            </a>
+                            <a href="#" 
+                               onclick="shareOnTwitter()"
+                               class="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors duration-300">
+                                <i class="fab fa-twitter mr-2"></i>Twitter
+                            </a>
+                            <a href="#" 
+                               onclick="shareOnLinkedIn()"
+                               class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300">
+                                <i class="fab fa-linkedin-in mr-2"></i>LinkedIn
+                            </a>
+                            <button onclick="copyToClipboard()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-300">
+                                <i class="fas fa-link mr-2"></i>Sao chép link
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Author info -->
+                    <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+                        <div class="flex items-start space-x-4">
+                            {{#if post.author.avatar}}
+                            <img src="{{post.author.avatar}}" 
+                                 alt="{{post.author.firstName}} {{post.author.lastName}}" 
+                                 class="w-16 h-16 rounded-full object-cover">
+                            {{else}}
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                {{substring post.author.firstName 0 1}}{{substring post.author.lastName 0 1}}
+                            </div>
+                            {{/if}}
+                            <div class="flex-1">
+                                <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                    {{post.author.firstName}} {{post.author.lastName}}
+                                </h4>
+                                <p class="text-gray-600 dark:text-gray-400 mt-1">
+                                    Tác giả
+                                </p>
+                                <p class="text-gray-700 dark:text-gray-300 mt-2">
+                                    Chuyên gia về công nghệ và phát triển web, chia sẻ những kiến thức và kinh nghiệm quý báu cho cộng đồng developer.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Comments Section -->
+{{#if post.comments}}
+<section class="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-8">
+                <i class="fas fa-comments mr-3"></i>
+                Bình luận ({{post.comments.length}})
+            </h3>
+            
+            <div class="space-y-6">
+                {{#each post.comments}}
+                <div class="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg transition-colors duration-300">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                            {{substring authorName 0 1}}
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h5 class="font-semibold text-gray-800 dark:text-gray-200">{{authorName}}</h5>
+                                <span class="text-gray-500 dark:text-gray-400 text-sm">{{timeAgo createdAt}}</span>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{content}}</p>
+                            
+                            <!-- Replies -->
+                            {{#if replies}}
+                            <div class="mt-4 pl-4 border-l-2 border-gray-200 dark:border-gray-600 space-y-4">
+                                {{#each replies}}
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                        {{substring authorName 0 1}}
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 mb-1">
+                                            <h6 class="font-medium text-gray-800 dark:text-gray-200 text-sm">{{authorName}}</h6>
+                                            <span class="text-gray-500 dark:text-gray-400 text-xs">{{timeAgo createdAt}}</span>
+                                        </div>
+                                        <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{{content}}</p>
+                                    </div>
+                                </div>
+                                {{/each}}
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</section>
+{{/if}}
+
+<!-- Related Posts Section -->
+{{#if relatedPosts}}
+<section class="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <h3 class="text-3xl font-bold text-center text-gray-800 dark:text-gray-200 mb-12">
+                <i class="fas fa-newspaper mr-3"></i>
+                Bài viết liên quan
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {{#each relatedPosts}}
+                <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
+                    <!-- Featured Image -->
+                    <div class="aspect-video overflow-hidden">
+                        {{#if featuredImage}}
+                        <img src="{{featuredImage}}" 
+                             alt="{{title}}" 
+                             class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        {{else}}
+                        <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <i class="fas fa-image text-white text-4xl opacity-50"></i>
+                        </div>
+                        {{/if}}
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="p-6">
+                        <!-- Category -->
+                        {{#if category}}
+                        <div class="mb-3">
+                            <span class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-xs font-medium">
+                                {{category.name}}
+                            </span>
+                        </div>
+                        {{/if}}
+                        
+                        <!-- Title -->
+                        <h4 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-3 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
+                            <a href="/posts/{{slug}}">{{title}}</a>
+                        </h4>
+                        
+                        <!-- Excerpt -->
+                        {{#if excerpt}}
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">{{excerpt}}</p>
+                        {{/if}}
+                        
+                        <!-- Meta -->
+                        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                            <span class="flex items-center">
+                                <i class="fas fa-calendar mr-1"></i>
+                                {{formatDate publishedAt}}
+                            </span>
+                            <span class="flex items-center">
+                                <i class="fas fa-clock mr-1"></i>
+                                {{readingTime}} phút
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                {{/each}}
+            </div>
+            
+            <!-- View all posts button -->
+            <div class="text-center mt-12">
+                <a href="/posts" class="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    <i class="fas fa-arrow-right mr-2"></i>
+                    Xem tất cả bài viết
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{{/if}}
+
+<!-- Newsletter Subscription -->
+<section class="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <h3 class="text-3xl font-bold mb-4">Đăng ký nhận tin</h3>
+            <p class="text-blue-100 mb-8">Nhận thông báo khi có bài viết mới và những cập nhật quan trọng từ chúng tôi.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" 
+                       placeholder="Nhập email của bạn..." 
+                       class="flex-1 px-4 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50">
+                <button type="submit" 
+                        class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition-colors duration-300">
+                    <i class="fas fa-paper-plane mr-2"></i>
+                    Đăng ký
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+function shareOnFacebook() {
+    const url = window.location.href;
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+}
+
+function shareOnTwitter() {
+    const url = window.location.href;
+    const title = document.title;
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`, '_blank');
+}
+
+function shareOnLinkedIn() {
+    const url = window.location.href;
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+}
+
+function copyToClipboard() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(function() {
+        // Show success message
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check mr-2"></i>Đã sao chép!';
+        button.classList.add('bg-green-600');
+        button.classList.remove('bg-gray-600');
+        
+        setTimeout(function() {
+            button.innerHTML = originalText;
+            button.classList.remove('bg-green-600');
+            button.classList.add('bg-gray-600');
+        }, 2000);
+    });
+}
+</script>

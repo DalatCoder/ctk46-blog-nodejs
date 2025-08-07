@@ -233,7 +233,7 @@ const hbs = engine({
 
     // Reading time calculation (words per minute)
     readingTime: function(text) {
-      if (!text) return 0;
+      if (!text || typeof text !== 'string') return 0;
       const wordsPerMinute = 250;
       const words = text.trim().split(/\s+/).length;
       return Math.ceil(words / wordsPerMinute);
@@ -241,7 +241,7 @@ const hbs = engine({
 
     // Simple readability score
     readabilityScore: function(text) {
-      if (!text) return 0;
+      if (!text || typeof text !== 'string') return 0;
       const words = text.trim().split(/\s+/).length;
       const sentences = text.split(/[.!?]+/).length - 1 || 1;
       const syllables = text.toLowerCase().match(/[aeiouy]+/g)?.length || words;
