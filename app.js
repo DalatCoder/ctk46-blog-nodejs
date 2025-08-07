@@ -6,6 +6,7 @@ const { engine } = require('express-handlebars');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
+const methodOverride = require('method-override');
 const moment = require('moment');
 require('dotenv').config();
 
@@ -37,6 +38,9 @@ if (process.env.NODE_ENV === 'development') {
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Method override for PUT/DELETE forms
+app.use(methodOverride('_method'));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -219,6 +223,84 @@ const hbs = engine({
       }
       
       return pages;
+    },
+
+    // String length helper
+    length: function(str) {
+      if (!str) return 0;
+      return str.length || 0;
+    },
+
+    // Reading time calculation (words per minute)
+    readingTime: function(text) {
+      if (!text) return 0;
+      const wordsPerMinute = 250;
+      const words = text.trim().split(/\s+/).length;
+      return Math.ceil(words / wordsPerMinute);
+    },
+
+    // Simple readability score
+    readabilityScore: function(text) {
+      if (!text) return 0;
+      const words = text.trim().split(/\s+/).length;
+      const sentences = text.split(/[.!?]+/).length - 1 || 1;
+      const syllables = text.toLowerCase().match(/[aeiouy]+/g)?.length || words;
+      
+      // Flesch Reading Ease approximation
+      const score = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
+      return Math.max(0, Math.min(100, Math.round(score)));
+    },
+
+    // SEO score calculation
+    seoScore: function(post) {
+      if (!post) return 0;
+      
+      let score = 0;
+      
+      // Title (20 points)
+      if (post.title && post.title.length >= 10) score += 20;
+      
+      // Meta title (15 points)
+      if (post.metaTitle && post.metaTitle.length >= 30 && post.metaTitle.length <= 60) score += 15;
+      
+      // Meta description (15 points)
+      if (post.metaDescription && post.metaDescription.length >= 120 && post.metaDescription.length <= 160) score += 15;
+      
+      // Content length (25 points)
+      if (post.content && post.content.length >= 300) score += 25;
+      
+      // Category (10 points)
+      if (post.categoryId) score += 10;
+      
+      // Featured image (10 points)
+      if (post.featuredImage) score += 10;
+      
+      // Excerpt (5 points)
+      if (post.excerpt && post.excerpt.length >= 50) score += 5;
+      
+      return score;
+    },
+
+    // Format number with commas
+    numberWithCommas: function(num) {
+      if (!num) return '0';
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+
+    // Check if array/string is empty
+    isEmpty: function(value) {
+      if (!value) return true;
+      if (Array.isArray(value)) return value.length === 0;
+      if (typeof value === 'string') return value.trim().length === 0;
+      return false;
+    },
+
+    // Check if array/string is not empty
+    isNotEmpty: function(value) {
+      if (!value) return false;
+      if (Array.isArray(value)) return value.length > 0;
+      if (typeof value === 'string') return value.trim().length > 0;
+      return true;
     }
   }
 });
@@ -260,10 +342,11 @@ app.use((err, req, res, next) => {
   if (req.path.startsWith('/admin')) {
     res.status(status).render('admin/error', {
       title: 'Error',
-      layout: 'layouts/admin',
+      layout: 'admin',
       error: process.env.NODE_ENV === 'development' ? err : null,
       isDevelopment: process.env.NODE_ENV === 'development',
       message: err.message || 'An error occurred',
+      status: status
     });
   } else {
     res.status(status).render('frontend/error', {
@@ -272,6 +355,7 @@ app.use((err, req, res, next) => {
       error: process.env.NODE_ENV === 'development' ? err : null,
       isDevelopment: process.env.NODE_ENV === 'development',
       message: err.message || 'An error occurred',
+      status: status
     });
   }
 });
