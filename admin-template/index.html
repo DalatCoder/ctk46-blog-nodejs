@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - MyBlog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between h-16 px-6 border-b border-slate-200 dark:border-slate-700">
+            <h1 class="text-xl font-bold text-slate-800 dark:text-white">Admin Panel</h1>
+            <button id="sidebar-close" class="lg:hidden">
+                <i class="fas fa-times text-slate-600 dark:text-slate-300"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-6">
+            <div class="px-6 py-2">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Menu chính</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="index.html" class="flex items-center px-6 py-3 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-r-2 border-blue-600 dark:border-blue-400">
+                    <i class="fas fa-chart-bar w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="posts.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-file-alt w-5 h-5 mr-3"></i>
+                    Bài viết
+                </a>
+                <a href="comments.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-comments w-5 h-5 mr-3"></i>
+                    Bình luận
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">5</span>
+                </a>
+                <a href="categories.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-folder w-5 h-5 mr-3"></i>
+                    Danh mục
+                </a>
+                <a href="tags.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-tags w-5 h-5 mr-3"></i>
+                    Thẻ
+                </a>
+                <a href="users.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-users w-5 h-5 mr-3"></i>
+                    Người dùng
+                </a>
+            </div>
+
+            <div class="px-6 py-2 mt-6">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Cài đặt</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="newsletter.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-envelope w-5 h-5 mr-3"></i>
+                    Newsletter
+                </a>
+                <a href="settings.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-cog w-5 h-5 mr-3"></i>
+                    Cài đặt chung
+                </a>
+            </div>
+
+            <div class="px-6 py-2 mt-6">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Khác</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="../index.html" target="_blank" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-external-link-alt w-5 h-5 mr-3"></i>
+                    Xem website
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden hidden"></div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Top Header -->
+        <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="lg:hidden mr-4">
+                        <i class="fas fa-bars text-slate-600 dark:text-slate-300"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-slate-800 dark:text-white">Dashboard</h2>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Search -->
+                    <div class="relative hidden md:block">
+                        <input type="text" placeholder="Tìm kiếm..." class="w-64 pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                        <i class="fas fa-search absolute left-3 top-3 text-slate-400 dark:text-slate-500"></i>
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button class="relative p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Dark Mode Toggle -->
+                    <button id="theme-toggle" class="p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">
+                        <i class="fas fa-sun dark:hidden"></i>
+                        <i class="fas fa-moon hidden dark:block"></i>
+                    </button>
+                    
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button id="user-menu-button" class="flex items-center space-x-2 p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" alt="User" class="w-8 h-8 rounded-full">
+                            <span class="hidden md:block font-medium">Minh</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        
+                        <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden">
+                            <a href="#" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Hồ sơ</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Cài đặt</a>
+                            <hr class="border-slate-200 dark:border-slate-700">
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-slate-50 dark:hover:bg-slate-700">Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-6">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Tổng bài viết</p>
+                            <p class="text-2xl font-bold text-slate-800 dark:text-white">25</p>
+                            <p class="text-sm text-green-600 dark:text-green-400">+2 tuần này</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-file-alt text-blue-600 dark:text-blue-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Lượt xem</p>
+                            <p class="text-2xl font-bold text-slate-800 dark:text-white">12,547</p>
+                            <p class="text-sm text-green-600 dark:text-green-400">+15% tháng này</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-eye text-green-600 dark:text-green-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Bình luận</p>
+                            <p class="text-2xl font-bold text-slate-800 dark:text-white">156</p>
+                            <p class="text-sm text-yellow-600 dark:text-yellow-400">5 chờ duyệt</p>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-comments text-yellow-600 dark:text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Đăng ký newsletter</p>
+                            <p class="text-2xl font-bold text-slate-800 dark:text-white">89</p>
+                            <p class="text-sm text-green-600 dark:text-green-400">+7 tuần này</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-envelope text-purple-600 dark:text-purple-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts and Recent Activity -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Views Chart -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Lượt xem theo ngày</h3>
+                    <canvas id="viewsChart" width="400" height="200"></canvas>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Hoạt động gần đây</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-plus text-blue-600 dark:text-blue-400 text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-slate-800 dark:text-white">Bài viết mới được đăng</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">2 giờ trước</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-comment text-green-600 dark:text-green-400 text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-slate-800 dark:text-white">Bình luận mới từ Lan Anh</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">4 giờ trước</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user-plus text-yellow-600 dark:text-yellow-400 text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-slate-800 dark:text-white">3 đăng ký newsletter mới</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">6 giờ trước</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-share text-purple-600 dark:text-purple-400 text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-slate-800 dark:text-white">Bài viết được chia sẻ 15 lần</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">1 ngày trước</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Posts and Comments -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Recent Posts -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Bài viết gần đây</h3>
+                        <a href="posts.html" class="text-blue-600 dark:text-blue-400 text-sm hover:underline">Xem tất cả</a>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=48&h=48&fit=crop&crop=center" alt="Post" class="w-12 h-12 rounded-lg object-cover">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-medium text-slate-800 dark:text-white">Làm thế nào công nghệ thay đổi cuộc sống chúng ta</h4>
+                                <div class="flex items-center space-x-4 mt-1 text-xs text-slate-500 dark:text-slate-400">
+                                    <span>1,234 views</span>
+                                    <span>12 comments</span>
+                                    <span>25/07/2024</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=48&h=48&fit=crop&crop=center" alt="Post" class="w-12 h-12 rounded-lg object-cover">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-medium text-slate-800 dark:text-white">10 địa điểm du lịch tuyệt vời trong nước</h4>
+                                <div class="flex items-center space-x-4 mt-1 text-xs text-slate-500 dark:text-slate-400">
+                                    <span>856 views</span>
+                                    <span>8 comments</span>
+                                    <span>22/07/2024</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=48&h=48&fit=crop&crop=center" alt="Post" class="w-12 h-12 rounded-lg object-cover">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-medium text-slate-800 dark:text-white">7 thói quen tốt để cải thiện bản thân</h4>
+                                <div class="flex items-center space-x-4 mt-1 text-xs text-slate-500 dark:text-slate-400">
+                                    <span>642 views</span>
+                                    <span>15 comments</span>
+                                    <span>20/07/2024</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Comments -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white">Bình luận gần đây</h3>
+                        <a href="comments.html" class="text-blue-600 dark:text-blue-400 text-sm hover:underline">Xem tất cả</a>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612d75c?w=32&h=32&fit=crop&crop=face" alt="User" class="w-8 h-8 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="text-sm font-medium text-slate-800 dark:text-white">Lan Anh</h4>
+                                    <span class="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 rounded">Chờ duyệt</span>
+                                </div>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Bài viết rất hay và có ý nghĩa!</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">2 giờ trước</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" alt="User" class="w-8 h-8 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="text-sm font-medium text-slate-800 dark:text-white">Hoàng Nam</h4>
+                                    <span class="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">Đã duyệt</span>
+                                </div>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Cảm ơn tác giả đã chia sẻ!</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">4 giờ trước</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" alt="User" class="w-8 h-8 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="text-sm font-medium text-slate-800 dark:text-white">Thu Hà</h4>
+                                    <span class="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">Đã duyệt</span>
+                                </div>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Rất hữu ích cho tôi. Cảm ơn!</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">6 giờ trước</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

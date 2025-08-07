@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài đặt chung - MyBlog Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between h-16 px-6 border-b border-slate-200 dark:border-slate-700">
+            <h1 class="text-xl font-bold text-slate-800 dark:text-white">Admin Panel</h1>
+            <button id="sidebar-close" class="lg:hidden">
+                <i class="fas fa-times text-slate-600 dark:text-slate-300"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-6">
+            <div class="px-6 py-2">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Menu chính</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="index.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-chart-bar w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="posts.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-file-alt w-5 h-5 mr-3"></i>
+                    Bài viết
+                </a>
+                <a href="comments.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-comments w-5 h-5 mr-3"></i>
+                    Bình luận
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">5</span>
+                </a>
+                <a href="categories.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-folder w-5 h-5 mr-3"></i>
+                    Danh mục
+                </a>
+                <a href="tags.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-tags w-5 h-5 mr-3"></i>
+                    Thẻ
+                </a>
+                <a href="users.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-users w-5 h-5 mr-3"></i>
+                    Người dùng
+                </a>
+            </div>
+
+            <div class="px-6 py-2 mt-6">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Cài đặt</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="newsletter.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-envelope w-5 h-5 mr-3"></i>
+                    Newsletter
+                </a>
+                <a href="settings.html" class="flex items-center px-6 py-3 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-r-2 border-blue-600 dark:border-blue-400">
+                    <i class="fas fa-cog w-5 h-5 mr-3"></i>
+                    Cài đặt chung
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Top Header -->
+        <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="lg:hidden mr-4">
+                        <i class="fas fa-bars text-slate-600 dark:text-slate-300"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-slate-800 dark:text-white">Cài đặt chung</h2>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">
+                        <i class="fas fa-sun dark:hidden"></i>
+                        <i class="fas fa-moon hidden dark:block"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="hidden md:block font-medium text-slate-700 dark:text-slate-300">Minh</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="p-6 max-w-4xl">
+            <!-- Header Actions -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Cài đặt chung</h1>
+                    <p class="text-slate-600 dark:text-slate-400">Quản lý cài đặt website và hệ thống</p>
+                </div>
+                <div class="mt-4 sm:mt-0 flex space-x-2">
+                    <button onclick="saveSettings()" class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2">
+                        <i class="fas fa-save"></i>
+                        <span>Lưu cài đặt</span>
+                    </button>
+                    <button onclick="resetSettings()" class="bg-slate-600 hover:bg-slate-700 dark:bg-slate-500 dark:hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2">
+                        <i class="fas fa-undo"></i>
+                        <span>Khôi phục</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings Form -->
+            <form class="space-y-8">
+                <!-- Site Information -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Thông tin Website</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tên website</label>
+                            <input type="text" value="MyBlog" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tagline</label>
+                            <input type="text" value="Chia sẻ những câu chuyện và kinh nghiệm sống" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Mô tả website</label>
+                            <textarea rows="3" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Blog cá nhân chia sẻ về công nghệ, du lịch, phát triển bản thân và những trải nghiệm cuộc sống.</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">URL website</label>
+                            <input type="url" value="https://myblog.com" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email liên hệ</label>
+                            <input type="email" value="contact@myblog.com" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Display Settings -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Cài đặt hiển thị</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Số bài viết trên trang</label>
+                            <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="5">5 bài viết</option>
+                                <option value="10" selected>10 bài viết</option>
+                                <option value="15">15 bài viết</option>
+                                <option value="20">20 bài viết</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Ngôn ngữ mặc định</label>
+                            <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="vi" selected>Tiếng Việt</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Múi giờ</label>
+                            <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="Asia/Ho_Chi_Minh" selected>GMT+7 (Việt Nam)</option>
+                                <option value="UTC">GMT+0 (UTC)</option>
+                                <option value="America/New_York">GMT-5 (New York)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="show_read_time" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="show_read_time" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Hiển thị thời gian đọc</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="show_author" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="show_author" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Hiển thị thông tin tác giả</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="show_share_buttons" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="show_share_buttons" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Hiển thị nút chia sẻ</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_dark_mode" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_dark_mode" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Cho phép chế độ tối</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comments Settings -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Cài đặt bình luận</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_comments" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_comments" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Cho phép bình luận</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="require_approval" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="require_approval" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Bình luận cần được duyệt</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_guest_comments" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_guest_comments" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Cho phép bình luận ẩn danh</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_comment_likes" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_comment_likes" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Cho phép like/dislike bình luận</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_nested_comments" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_nested_comments" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Cho phép trả lời bình luận</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Số bình luận hiển thị</label>
+                            <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="10">10 bình luận</option>
+                                <option value="20" selected>20 bình luận</option>
+                                <option value="50">50 bình luận</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Sắp xếp bình luận</label>
+                            <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="newest" selected>Mới nhất</option>
+                                <option value="oldest">Cũ nhất</option>
+                                <option value="most_liked">Nhiều like nhất</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Mạng xã hội</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Facebook</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fab fa-facebook text-slate-400"></i>
+                                </div>
+                                <input type="url" value="https://facebook.com/myblog" class="w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Twitter</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fab fa-twitter text-slate-400"></i>
+                                </div>
+                                <input type="url" value="https://twitter.com/myblog" class="w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Instagram</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fab fa-instagram text-slate-400"></i>
+                                </div>
+                                <input type="url" placeholder="https://instagram.com/myblog" class="w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">LinkedIn</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fab fa-linkedin text-slate-400"></i>
+                                </div>
+                                <input type="url" value="https://linkedin.com/in/myblog" class="w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">YouTube</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fab fa-youtube text-slate-400"></i>
+                                </div>
+                                <input type="url" placeholder="https://youtube.com/@myblog" class="w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">GitHub</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fab fa-github text-slate-400"></i>
+                                </div>
+                                <input type="url" placeholder="https://github.com/myblog" class="w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO Settings -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Cài đặt SEO</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Meta Description mặc định</label>
+                            <textarea rows="3" placeholder="Mô tả ngắn gọn về website..." class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Blog cá nhân chia sẻ về công nghệ, du lịch, phát triển bản thân và những trải nghiệm cuộc sống thú vị.</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Keywords mặc định</label>
+                            <input type="text" value="blog, công nghệ, du lịch, phát triển bản thân, kinh nghiệm sống" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Phân cách bằng dấu phẩy</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Google Analytics ID</label>
+                                <input type="text" placeholder="G-XXXXXXXXXX" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Google Search Console</label>
+                                <input type="text" placeholder="verification code" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="enable_sitemap" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                                <label for="enable_sitemap" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Tự động tạo sitemap.xml</label>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="checkbox" id="enable_robots" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                                <label for="enable_robots" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Tự động tạo robots.txt</label>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="checkbox" id="enable_open_graph" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                                <label for="enable_open_graph" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Bật Open Graph tags</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Settings -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Hiệu suất</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_caching" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_caching" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Bật cache</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_compression" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_compression" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Nén GZIP</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="optimize_images" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="optimize_images" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Tối ưu hình ảnh tự động</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="lazy_loading" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="lazy_loading" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Lazy loading hình ảnh</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Bảo mật</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_ssl" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_ssl" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Bắt buộc HTTPS</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_csrf" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_csrf" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Bảo vệ CSRF</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_rate_limiting" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_rate_limiting" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Giới hạn tần suất truy cập</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enable_spam_protection" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="enable_spam_protection" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Chống spam tự động</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Bài viết - MyBlog Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between h-16 px-6 border-b border-slate-200 dark:border-slate-700">
+            <h1 class="text-xl font-bold text-slate-800 dark:text-white">Admin Panel</h1>
+            <button id="sidebar-close" class="lg:hidden">
+                <i class="fas fa-times text-slate-600 dark:text-slate-300"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-6">
+            <div class="px-6 py-2">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Menu chính</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="index.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-chart-bar w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="posts.html" class="flex items-center px-6 py-3 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-r-2 border-blue-600 dark:border-blue-400">
+                    <i class="fas fa-file-alt w-5 h-5 mr-3"></i>
+                    Bài viết
+                </a>
+                <a href="comments.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-comments w-5 h-5 mr-3"></i>
+                    Bình luận
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">5</span>
+                </a>
+                <a href="categories.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-folder w-5 h-5 mr-3"></i>
+                    Danh mục
+                </a>
+                <a href="tags.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-tags w-5 h-5 mr-3"></i>
+                    Thẻ
+                </a>
+                <a href="users.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-users w-5 h-5 mr-3"></i>
+                    Người dùng
+                </a>
+            </div>
+
+            <div class="px-6 py-2 mt-6">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Cài đặt</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="newsletter.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-envelope w-5 h-5 mr-3"></i>
+                    Newsletter
+                </a>
+                <a href="settings.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-cog w-5 h-5 mr-3"></i>
+                    Cài đặt chung
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Top Header -->
+        <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="lg:hidden mr-4">
+                        <i class="fas fa-bars text-slate-600 dark:text-slate-300"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-slate-800 dark:text-white">Quản lý Bài viết</h2>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">
+                        <i class="fas fa-sun dark:hidden"></i>
+                        <i class="fas fa-moon hidden dark:block"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="hidden md:block font-medium text-slate-700 dark:text-slate-300">Minh</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="p-6">
+            <!-- Header Actions -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Bài viết</h1>
+                    <p class="text-slate-600 dark:text-slate-400">Quản lý tất cả bài viết trên blog</p>
+                </div>
+                <button onclick="openCreateModal()" class="mt-4 sm:mt-0 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2">
+                    <i class="fas fa-plus"></i>
+                    <span>Tạo bài viết mới</span>
+                </button>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tìm kiếm</label>
+                        <div class="relative">
+                            <input type="text" placeholder="Tìm theo tiêu đề..." class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search absolute left-3 top-3 text-slate-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Trạng thái</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Tất cả</option>
+                            <option value="published">Đã xuất bản</option>
+                            <option value="draft">Bản nháp</option>
+                            <option value="archived">Lưu trữ</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Danh mục</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Tất cả danh mục</option>
+                            <option value="cong-nghe">Công nghệ</option>
+                            <option value="du-lich">Du lịch</option>
+                            <option value="phat-trien-ban-than">Phát triển bản thân</option>
+                            <option value="sach">Sách</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-end">
+                        <button class="w-full bg-slate-600 hover:bg-slate-700 dark:bg-slate-500 dark:hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-medium">
+                            Lọc
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts Table -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-slate-50 dark:bg-slate-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Bài viết</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Danh mục</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Trạng thái</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Thống kê</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ngày tạo</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=60&h=40&fit=crop" alt="Post" class="w-15 h-10 rounded-lg object-cover mr-4">
+                                        <div>
+                                            <div class="text-sm font-medium text-slate-900 dark:text-white">Làm thế nào công nghệ thay đổi cuộc sống chúng ta</div>
+                                            <div class="text-sm text-slate-500 dark:text-slate-400">lam-the-nao-cong-nghe-thay-doi-cuoc-song-chung-ta</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                        Công nghệ
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                                        Đã xuất bản
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-slate-900 dark:text-white">
+                                        <div>1,234 views</div>
+                                        <div class="text-slate-500 dark:text-slate-400">12 comments • 56 likes</div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
+                                    25/07/2024
+                                </td>
+                                <td class="px-6 py-4 text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button onclick="viewPost(1)" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300" title="Xem">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button onclick="editPost(1)" class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="deletePost(1)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=60&h=40&fit=crop" alt="Post" class="w-15 h-10 rounded-lg object-cover mr-4">
+                                        <div>
+                                            <div class="text-sm font-medium text-slate-900 dark:text-white">10 địa điểm du lịch tuyệt vời trong nước</div>
+                                            <div class="text-sm text-slate-500 dark:text-slate-400">10-dia-diem-du-lich-tuyet-voi-trong-nuoc</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                                        Du lịch
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                                        Đã xuất bản
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-slate-900 dark:text-white">
+                                        <div>856 views</div>
+                                        <div class="text-slate-500 dark:text-slate-400">8 comments • 32 likes</div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
+                                    22/07/2024
+                                </td>
+                                <td class="px-6 py-4 text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button onclick="viewPost(2)" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300" title="Xem">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button onclick="editPost(2)" class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="deletePost(2)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=60&h=40&fit=crop" alt="Post" class="w-15 h-10 rounded-lg object-cover mr-4">
+                                        <div>
+                                            <div class="text-sm font-medium text-slate-900 dark:text-white">7 thói quen tốt để cải thiện bản thân mỗi ngày</div>
+                                            <div class="text-sm text-slate-500 dark:text-slate-400">7-thoi-quen-tot-de-cai-thien-ban-than-moi-ngay</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                                        Phát triển bản thân
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
+                                        Bản nháp
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-slate-900 dark:text-white">
+                                        <div>0 views</div>
+                                        <div class="text-slate-500 dark:text-slate-400">0 comments • 0 likes</div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
+                                    20/07/2024
+                                </td>
+                                <td class="px-6 py-4 text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button onclick="editPost(3)" class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="publishPost(3)" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300" title="Xuất bản">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                        <button onclick="deletePost(3)" class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="bg-white dark:bg-slate-800 px-4 py-3 border-t border-slate-200 dark:border-slate-700 sm:px-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center text-sm text-slate-700 dark:text-slate-300">
+                            Hiển thị <strong>1</strong> đến <strong>10</strong> của <strong>25</strong> kết quả
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-1 text-sm bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600 disabled:opacity-50" disabled>
+                                Trước
+                            </button>
+                            <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md">1</button>
+                            <button class="px-3 py-1 text-sm bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600">2</button>
+                            <button class="px-3 py-1 text-sm bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600">3</button>
+                            <button class="px-3 py-1 text-sm bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600">
+                                Sau
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div id="createModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            
+            <div class="inline-block align-bottom bg-white dark:bg-slate-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white dark:bg-slate-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-slate-900 dark:text-white">Tạo bài viết mới</h3>
+                        <button onclick="closeCreateModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tiêu đề</label>
+                            <input type="text" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập tiêu đề bài viết">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Slug</label>
+                            <input type="text" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="slug-bai-viet">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Danh mục</label>
+                                <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Chọn danh mục</option>
+                                    <option value="cong-nghe">Công nghệ</option>
+                                    <option value="du-lich">Du lịch</option>
+                                    <option value="phat-trien-ban-than">Phát triển bản thân</option>
+                                    <option value="sach">Sách</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Trạng thái</label>
+                                <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="draft">Bản nháp</option>
+                                    <option value="published">Xuất bản</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="bg-slate-50 dark:bg-slate-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+                        Tạo bài viết
+                    </button>
+                    <button type="button" onclick="closeCreateModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 dark:border-slate-600 shadow-sm px-4 py-2 bg-white dark:bg-slate-800 text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

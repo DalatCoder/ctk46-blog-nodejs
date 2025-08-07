@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Danh mục - MyBlog Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between h-16 px-6 border-b border-slate-200 dark:border-slate-700">
+            <h1 class="text-xl font-bold text-slate-800 dark:text-white">Admin Panel</h1>
+            <button id="sidebar-close" class="lg:hidden">
+                <i class="fas fa-times text-slate-600 dark:text-slate-300"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-6">
+            <div class="px-6 py-2">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Menu chính</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="index.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-chart-bar w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="posts.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-file-alt w-5 h-5 mr-3"></i>
+                    Bài viết
+                </a>
+                <a href="comments.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-comments w-5 h-5 mr-3"></i>
+                    Bình luận
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">5</span>
+                </a>
+                <a href="categories.html" class="flex items-center px-6 py-3 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-r-2 border-blue-600 dark:border-blue-400">
+                    <i class="fas fa-folder w-5 h-5 mr-3"></i>
+                    Danh mục
+                </a>
+                <a href="tags.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-tags w-5 h-5 mr-3"></i>
+                    Thẻ
+                </a>
+                <a href="users.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-users w-5 h-5 mr-3"></i>
+                    Người dùng
+                </a>
+            </div>
+
+            <div class="px-6 py-2 mt-6">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Cài đặt</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="newsletter.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-envelope w-5 h-5 mr-3"></i>
+                    Newsletter
+                </a>
+                <a href="settings.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-cog w-5 h-5 mr-3"></i>
+                    Cài đặt chung
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Top Header -->
+        <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="lg:hidden mr-4">
+                        <i class="fas fa-bars text-slate-600 dark:text-slate-300"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-slate-800 dark:text-white">Quản lý Danh mục</h2>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">
+                        <i class="fas fa-sun dark:hidden"></i>
+                        <i class="fas fa-moon hidden dark:block"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="hidden md:block font-medium text-slate-700 dark:text-slate-300">Minh</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="p-6">
+            <!-- Header Actions -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Danh mục</h1>
+                    <p class="text-slate-600 dark:text-slate-400">Quản lý danh mục bài viết</p>
+                </div>
+                <button onclick="openCreateModal()" class="mt-4 sm:mt-0 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2">
+                    <i class="fas fa-plus"></i>
+                    <span>Tạo danh mục mới</span>
+                </button>
+            </div>
+
+            <!-- Categories Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Category 1 -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-laptop-code text-blue-600 dark:text-blue-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Công nghệ</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">cong-nghe</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editCategory(1)" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteCategory(1)" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="text-slate-600 dark:text-slate-300 mb-4">Những bài viết về công nghệ và đổi mới</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-file-alt"></i>
+                                <span>15 bài viết</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-eye"></i>
+                                <span>5,432 views</span>
+                            </span>
+                        </div>
+                        <span class="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">Hoạt động</span>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-map-marked-alt text-green-600 dark:text-green-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Du lịch</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">du-lich</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editCategory(2)" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteCategory(2)" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="text-slate-600 dark:text-slate-300 mb-4">Trải nghiệm và chia sẻ về du lịch</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-file-alt"></i>
+                                <span>8 bài viết</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-eye"></i>
+                                <span>3,201 views</span>
+                            </span>
+                        </div>
+                        <span class="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">Hoạt động</span>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-user-graduate text-purple-600 dark:text-purple-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Phát triển bản thân</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">phat-trien-ban-than</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editCategory(3)" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteCategory(3)" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="text-slate-600 dark:text-slate-300 mb-4">Hướng dẫn và chia sẻ về phát triển cá nhân</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-file-alt"></i>
+                                <span>12 bài viết</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-eye"></i>
+                                <span>4,156 views</span>
+                            </span>
+                        </div>
+                        <span class="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">Hoạt động</span>
+                    </div>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-book text-orange-600 dark:text-orange-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Sách</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">sach</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editCategory(4)" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteCategory(4)" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="text-slate-600 dark:text-slate-300 mb-4">Đánh giá và chia sẻ về sách hay</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-file-alt"></i>
+                                <span>6 bài viết</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-eye"></i>
+                                <span>2,847 views</span>
+                            </span>
+                        </div>
+                        <span class="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">Hoạt động</span>
+                    </div>
+                </div>
+
+                <!-- Category 5 - Inactive -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-shadow opacity-75">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gray-100 dark:bg-gray-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-music text-gray-600 dark:text-gray-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Âm nhạc</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">am-nhac</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editCategory(5)" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteCategory(5)" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="text-slate-600 dark:text-slate-300 mb-4">Chia sẻ về âm nhạc và nghệ thuật</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-file-alt"></i>
+                                <span>0 bài viết</span>
+                            </span>
+                            <span class="flex items-center space-x-1">
+                                <i class="fas fa-eye"></i>
+                                <span>0 views</span>
+                            </span>
+                        </div>
+                        <span class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-900/30 text-gray-800 dark:text-gray-400 rounded">Không hoạt động</span>
+                    </div>
+                </div>
+
+                <!-- Add Category Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 p-6 hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer" onclick="openCreateModal()">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-plus text-slate-400 dark:text-slate-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-600 dark:text-slate-400 mb-2">Thêm danh mục mới</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-500">Nhấp để tạo danh mục mới</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create Category Modal -->
+    <div id="createModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            
+            <div class="inline-block align-bottom bg-white dark:bg-slate-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white dark:bg-slate-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-medium text-slate-900 dark:text-white">Tạo danh mục mới</h3>
+                        <button onclick="closeCreateModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tên danh mục</label>
+                            <input type="text" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập tên danh mục">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Slug</label>
+                            <input type="text" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="slug-danh-muc">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Mô tả</label>
+                            <textarea rows="3" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Mô tả ngắn về danh mục"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Màu sắc</label>
+                                <input type="color" value="#3B82F6" class="w-full h-10 border border-slate-300 dark:border-slate-600 rounded-lg">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Icon</label>
+                                <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="fas fa-laptop-code">💻 Laptop Code</option>
+                                    <option value="fas fa-map-marked-alt">🗺️ Map</option>
+                                    <option value="fas fa-user-graduate">🎓 User Graduate</option>
+                                    <option value="fas fa-book">📚 Book</option>
+                                    <option value="fas fa-music">🎵 Music</option>
+                                    <option value="fas fa-camera">📷 Camera</option>
+                                    <option value="fas fa-utensils">🍽️ Utensils</option>
+                                    <option value="fas fa-dumbbell">🏋️ Dumbbell</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Danh mục cha</label>
+                            <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Không có (Danh mục gốc)</option>
+                                <option value="1">Công nghệ</option>
+                                <option value="2">Du lịch</option>
+                                <option value="3">Phát triển bản thân</option>
+                                <option value="4">Sách</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="is_active" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" checked>
+                            <label for="is_active" class="ml-2 text-sm text-slate-700 dark:text-slate-300">Hoạt động</label>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="bg-slate-50 dark:bg-slate-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+                        Tạo danh mục
+                    </button>
+                    <button type="button" onclick="closeCreateModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 dark:border-slate-600 shadow-sm px-4 py-2 bg-white dark:bg-slate-800 text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

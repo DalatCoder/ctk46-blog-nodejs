@@ -1,0 +1,112 @@
+digraph BlogERD {
+    rankdir=TB;
+    node [shape=record, style=filled, fillcolor=lightblue];
+    edge [color=gray];
+
+    // Bảng Users
+    users [label="{users|id (PK)\lemail\lusername\lfull_name\lpassword_hash\lavatar_url\lbio\lwebsite\lfacebook_url\ltwitter_url\llinkedin_url\lis_admin\lis_active\lemail_verified\lcreated_at\lupdated_at}"];
+
+    // Bảng Categories  
+    categories [label="{categories|id (PK)\lname\lslug\ldescription\lcolor\licon\lparent_id (FK)\lsort_order\lis_active\lcreated_at\lupdated_at}"];
+
+    // Bảng Tags
+    tags [label="{tags|id (PK)\lname\lslug\lcolor\lusage_count\lcreated_at\lupdated_at}"];
+
+    // Bảng Posts
+    posts [label="{posts|id (PK)\ltitle\lslug\lexcerpt\lcontent\lfeatured_image\lmeta_description\lmeta_keywords\lauthor_id (FK)\lcategory_id (FK)\lstatus\lis_featured\lreading_time\lview_count\llike_count\lshare_count\lcomment_count\lpublished_at\lcreated_at\lupdated_at}"];
+
+    // Bảng Post_Tags (Many-to-Many)
+    post_tags [label="{post_tags|post_id (FK)\ltag_id (FK)\lcreated_at}"];
+
+    // Bảng Comments
+    comments [label="{comments|id (PK)\lpost_id (FK)\lparent_id (FK)\luser_id (FK)\lguest_name\lguest_email\lcontent\lstatus\llike_count\ldislike_count\luser_agent\lip_address\lcreated_at\lupdated_at}"];
+
+    // Bảng Comment_Reactions
+    comment_reactions [label="{comment_reactions|id (PK)\lcomment_id (FK)\luser_id (FK)\lip_address\lreaction_type\lcreated_at}"];
+
+    // Bảng Post_Views
+    post_views [label="{post_views|id (PK)\lpost_id (FK)\luser_id (FK)\lip_address\luser_agent\lreferrer\lviewed_at}"];
+
+    // Bảng Post_Shares
+    post_shares [label="{post_shares|id (PK)\lpost_id (FK)\lplatform\luser_id (FK)\lip_address\lshared_at}"];
+
+    // Bảng Post_Likes
+    post_likes [label="{post_likes|id (PK)\lpost_id (FK)\luser_id (FK)\lip_address\lliked_at}"];
+
+    // Bảng Newsletter_Subscribers
+    newsletter_subscribers [label="{newsletter_subscribers|id (PK)\lemail\lname\lstatus\lsource\lip_address\luser_agent\lsubscribed_at\lunsubscribed_at\llast_email_sent\lemail_verified\lverification_token}"];
+
+    // Bảng Related_Posts
+    related_posts [label="{related_posts|id (PK)\lpost_id (FK)\lrelated_post_id (FK)\lrelevance_score\lrelation_type\lcreated_at}"];
+
+    // Bảng Site_Settings
+    site_settings [label="{site_settings|id (PK)\lsetting_key\lsetting_value\lsetting_type\ldescription\lis_public\lupdated_at}"];
+
+    // Relationships
+    // Users -> Posts (1:n)
+    users -> posts [label="writes"];
+    
+    // Categories -> Posts (1:n)
+    categories -> posts [label="contains"];
+    
+    // Categories -> Categories (1:n) - self reference
+    categories -> categories [label="parent-child"];
+    
+    // Posts -> Post_Tags (1:n)
+    posts -> post_tags [label="has"];
+    
+    // Tags -> Post_Tags (1:n)
+    tags -> post_tags [label="tagged"];
+    
+    // Posts -> Comments (1:n)
+    posts -> comments [label="receives"];
+    
+    // Users -> Comments (1:n)
+    users -> comments [label="writes"];
+    
+    // Comments -> Comments (1:n) - self reference
+    comments -> comments [label="replies to"];
+    
+    // Comments -> Comment_Reactions (1:n)
+    comments -> comment_reactions [label="gets reactions"];
+    
+    // Users -> Comment_Reactions (1:n)
+    users -> comment_reactions [label="reacts"];
+    
+    // Posts -> Post_Views (1:n)
+    posts -> post_views [label="viewed"];
+    
+    // Users -> Post_Views (1:n)
+    users -> post_views [label="views"];
+    
+    // Posts -> Post_Shares (1:n)
+    posts -> post_shares [label="shared"];
+    
+    // Users -> Post_Shares (1:n)
+    users -> post_shares [label="shares"];
+    
+    // Posts -> Post_Likes (1:n)
+    posts -> post_likes [label="liked"];
+    
+    // Users -> Post_Likes (1:n)
+    users -> post_likes [label="likes"];
+    
+    // Posts -> Related_Posts (1:n)
+    posts -> related_posts [label="related to"];
+    related_posts -> posts [label="relates to"];
+
+    // Styling
+    users [fillcolor=lightcoral];
+    posts [fillcolor=lightgreen];
+    categories [fillcolor=lightyellow];
+    tags [fillcolor=lightpink];
+    comments [fillcolor=lightcyan];
+    post_tags [fillcolor=lavender];
+    comment_reactions [fillcolor=lavender];
+    post_views [fillcolor=lavender];
+    post_shares [fillcolor=lavender];
+    post_likes [fillcolor=lavender];
+    newsletter_subscribers [fillcolor=lightgray];
+    related_posts [fillcolor=lavender];
+    site_settings [fillcolor=lightgray];
+}

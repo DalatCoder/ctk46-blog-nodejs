@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Làm thế nào công nghệ thay đổi cuộc sống chúng ta - Blog Cá Nhân</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter text-slate-800 bg-white dark:text-slate-200 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-5">
+            <div class="flex justify-between items-center py-4">
+                <div class="logo">
+                    <h1 class="text-2xl font-bold"><a href="index.html" class="text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">MyBlog</a></h1>
+                </div>
+                <nav class="nav hidden md:block">
+                    <ul class="flex space-x-8">
+                        <li><a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">Trang Chủ</a></li>
+                        <li><a href="about.html" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">Về Tôi</a></li>
+                        <li><a href="contact.html" class="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium px-4 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">Liên Hệ</a></li>
+                    </ul>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                        <i class="fas fa-moon text-slate-600 dark:text-slate-300"></i>
+                    </button>
+                    <div class="hamburger md:hidden flex flex-col space-y-1 cursor-pointer">
+                        <span class="w-6 h-0.5 bg-slate-800 dark:bg-slate-200 transition-all"></span>
+                        <span class="w-6 h-0.5 bg-slate-800 dark:bg-slate-200 transition-all"></span>
+                        <span class="w-6 h-0.5 bg-slate-800 dark:bg-slate-200 transition-all"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Hero -->
+    <section class="py-16 bg-slate-50 dark:bg-slate-800 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-5">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
+                    <a href="index.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Trang chủ</a>
+                    <span>/</span>
+                    <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Công nghệ</a>
+                    <span>/</span>
+                    <span>Bài viết</span>
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-bold mb-6 text-slate-800 dark:text-slate-200">
+                    Làm thế nào công nghệ thay đổi cuộc sống chúng ta
+                </h1>
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face" alt="Tác giả" class="w-12 h-12 rounded-full">
+                        <div class="text-left">
+                            <div class="font-medium text-slate-800 dark:text-slate-200">Minh</div>
+                            <div class="text-sm text-slate-500 dark:text-slate-400">25 Tháng 7, 2024</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-6 text-sm text-slate-500 dark:text-slate-400">
+                        <span class="flex items-center space-x-1">
+                            <i class="fas fa-clock"></i>
+                            <span>8 phút đọc</span>
+                        </span>
+                        <span class="flex items-center space-x-1">
+                            <i class="fas fa-eye"></i>
+                            <span>1,234 lượt xem</span>
+                        </span>
+                        <span class="flex items-center space-x-1">
+                            <i class="fas fa-comment"></i>
+                            <span>12 bình luận</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Post Content -->
+    <section class="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-5">
+            <div class="grid lg:grid-cols-4 gap-12">
+                <main class="lg:col-span-3">
+                    <article class="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden mb-12 transition-colors duration-300">
+                        <div class="h-64 md:h-80 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=400&fit=crop&crop=center" alt="Công nghệ và cuộc sống" class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="p-8 md:p-12">
+                            <p class="text-xl leading-relaxed text-slate-600 dark:text-slate-300 mb-8 font-light">
+                                Trong thời đại số hóa ngày nay, công nghệ đã và đang thay đổi mọi khía cạnh của cuộc sống chúng ta một cách sâu sắc và toàn diện. Từ cách chúng ta giao tiếp, làm việc, học tập đến giải trí, công nghệ đã mở ra những khả năng mới mà thế hệ trước chưa từng tưởng tượng được.
+                            </p>
+
+                            <h2 class="text-3xl font-bold mb-6 text-slate-800 dark:text-slate-200 mt-12">Cách công nghệ thay đổi giao tiếp</h2>
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+                                Một trong những thay đổi rõ rệt nhất mà công nghệ mang lại là cách chúng ta giao tiếp với nhau. Trước đây, việc liên lạc với người thân ở xa phải qua thư từ hoặc điện thoại cố định. Ngày nay, chỉ với một chiếc smartphone, chúng ta có thể:
+                            </p>
+
+                            <ul class="space-y-3 mb-8 text-slate-600 dark:text-slate-300">
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                                    <span>Gọi video với bất kỳ ai trên thế giới</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                                    <span>Chia sẻ hình ảnh, video ngay lập tức</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                                    <span>Tham gia các cuộc họp trực tuyến từ mọi nơi</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full mt-2 flex-shrink-0"></span>
+                                    <span>Kết nối với cộng đồng có cùng sở thích</span>
+                                </li>
+                            </ul>
+
+                            <blockquote class="border-l-4 border-blue-500 dark:border-blue-400 pl-6 py-4 my-8 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg">
+                                <p class="text-lg italic text-slate-700 dark:text-slate-300 mb-2">
+                                    "Công nghệ đã làm cho thế giới trở nên nhỏ hơn, nhưng cũng đã làm cho các mối quan hệ trở nên phong phú hơn."
+                                </p>
+                            </blockquote>
+
+                            <h2 class="text-3xl font-bold mb-6 text-slate-800 dark:text-slate-200 mt-12">Thay đổi trong cách làm việc</h2>
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+                                Đại dịch COVID-19 đã chứng minh rằng công nghệ có thể thay đổi hoàn toàn cách chúng ta làm việc. Remote work không còn là một khái niệm xa lạ mà đã trở thành xu hướng chính của nhiều công ty.
+                            </p>
+
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+                                Các công cụ như Zoom, Slack, Microsoft Teams đã cho phép chúng ta:
+                            </p>
+
+                            <ol class="space-y-3 mb-8 text-slate-600 dark:text-slate-300">
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-6 h-6 bg-blue-500 dark:bg-blue-400 text-white text-sm rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+                                    <span>Làm việc từ bất kỳ đâu có internet</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-6 h-6 bg-blue-500 dark:bg-blue-400 text-white text-sm rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+                                    <span>Cộng tác hiệu quả với đồng nghiệp trên toàn cầu</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-6 h-6 bg-blue-500 dark:bg-blue-400 text-white text-sm rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+                                    <span>Tham gia họp, thuyết trình trực tuyến</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="w-6 h-6 bg-blue-500 dark:bg-blue-400 text-white text-sm rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
+                                    <span>Quản lý dự án một cách linh hoạt</span>
+                                </li>
+                            </ol>
+
+                            <h2 class="text-3xl font-bold mb-6 text-slate-800 dark:text-slate-200 mt-12">Giáo dục trong kỷ nguyên số</h2>
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+                                Công nghệ đã cách mạng hóa ngành giáo dục. E-learning, MOOC (Massive Open Online Courses), và các ứng dụng học tập đã làm cho kiến thức trở nên dễ tiếp cận hơn bao giờ hết.
+                            </p>
+
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+                                Học sinh và sinh viên ngày nay có thể:
+                            </p>
+
+                            <ul class="space-y-3 mb-8 text-slate-600 dark:text-slate-300">
+                                <li class="flex items-start space-x-3">
+                                    <i class="fas fa-graduation-cap text-blue-500 dark:text-blue-400 mt-1"></i>
+                                    <span>Học từ các giảng viên hàng đầu thế giới</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <i class="fas fa-book-open text-blue-500 dark:text-blue-400 mt-1"></i>
+                                    <span>Truy cập vào thư viện kiến thức khổng lồ trên internet</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <i class="fas fa-vr-cardboard text-blue-500 dark:text-blue-400 mt-1"></i>
+                                    <span>Sử dụng AR/VR để trải nghiệm học tập sinh động</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <i class="fas fa-clock text-blue-500 dark:text-blue-400 mt-1"></i>
+                                    <span>Học tập theo tốc độ của riêng mình</span>
+                                </li>
+                            </ul>
+
+                            <h2 class="text-3xl font-bold mb-6 text-slate-800 dark:text-slate-200 mt-12">Những thách thức và cân nhắc</h2>
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-8">
+                                Tuy nhiên, bên cạnh những lợi ích to lớn, công nghệ cũng mang đến những thách thức mà chúng ta cần lưu ý:
+                            </p>
+
+                            <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200 flex items-center">
+                                <span class="w-8 h-8 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center text-sm font-bold mr-3">1</span>
+                                Vấn đề bảo mật và riêng tư
+                            </h3>
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6 ml-11">
+                                Với việc chia sẻ nhiều thông tin cá nhân trên các nền tảng số, vấn đề bảo mật dữ liệu trở nên quan trọng hơn bao giờ hết.
+                            </p>
+
+                            <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200 flex items-center">
+                                <span class="w-8 h-8 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center text-sm font-bold mr-3">2</span>
+                                Nghiện công nghệ
+                            </h3>
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6 ml-11">
+                                Việc sử dụng quá nhiều thiết bị điện tử có thể dẫn đến các vấn đề về sức khỏe thể chất và tinh thần.
+                            </p>
+
+                            <h3 class="text-2xl font-semibold mb-4 text-slate-800 dark:text-slate-200 flex items-center">
+                                <span class="w-8 h-8 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center text-sm font-bold mr-3">3</span>
+                                Khoảng cách số
+                            </h3>
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-8 ml-11">
+                                Không phải ai cũng có điều kiện tiếp cận với công nghệ mới nhất, tạo ra sự bất bình đẳng trong xã hội.
+                            </p>
+
+                            <h2 class="text-3xl font-bold mb-6 text-slate-800 dark:text-slate-200 mt-12">Tương lai và kết luận</h2>
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+                                Công nghệ sẽ tiếp tục phát triển với tốc độ chóng mặt. AI, IoT, blockchain, và các công nghệ mới khác sẽ mang đến những thay đổi còn lớn hơn nữa.
+                            </p>
+
+                            <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-6">
+                                Để tận dụng tối đa những lợi ích mà công nghệ mang lại, chúng ta cần:
+                            </p>
+
+                            <ul class="space-y-3 mb-8 text-slate-600 dark:text-slate-300">
+                                <li class="flex items-start space-x-3">
+                                    <i class="fas fa-lightbulb text-yellow-500 dark:text-yellow-400 mt-1"></i>
+                                    <span>Luôn cập nhật và học hỏi những công nghệ mới</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <i class="fas fa-shield-alt text-green-500 dark:text-green-400 mt-1"></i>
+                                    <span>Sử dụng công nghệ một cách có trách nhiệm</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <i class="fas fa-balance-scale text-blue-500 dark:text-blue-400 mt-1"></i>
+                                    <span>Cân bằng giữa cuộc sống số và cuộc sống thực</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <i class="fas fa-hands-helping text-purple-500 dark:text-purple-400 mt-1"></i>
+                                    <span>Giúp đỡ những người xung quanh tiếp cận với công nghệ</span>
+                                </li>
+                            </ul>
+
+                            <div class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-6 rounded-xl mb-8">
+                                <p class="text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+                                    Cuối cùng, công nghệ chỉ là công cụ. Điều quan trọng là cách chúng ta sử dụng nó để tạo ra giá trị tích cực cho bản thân và xã hội.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="px-8 md:px-12 pb-8">
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span class="text-sm font-medium text-slate-600 dark:text-slate-400 mr-2">Thẻ:</span>
+                                <a href="#" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors">
+                                    Công nghệ
+                                </a>
+                                <a href="#" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors">
+                                    Cuộc sống
+                                </a>
+                                <a href="#" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors">
+                                    Tương lai
+                                </a>
+                                <a href="#" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors">
+                                    Digital
+                                </a>
+                            </div>
+
+                            <div class="border-t border-slate-200 dark:border-slate-600 pt-6">
+                                <h4 class="text-lg font-semibold mb-4 text-slate-800 dark:text-slate-200">Chia sẻ bài viết:</h4>
+                                <div class="flex flex-wrap gap-3">
+                                    <a href="#" class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                                        <i class="fab fa-facebook-f"></i>
+                                        <span>Facebook</span>
+                                    </a>
+                                    <a href="#" class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-400 hover:bg-blue-500 text-white rounded-lg transition-colors">
+                                        <i class="fab fa-twitter"></i>
+                                        <span>Twitter</span>
+                                    </a>
+                                    <a href="#" class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition-colors">
+                                        <i class="fab fa-linkedin-in"></i>
+                                        <span>LinkedIn</span>
+                                    </a>
+                                    <a href="#" class="inline-flex items-center space-x-2 px-4 py-2 bg-slate-600 hover:bg-slate-700 dark:bg-slate-500 dark:hover:bg-slate-600 text-white rounded-lg transition-colors">
+                                        <i class="fas fa-link"></i>
+                                        <span>Copy Link</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Comments Section -->
+                    <section class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 md:p-12 transition-colors duration-300">
+                        <h3 class="text-2xl font-bold mb-8 text-slate-800 dark:text-slate-200">Bình luận (12)</h3>
+                        
+                        <div class="space-y-6 mb-8">
+                            <div class="flex space-x-4">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612d75c?w=50&h=50&fit=crop&crop=face" alt="User" class="w-12 h-12 rounded-full flex-shrink-0">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h4 class="font-semibold text-slate-800 dark:text-slate-200">Lan Anh</h4>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">2 ngày trước</span>
+                                    </div>
+                                    <p class="text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                                        Bài viết rất hay và có ý nghĩa! Mình đặc biệt thích phần nói về giáo dục. Thực sự công nghệ đã thay đổi cách chúng ta học tập rất nhiều.
+                                    </p>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="flex items-center space-x-1 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            <i class="fas fa-thumbs-up"></i>
+                                            <span>5</span>
+                                        </button>
+                                        <button class="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            Trả lời
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex space-x-4">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face" alt="User" class="w-12 h-12 rounded-full flex-shrink-0">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h4 class="font-semibold text-slate-800 dark:text-slate-200">Hoàng Nam</h4>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">1 ngày trước</span>
+                                    </div>
+                                    <p class="text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                                        Cảm ơn tác giả đã chia sẻ! Mình cũng đang quan tâm về vấn đề bảo mật dữ liệu mà bài viết đề cập. Có thể viết thêm về chủ đề này không?
+                                    </p>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="flex items-center space-x-1 text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            <i class="fas fa-thumbs-up"></i>
+                                            <span>3</span>
+                                        </button>
+                                        <button class="text-sm text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            Trả lời
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 dark:border-slate-600 pt-8">
+                            <h4 class="text-xl font-semibold mb-6 text-slate-800 dark:text-slate-200">Để lại bình luận</h4>
+                            <form class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <input type="text" placeholder="Tên của bạn" required class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all">
+                                    <input type="email" placeholder="Email" required class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all">
+                                </div>
+                                <textarea placeholder="Viết bình luận của bạn..." rows="4" required class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all resize-none"></textarea>
+                                <button type="submit" class="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Gửi bình luận</span>
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                </main>
+
+                <aside class="lg:col-span-1 space-y-8">
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 transition-colors duration-300">
+                        <div class="text-center">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Tác giả" class="w-20 h-20 rounded-full mx-auto mb-4">
+                            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mb-2">Minh</h3>
+                            <p class="text-slate-600 dark:text-slate-400 mb-4">Developer & Blogger</p>
+                            <div class="flex justify-center space-x-3 mb-4">
+                                <a href="#" class="w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors">
+                                    <i class="fab fa-facebook-f text-sm"></i>
+                                </a>
+                                <a href="#" class="w-8 h-8 bg-blue-400 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition-colors">
+                                    <i class="fab fa-twitter text-sm"></i>
+                                </a>
+                                <a href="#" class="w-8 h-8 bg-blue-700 hover:bg-blue-800 text-white rounded-full flex items-center justify-center transition-colors">
+                                    <i class="fab fa-linkedin-in text-sm"></i>
+                                </a>
+                            </div>
+                            <a href="about.html" class="inline-block px-4 py-2 border border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-slate-900 transition-all">
+                                Xem thêm
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 transition-colors duration-300">
+                        <h3 class="text-xl font-bold mb-6 text-slate-800 dark:text-slate-200">Bài viết liên quan</h3>
+                        <div class="space-y-4">
+                            <div class="flex space-x-3">
+                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=80&h=80&fit=crop&crop=center" alt="AI" class="w-16 h-16 rounded-lg object-cover flex-shrink-0">
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-slate-800 dark:text-slate-200 mb-1 line-clamp-2">
+                                        <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            Trí tuệ nhân tạo và tương lai nghề nghiệp
+                                        </a>
+                                    </h4>
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">20 Tháng 7, 2024</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3">
+                                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=80&h=80&fit=crop&crop=center" alt="Remote work" class="w-16 h-16 rounded-lg object-cover flex-shrink-0">
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-slate-800 dark:text-slate-200 mb-1 line-clamp-2">
+                                        <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            Làm việc từ xa: Ưu và nhược điểm
+                                        </a>
+                                    </h4>
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">15 Tháng 7, 2024</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-3">
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=80&h=80&fit=crop&crop=center" alt="Digital" class="w-16 h-16 rounded-lg object-cover flex-shrink-0">
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-slate-800 dark:text-slate-200 mb-1 line-clamp-2">
+                                        <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            Chuyển đổi số trong doanh nghiệp
+                                        </a>
+                                    </h4>
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">10 Tháng 7, 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 transition-colors duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-slate-800 dark:text-slate-200">Đăng ký nhận tin</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">Nhận thông báo về bài viết mới</p>
+                        <form class="space-y-3">
+                            <input type="email" placeholder="Email của bạn" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors">
+                                Đăng ký
+                            </button>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 dark:bg-slate-900 text-white py-12 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-5">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">MyBlog</h3>
+                    <p class="text-slate-300 dark:text-slate-400 mb-4">Chia sẻ những câu chuyện và kinh nghiệm sống</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Danh mục</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Công nghệ</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Du lịch</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Phát triển bản thân</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Sách</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Liên kết</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Về tôi</a></li>
+                        <li><a href="contact.html" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Liên hệ</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Chính sách bảo mật</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 transition-colors">Điều khoản sử dụng</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-700 dark:border-slate-600 mt-8 pt-8 text-center">
+                <p class="text-slate-400 dark:text-slate-500">&copy; 2024 MyBlog. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>

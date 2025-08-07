@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Bình luận - MyBlog Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/custom.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="flex items-center justify-between h-16 px-6 border-b border-slate-200 dark:border-slate-700">
+            <h1 class="text-xl font-bold text-slate-800 dark:text-white">Admin Panel</h1>
+            <button id="sidebar-close" class="lg:hidden">
+                <i class="fas fa-times text-slate-600 dark:text-slate-300"></i>
+            </button>
+        </div>
+        
+        <nav class="mt-6">
+            <div class="px-6 py-2">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Menu chính</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="index.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-chart-bar w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="posts.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-file-alt w-5 h-5 mr-3"></i>
+                    Bài viết
+                </a>
+                <a href="comments.html" class="flex items-center px-6 py-3 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-r-2 border-blue-600 dark:border-blue-400">
+                    <i class="fas fa-comments w-5 h-5 mr-3"></i>
+                    Bình luận
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">5</span>
+                </a>
+                <a href="categories.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-folder w-5 h-5 mr-3"></i>
+                    Danh mục
+                </a>
+                <a href="tags.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-tags w-5 h-5 mr-3"></i>
+                    Thẻ
+                </a>
+                <a href="users.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-users w-5 h-5 mr-3"></i>
+                    Người dùng
+                </a>
+            </div>
+
+            <div class="px-6 py-2 mt-6">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Cài đặt</p>
+            </div>
+            
+            <div class="mt-2">
+                <a href="newsletter.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-envelope w-5 h-5 mr-3"></i>
+                    Newsletter
+                </a>
+                <a href="settings.html" class="flex items-center px-6 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <i class="fas fa-cog w-5 h-5 mr-3"></i>
+                    Cài đặt chung
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Top Header -->
+        <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="lg:hidden mr-4">
+                        <i class="fas fa-bars text-slate-600 dark:text-slate-300"></i>
+                    </button>
+                    <h2 class="text-xl font-semibold text-slate-800 dark:text-white">Quản lý Bình luận</h2>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">
+                        <i class="fas fa-sun dark:hidden"></i>
+                        <i class="fas fa-moon hidden dark:block"></i>
+                    </button>
+                    
+                    <div class="flex items-center space-x-2">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" alt="User" class="w-8 h-8 rounded-full">
+                        <span class="hidden md:block font-medium text-slate-700 dark:text-slate-300">Minh</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="p-6">
+            <!-- Header Actions -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Bình luận</h1>
+                    <p class="text-slate-600 dark:text-slate-400">Quản lý và kiểm duyệt bình luận</p>
+                </div>
+                <div class="mt-4 sm:mt-0 flex space-x-2">
+                    <button onclick="approveSelected()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2">
+                        <i class="fas fa-check"></i>
+                        <span>Duyệt đã chọn</span>
+                    </button>
+                    <button onclick="deleteSelected()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2">
+                        <i class="fas fa-trash"></i>
+                        <span>Xóa đã chọn</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Tổng bình luận</p>
+                            <p class="text-2xl font-bold text-slate-800 dark:text-white">156</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-comments text-blue-600 dark:text-blue-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Chờ duyệt</p>
+                            <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">5</p>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clock text-yellow-600 dark:text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Đã duyệt</p>
+                            <p class="text-2xl font-bold text-green-600 dark:text-green-400">148</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check text-green-600 dark:text-green-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Spam</p>
+                            <p class="text-2xl font-bold text-red-600 dark:text-red-400">3</p>
+                        </div>
+                        <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-ban text-red-600 dark:text-red-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tìm kiếm</label>
+                        <div class="relative">
+                            <input type="text" placeholder="Tìm theo nội dung..." class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search absolute left-3 top-3 text-slate-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Trạng thái</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Tất cả</option>
+                            <option value="pending">Chờ duyệt</option>
+                            <option value="approved">Đã duyệt</option>
+                            <option value="rejected">Đã từ chối</option>
+                            <option value="spam">Spam</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Bài viết</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Tất cả bài viết</option>
+                            <option value="1">Làm thế nào công nghệ thay đổi cuộc sống</option>
+                            <option value="2">10 địa điểm du lịch tuyệt vời</option>
+                            <option value="3">7 thói quen tốt để cải thiện bản thân</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-end">
+                        <button class="w-full bg-slate-600 hover:bg-slate-700 dark:bg-slate-500 dark:hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-medium">
+                            Lọc
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments List -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="selectAll" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <span class="ml-2 text-sm text-slate-700 dark:text-slate-300">Chọn tất cả</span>
+                    </label>
+                </div>
+
+                <div class="divide-y divide-slate-200 dark:divide-slate-700">
+                    <!-- Comment 1 - Pending -->
+                    <div class="p-6 hover:bg-slate-50 dark:hover:bg-slate-700">
+                        <div class="flex items-start space-x-4">
+                            <input type="checkbox" class="mt-2 rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612d75c?w=40&h=40&fit=crop&crop=face" alt="User" class="w-10 h-10 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <h4 class="text-sm font-medium text-slate-900 dark:text-white">Lan Anh</h4>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">lananh@email.com</span>
+                                        <span class="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 rounded">Chờ duyệt</span>
+                                    </div>
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">2 giờ trước</span>
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-2">
+                                        Bài viết rất hay và có ý nghĩa! Mình đặc biệt thích phần nói về giáo dục. Thực sự công nghệ đã thay đổi cách chúng ta học tập rất nhiều.
+                                    </p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                        Trên bài viết: <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Làm thế nào công nghệ thay đổi cuộc sống chúng ta</a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-4 flex items-center space-x-4">
+                                    <button onclick="approveComment(1)" class="flex items-center space-x-1 text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
+                                        <i class="fas fa-check text-sm"></i>
+                                        <span class="text-sm">Duyệt</span>
+                                    </button>
+                                    <button onclick="rejectComment(1)" class="flex items-center space-x-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
+                                        <i class="fas fa-times text-sm"></i>
+                                        <span class="text-sm">Từ chối</span>
+                                    </button>
+                                    <button onclick="markAsSpam(1)" class="flex items-center space-x-1 text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300">
+                                        <i class="fas fa-ban text-sm"></i>
+                                        <span class="text-sm">Spam</span>
+                                    </button>
+                                    <button onclick="editComment(1)" class="flex items-center space-x-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                                        <i class="fas fa-edit text-sm"></i>
+                                        <span class="text-sm">Sửa</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comment 2 - Approved -->
+                    <div class="p-6 hover:bg-slate-50 dark:hover:bg-slate-700">
+                        <div class="flex items-start space-x-4">
+                            <input type="checkbox" class="mt-2 rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="User" class="w-10 h-10 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <h4 class="text-sm font-medium text-slate-900 dark:text-white">Hoàng Nam</h4>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">hoangnam@email.com</span>
+                                        <span class="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">Đã duyệt</span>
+                                    </div>
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">4 giờ trước</span>
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-2">
+                                        Cảm ơn tác giả đã chia sẻ! Mình cũng đang quan tâm về vấn đề bảo mật dữ liệu mà bài viết đề cập. Có thể viết thêm về chủ đề này không?
+                                    </p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                        Trên bài viết: <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Làm thế nào công nghệ thay đổi cuộc sống chúng ta</a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-4 flex items-center space-x-4">
+                                    <div class="flex items-center space-x-1 text-slate-500 dark:text-slate-400">
+                                        <i class="fas fa-thumbs-up text-sm"></i>
+                                        <span class="text-sm">3 likes</span>
+                                    </div>
+                                    <button onclick="editComment(2)" class="flex items-center space-x-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                                        <i class="fas fa-edit text-sm"></i>
+                                        <span class="text-sm">Sửa</span>
+                                    </button>
+                                    <button onclick="deleteComment(2)" class="flex items-center space-x-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
+                                        <i class="fas fa-trash text-sm"></i>
+                                        <span class="text-sm">Xóa</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comment 3 - Reply -->
+                    <div class="p-6 hover:bg-slate-50 dark:hover:bg-slate-700 bg-slate-25 dark:bg-slate-750 ml-12">
+                        <div class="flex items-start space-x-4">
+                            <input type="checkbox" class="mt-2 rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="User" class="w-10 h-10 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <h4 class="text-sm font-medium text-slate-900 dark:text-white">Minh (Admin)</h4>
+                                        <span class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 rounded">Admin</span>
+                                        <span class="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">Đã duyệt</span>
+                                    </div>
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">3 giờ trước</span>
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-2">
+                                        <span class="text-blue-600 dark:text-blue-400">@Hoàng Nam</span> Cảm ơn bạn đã quan tâm! Mình sẽ viết một bài chi tiết về bảo mật dữ liệu trong tuần tới. 
+                                    </p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                        Trả lời bình luận của Hoàng Nam
+                                    </p>
+                                </div>
+
+                                <div class="mt-4 flex items-center space-x-4">
+                                    <button onclick="editComment(3)" class="flex items-center space-x-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                                        <i class="fas fa-edit text-sm"></i>
+                                        <span class="text-sm">Sửa</span>
+                                    </button>
+                                    <button onclick="deleteComment(3)" class="flex items-center space-x-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
+                                        <i class="fas fa-trash text-sm"></i>
+                                        <span class="text-sm">Xóa</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comment 4 - Spam -->
+                    <div class="p-6 hover:bg-slate-50 dark:hover:bg-slate-700 bg-red-25 dark:bg-red-900/10">
+                        <div class="flex items-start space-x-4">
+                            <input type="checkbox" class="mt-2 rounded border-slate-300 dark:border-slate-600 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-600 flex items-center justify-center">
+                                <i class="fas fa-user text-slate-500 dark:text-slate-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <h4 class="text-sm font-medium text-slate-900 dark:text-white">spam_user_123</h4>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400">fake@email.com</span>
+                                        <span class="px-2 py-1 text-xs bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 rounded">Spam</span>
+                                    </div>
+                                    <span class="text-sm text-slate-500 dark:text-slate-400">1 ngày trước</span>
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-2">
+                                        ⚠️ Nội dung spam được phát hiện tự động. Check out my amazing website for cheap products!!! Click here now!!!
+                                    </p>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                        Trên bài viết: <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">10 địa điểm du lịch tuyệt vời trong nước</a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-4 flex items-center space-x-4">
+                                    <button onclick="approveComment(4)" class="flex items-center space-x-1 text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
+                                        <i class="fas fa-check text-sm"></i>
+                                        <span class="text-sm">Duyệt</span>
+                                    </button>
+                                    <button onclick="deleteComment(4)" class="flex items-center space-x-1 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
+                                        <i class="fas fa-trash text-sm"></i>
+                                        <span class="text-sm">Xóa vĩnh viễn</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="bg-white dark:bg-slate-800 px-4 py-3 border-t border-slate-200 dark:border-slate-700 sm:px-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center text-sm text-slate-700 dark:text-slate-300">
+                            Hiển thị <strong>1</strong> đến <strong>10</strong> của <strong>156</strong> bình luận
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-1 text-sm bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600 disabled:opacity-50" disabled>
+                                Trước
+                            </button>
+                            <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md">1</button>
+                            <button class="px-3 py-1 text-sm bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600">2</button>
+                            <button class="px-3 py-1 text-sm bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600">3</button>
+                            <button class="px-3 py-1 text-sm bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md hover:bg-slate-50 dark:hover:bg-slate-600">
+                                Sau
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
