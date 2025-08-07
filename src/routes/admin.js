@@ -60,6 +60,7 @@ router.post('/users/bulk-update', UserController.bulkUpdateUsers);
 
 // Settings routes
 router.get('/settings', AdminController.settings);
+router.post('/settings', AdminController.updateSettings);
 
 // Profile routes
 router.get('/profile', AuthController.showProfile);

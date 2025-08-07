@@ -2,6 +2,7 @@ const UserModel = require('../models/UserModel');
 const PostModel = require('../models/PostModel');
 const CategoryModel = require('../models/CategoryModel');
 const CommentModel = require('../models/CommentModel');
+const SettingsModel = require('../models/SettingsModel');
 
 class AdminController {
   // Dashboard
@@ -123,16 +124,78 @@ class AdminController {
   // Settings page
   static async settings(req, res) {
     try {
+      // Initialize default settings if not exists
+      await SettingsModel.initializeDefaults();
+      
+      // Get all settings organized by categories
+      const [general, content, users, system, analytics] = await Promise.all([
+        SettingsModel.getByCategory('general'),
+        SettingsModel.getByCategory('content'),
+        SettingsModel.getByCategory('users'),
+        SettingsModel.getByCategory('system'),
+        SettingsModel.getByCategory('analytics')
+      ]);
+
       res.render('admin/settings', {
-        title: 'Settings',
+        title: 'Cài đặt',
         layout: 'admin',
         currentPage: 'settings',
         user: req.user,
+        settings: {
+          general,
+          content,
+          users,
+          system,
+          analytics
+        }
       });
     } catch (error) {
       console.error('Settings page error:', error);
-      req.flash('error', 'Error loading settings');
+      req.flash('error', 'Lỗi khi tải trang cài đặt');
       res.redirect('/admin');
+    }
+  }
+
+  // Update settings
+  static async updateSettings(req, res) {
+    try {
+      const settingsData = req.body;
+      const updates = {};
+
+      // Process form data and prepare for database update
+      for (const [key, value] of Object.entries(settingsData)) {
+        if (key.startsWith('setting_')) {
+          const settingKey = key.replace('setting_', '');
+          let settingValue = value;
+          let settingType = 'string';
+
+          // Determine type based on key or value
+          if (settingKey.includes('enable_') || settingKey === 'maintenance_mode' || settingKey === 'comment_moderation') {
+            settingType = 'boolean';
+            settingValue = settingValue === 'on' || settingValue === 'true' ? 'true' : 'false';
+          } else if (settingKey === 'posts_per_page') {
+            settingType = 'number';
+          } else if (settingKey.includes('email')) {
+            settingType = 'email';
+          } else if (settingKey === 'site_description') {
+            settingType = 'text';
+          }
+
+          updates[settingKey] = {
+            value: settingValue,
+            type: settingType
+          };
+        }
+      }
+
+      await SettingsModel.updateMultiple(updates);
+
+      req.flash('success', 'Cài đặt đã được cập nhật thành công');
+      res.redirect('/admin/settings');
+    } catch (error) {
+      console.error('Update settings error:', error);
+      req.flash('error', 'Lỗi khi cập nhật cài đặt');
+      res.redirect('/admin/settings');
     }
   }
 
