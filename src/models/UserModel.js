@@ -1,6 +1,29 @@
 const prisma = require('../config/database');
 const bcrypt = require('bcryptjs');
 
+// Helper function to generate pagination pages
+function generatePaginationPages(currentPage, totalPages) {
+  const pages = [];
+  const maxPagesToShow = 5;
+  let startPage = Math.max(1, currentPage - 2);
+  let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+  // Adjust start page if we're near the end
+  if (endPage - startPage < maxPagesToShow - 1) {
+    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push({
+      number: i,
+      current: i === currentPage,
+      url: `?page=${i}`
+    });
+  }
+
+  return pages;
+}
+
 class UserModel {
   // Create new user
   static async create(userData) {
@@ -19,6 +42,51 @@ class UserModel {
   static async findByEmail(email) {
     return await prisma.user.findUnique({
       where: { email },
+    });
+  }
+
+  // Find user by username
+  static async findByUsername(username) {
+    return await prisma.user.findUnique({
+      where: { username },
+    });
+  }
+
+  // Find user by username with password (for authentication)
+  static async findByUsernameWithPassword(username) {
+    return await prisma.user.findUnique({
+      where: { username },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        password: true,
+        role: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  }
+
+  // Find user by email with password (for authentication)
+  static async findByEmailWithPassword(email) {
+    return await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        password: true,
+        role: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }
 
@@ -102,10 +170,13 @@ class UserModel {
     return {
       users,
       pagination: {
-        current: page,
-        total: Math.ceil(total / limit),
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+        totalItems: total,
+        limit: limit,
         hasNext: page < Math.ceil(total / limit),
-        hasPrev: page > 1,
+        hasPrevious: page > 1,
+        pages: generatePaginationPages(page, Math.ceil(total / limit))
       },
     };
   }
@@ -145,6 +216,47 @@ class UserModel {
       activeUsers,
       adminUsers,
     };
+  }
+
+  // Bulk update user status
+  static async bulkUpdateStatus(userIds, status) {
+    return prisma.user.updateMany({
+      where: {
+        id: {
+          in: userIds.map(id => parseInt(id))
+        }
+      },
+      data: {
+        status,
+        updatedAt: new Date()
+      }
+    });
+  }
+
+  // Bulk update user role
+  static async bulkUpdateRole(userIds, role) {
+    return prisma.user.updateMany({
+      where: {
+        id: {
+          in: userIds.map(id => parseInt(id))
+        }
+      },
+      data: {
+        role,
+        updatedAt: new Date()
+      }
+    });
+  }
+
+  // Bulk delete users
+  static async bulkDelete(userIds) {
+    return prisma.user.deleteMany({
+      where: {
+        id: {
+          in: userIds.map(id => parseInt(id))
+        }
+      }
+    });
   }
 }
 

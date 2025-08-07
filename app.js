@@ -312,12 +312,39 @@ const hbs = engine({
       return parseInt(a) - parseInt(b);
     },
 
+    mul: function(a, b) {
+      return parseInt(a) * parseInt(b);
+    },
+
     multiply: function(a, b) {
       return parseInt(a) * parseInt(b);
     },
 
     divide: function(a, b) {
       return parseInt(a) / parseInt(b);
+    },
+
+    // Comparison helpers
+    gt: function(a, b) {
+      return parseInt(a) > parseInt(b);
+    },
+
+    gte: function(a, b) {
+      return parseInt(a) >= parseInt(b);
+    },
+
+    lt: function(a, b) {
+      return parseInt(a) < parseInt(b);
+    },
+
+    lte: function(a, b) {
+      return parseInt(a) <= parseInt(b);
+    },
+
+    // Array length helper
+    length: function(array) {
+      if (!array) return 0;
+      return Array.isArray(array) ? array.length : 0;
     }
   }
 });

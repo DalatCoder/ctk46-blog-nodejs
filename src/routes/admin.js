@@ -3,6 +3,7 @@ const router = express.Router();
 const AdminController = require('../controllers/AdminController');
 const PostController = require('../controllers/PostController');
 const CommentController = require('../controllers/CommentController');
+const UserController = require('../controllers/UserController');
 const AuthController = require('../controllers/AuthController');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 const { validatePost, validateProfileUpdate, validatePasswordChange } = require('../middleware/validation');
@@ -48,6 +49,14 @@ router.post('/comments/:id/reply', replyValidation, CommentController.reply);
 
 // Users routes
 router.get('/users', AdminController.users);
+router.post('/users', UserController.createUser);
+router.get('/users/stats', UserController.getUserStats);
+router.get('/users/:id', UserController.getUserById);
+router.put('/users/:id', UserController.updateUser);
+router.delete('/users/:id', UserController.deleteUser);
+router.patch('/users/:id/toggle-status', UserController.toggleUserStatus);
+router.patch('/users/:id/reset-password', UserController.resetUserPassword);
+router.post('/users/bulk-update', UserController.bulkUpdateUsers);
 
 // Settings routes
 router.get('/settings', AdminController.settings);

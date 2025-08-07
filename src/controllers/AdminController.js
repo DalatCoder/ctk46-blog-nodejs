@@ -148,6 +148,9 @@ class AdminController {
       };
 
       const result = await UserModel.getAll(page, limit, filters);
+      
+      // Get statistics for users
+      const stats = await UserModel.getStats();
 
       res.render('admin/users', {
         title: 'Users Management',
@@ -155,6 +158,7 @@ class AdminController {
         users: result.users,
         pagination: result.pagination,
         filters,
+        stats,
         currentPage: 'users',
         user: req.user,
       });

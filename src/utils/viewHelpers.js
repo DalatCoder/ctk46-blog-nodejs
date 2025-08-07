@@ -62,5 +62,66 @@ module.exports = {
   // JSON stringify helper
   json: function(obj) {
     return JSON.stringify(obj);
+  },
+
+  // Math helpers
+  add: function(a, b) {
+    return Number(a) + Number(b);
+  },
+
+  sub: function(a, b) {
+    return Number(a) - Number(b);
+  },
+
+  mul: function(a, b) {
+    return Number(a) * Number(b);
+  },
+
+  div: function(a, b) {
+    return Number(a) / Number(b);
+  },
+
+  // Greater than helper
+  gt: function(a, b) {
+    return Number(a) > Number(b);
+  },
+
+  // Less than helper
+  lt: function(a, b) {
+    return Number(a) < Number(b);
+  },
+
+  // Greater than or equal helper
+  gte: function(a, b) {
+    return Number(a) >= Number(b);
+  },
+
+  // Less than or equal helper
+  lte: function(a, b) {
+    return Number(a) <= Number(b);
+  },
+
+  // Get array length
+  length: function(array) {
+    if (!array) return 0;
+    return Array.isArray(array) ? array.length : 0;
+  },
+
+  // Time ago helper
+  timeAgo: function(date) {
+    if (!date) return '';
+    return moment(date).fromNow();
+  },
+
+  // Strip HTML tags
+  stripTags: function(text) {
+    if (!text) return '';
+    return text.replace(/<[^>]*>/g, '');
+  },
+
+  // Capitalize first letter
+  capitalize: function(text) {
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 };
